@@ -19,8 +19,8 @@ The projects in this repository demonstrate my expertise across various domains,
 ## 📂 Repository Structure
 The repository is organized by project or topic:
 
-* `📁 /My-site` - Description of the project or topic.
-* `📁 [Folder Name]` - Description of the project or topic.
+* `📁 **[`/my-personal-site`](./my-personal-site)**` - Description of the project or topic.
+* `📁 **[`/Folder-Name`](./Folder-Name)**` - Description of the project or topic.
 
 ## 🤝 Contributing
 
