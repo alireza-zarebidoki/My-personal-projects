@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>علیرضا زارع بیدکی | دانشجو علوم کامپیوتر</title>
+    <link rel="icon" href="logo.png" type="image/png">
+
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- تنظیمات کلی و متغیرها --- */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #10b981; /* سبز زمردی */
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --terminal-bg: #1e1e1e;
+            --terminal-header: #2d2d2d;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* کانتینر ذرات پس‌زمینه */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* --- هدر و پروفایل --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
+        }
+
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            padding: 5px;
+            background: rgba(30, 41, 59, 0.9);
+            box-shadow: 0 0 35px var(--accent-glow);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            object-fit: cover;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05) rotate(5deg);
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.7);
+        }
+
+        h1 {
+            margin: 15px 0 10px 0;
+            font-size: 2.2rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* استایل تایپ‌نویس */
+        .typewriter {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 1.6em;
+            display: inline-block;
+            direction: ltr;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: var(--accent);
+            animation: blink 1s infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- کانتینر اصلی --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* --- لیست مهارت‌ها --- */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-tag {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .skill-tag:hover {
+            background-color: var(--accent);
+            color: #0f172a;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* --- ترمینال  --- */
+        .terminal-window {
+            background-color: var(--terminal-bg);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            border: 1px solid #333;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .terminal-header {
+            background-color: var(--terminal-header);
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .terminal-title {
+            margin-left: 15px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            color: #f1f5f9;
+            font-size: 0.95rem;
+            min-height: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .command-line {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .prompt {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            flex-grow: 1;
+            outline: none;
+            caret-color: var(--accent);
+        }
+
+        .output {
+            margin-bottom: 10px;
+            color: #d4d4d4;
+            white-space: pre-wrap;
+        }
+
+        .output-success { color: var(--accent); }
+        .output-error { color: #ff5f56; }
+        .output-info { color: #569cd6; }
+
+        /* --- دکمه‌ها --- */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #0f172a;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            color: white;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--text-muted);
+            color: var(--text-muted);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(15, 23, 42, 0.95);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <header>
+        <div class="profile-container">
+            <img src="logo.png" class="profile-img" alt="لوگوی علیرضا زارع بیدکی">
+        </div>
+        <h1>علیرضا زارع بیدکی</h1>
+
+        <div class="typewriter-container">
+            <span class="typewriter" id="typewriter-text"></span><span class="cursor">|</span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+            <h3 class="section-title"><i class="fas fa-user"></i> درباره من</h3>
+            <p style="color: #cbd5e1; text-align: justify;">
+                سلام! من علیرضا هستم، دانشجوی ورودی ۱۴۰۴ دانشگاه فردوسی مشهد.
+                مسیر حرفه‌ای من متمرکز بر عمیق شدن در مباحث پایه‌ای و تبدیل شدن به یک کارشناس علوم کامپیوتر توانمند است.
+                علاقه من به درک عمیق نحوه کارکرد کامپیوترها، سیستم‌عامل لینوکس و برنامه‌نویسی سطح پایین است.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3 class="section-title"><i class="fas fa-code"></i> جعبه ابزار من</h3>
+            <div class="skills-grid">
+                <span class="skill-tag">C / C++</span>
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Linux / Bash</span>
+                <span class="skill-tag">Git & GitHub</span>
+                <span class="skill-tag">Algorithms</span>
+                <span class="skill-tag">HTML & CSS</span>
+            </div>
+        </div>
+
+        <div class="card" style="padding: 0; background: transparent; box-shadow: none; border: none;">
+            <h3 class="section-title" style="margin-bottom: 15px; color: #fff;"><i class="fas fa-terminal"></i> ترمینال شخصی</h3>
+            <div class="terminal-window" id="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                    </div>
+                    <div class="terminal-title">alireza@zarebidoki:~</div>
+                </div>
+                <div class="terminal-body" id="terminal-body">
+                    <div class="output">Welcome to Alireza's Interactive Terminal v1.0</div>
+                    <div class="output">Type <span class="output-success">'help'</span> to see available commands.</div>
+                    <br>
+                    <div class="command-line">
+                        <span class="prompt">➜  ~</span>
+                        <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h3 class="section-title" style="border: none;"><i class="fas fa-envelope"></i> ارتباط با من</h3>
+            <div class="btn-container">
+                <a href="mailto:alireza@zarebidoki.com" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> ارسال ایمیل
+                </a>
+                <a href="https://github.com/alireza-zarebidoki" class="btn btn-outline" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 طراحی شده توسط علیرضا زارع بیدکی</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <script>
+        // --- 1. تنظیمات Particles.js (پس‌زمینه متحرک) ---
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#10b981" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#10b981",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" }
+                },
+                "modes": {
+                    "grab": { "distance": 140, "line_linked": { "opacity": 1 } }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // --- 2. تنظیمات Typewriter (تایپ خودکار) ---
+        const textElement = document.getElementById("typewriter-text");
+        const texts = [
+            "Computer Science Student",
+            "Programmer (C/C++, Java)",
+            "Linux Enthusiast",
+            "Tech Explorer"
+        ];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function typeWriter() {
+            const currentText = texts[textIndex];
+
+            if (isDeleting) {
+                textElement.innerText = currentText.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50; // سرعت پاک کردن
+            } else {
+                textElement.innerText = currentText.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100; // سرعت تایپ
+            }
+
+            if (!isDeleting && charIndex === currentText.length) {
+                isDeleting = true;
+                typeSpeed = 2000; // مکث بعد از تایپ کامل
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length;
+                typeSpeed = 500; // مکث قبل از شروع تایپ جدید
+            }
+
+            setTimeout(typeWriter, typeSpeed);
+        }
+
+        // شروع تایپ‌نویس بعد از لود صفحه
+        document.addEventListener('DOMContentLoaded', typeWriter);
+
+
+        // --- 3. تنظیمات Terminal (ترمینال تعاملی) ---
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalBody = document.getElementById('terminal-body');
+        const commandLine = document.querySelector('.command-line');
+
+        // فوکس همیشگی روی اینپوت ترمینال وقتی روی باکس کلیک میشه
+        document.getElementById('terminal').addEventListener('click', () => {
+            terminalInput.focus();
+        });
+
+        terminalInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const command = this.value.trim().toLowerCase();
+
+                // ایجاد خط دستور قبلی در تاریخچه
+                const historyLine = document.createElement('div');
+                historyLine.innerHTML = `<span class="prompt">➜  ~</span> ${this.value}`;
+                historyLine.style.marginBottom = "5px";
+                terminalBody.insertBefore(historyLine, commandLine);
+
+                // پردازش دستور
+                let response = "";
+                let responseClass = "output";
+
+                switch (command) {
+                    case 'help':
+                        response = "Available commands:\n" +
+                                   "  <span class='output-info'>about</span>    : Who am I?\n" +
+                                   "  <span class='output-info'>skills</span>   : My technical skills\n" +
+                                   "  <span class='output-info'>social</span>   : Social media links\n" +
+                                   "  <span class='output-info'>contact</span>  : Show email\n" +
+                                   "  <span class='output-info'>clear</span>    : Clear terminal\n" +
+                                   "  <span class='output-info'>date</span>     : Show current date";
+                        break;
+                    case 'about':
+                        response = "I am Alireza, a Computer Science student at FUM (Ferdowsi University of Mashhad). Passionate about low-level programming and OS.";
+                        break;
+                    case 'skills':
+                        response = "LANGUAGES: C, C++, Java, JavaScript\n" +
+                                   "TOOLS: Git, Linux (Bash), Vim\n" +
+                                   "WEB: HTML5, CSS3";
+                        break;
+                    case 'contact':
+                        response = "Email: alireza@zarebidoki.com";
+                        responseClass = "output-success";
+                        break;
+                    case 'social':
+                        response = "GitHub: github.com/alireza-zarebidoki";
+                        break;
+                    case 'clear':
+                        while (terminalBody.firstChild !== commandLine) {
+                            terminalBody.removeChild(terminalBody.firstChild);
+                        }
+                        this.value = '';
+                        return; // خروج از تابع برای جلوگیری از چاپ پاسخ خالی
+                    case 'date':
+                        response = new Date().toString();
+                        break;
+                    case 'sudo':
+                        response = "Permission denied: You are not root!";
+                        responseClass = "output-error";
+                        break;
+                    case '':
+                        response = "";
+                        break;
+                    default:
+                        response = `zsh: command not found: ${command}`;
+                        responseClass = "output-error";
+                }
+
+                if (response) {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = responseClass;
+                    responseDiv.innerHTML = response;
+                    responseDiv.style.marginBottom = "15px";
+                    terminalBody.insertBefore(responseDiv, commandLine);
+                }
+
+                this.value = '';
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
+        });
+    </script>
+
+</body>
+</html>
