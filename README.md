@@ -1,15 +1,50 @@
-# My Personal Projects
+# My Personal Projects 💻
 
-This repository contains a collection of my personal software projects,
-including websites, Telegram bots, and various utility tools.
+Welcome to my personal playground for coding! This repository serves as a collection of my programming exercises, small projects, and algorithmic challenges, predominantly focused on the **C programming language** as I pursue my Bachelor's in Computer Science.
 
-Each project is organized in its own directory with separate documentation
-and configuration.
+![C](https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white)
+![FUM](https://img.shields.io/badge/Ferdowsi%20University-CS-blue?style=for-the-badge)
 
-## Categories
-- Web applications
-- Telegram bots
-- Utility tools
+## 👤 About Me
+I am a Computer Science student (Entry 1404) at **Ferdowsi University of Mashhad (FUM)**. This repository documents my learning journey and the code I write to master fundamental concepts.
 
-## Author
-Alireza Zarebidoki
+## 📚 Topics Covered
+The codes in this repository cover a wide range of C programming concepts, including but not limited to:
+
+### 🔹 Basics & Control Flow
+- Data types, Variables, and Conversion specifiers.
+- Conditionals (`if`, `switch`) and Loops (`while`, `for`, `do-while`).
+- Control statements (`break`, `continue`) and formatting.
+
+### 🔹 Data Structures & Algorithms
+- **Arrays**: 1D and 2D arrays, Character arrays.
+- **Strings**: Manipulation using `strlen`, `strcpy`, `strcat`, `strcmp`, etc.
+- **Pointers**: Memory addresses, pointer arithmetic, and usage.
+- **Structures**: Custom data types (`struct`).
+
+### 🔹 Advanced Concepts
+- **Bitwise Operations**: Shifting (`<<`, `>>`), AND, OR, XOR, NOT.
+- **Math & Logic**: Random number generation (`rand`, `srand`), PI calculation, and `math.h` functions.
+- **Functions**: Global vs. Local variables, recursion, and modular programming.
+
+## 📂 Repository Structure
+Each folder or file corresponds to a specific topic or a small project.
+* `Basics/` - Introductory codes.
+* `Arrays_Strings/` - Operations on arrays and string handling.
+* `Pointers/` - Memory management exercises.
+* `Projects/` - Larger, combined logic programs.
+
+## 🚀 How to Run
+To run any of the `.c` files, you can use `gcc`:
+
+```bash
+gcc filename.c -o output
+./output
+```
+
+📫 Contact
+Feel free to explore the code! If you have any suggestions or want to connect:
+
+GitHub: alireza-zarebidoki
+
+Created with ❤️ by Alireza Zarebidoki
