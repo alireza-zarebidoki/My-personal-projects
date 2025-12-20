@@ -40,11 +40,25 @@ To run any of the `.c` files, you can use `gcc`:
 ```bash
 gcc filename.c -o output
 ./output
+
 ```
 
-📫 Contact
+## 📫 Contact
+
 Feel free to explore the code! If you have any suggestions or want to connect:
 
-GitHub: alireza-zarebidoki
+* **GitHub**: [alireza-zarebidoki](https://www.google.com/search?q=https://github.com/alireza-zarebidoki)
 
-Created with ❤️ by Alireza Zarebidoki
+---
+
+*Created with ❤️ by Alireza Zarebidoki*
+
+```
+
+### تغییرات احتمالی:
+* **زبان:** اکثر پورتفولیوهای گیت‌هاب به زبان **انگلیسی** نوشته می‌شوند تا جهانی باشند. اگر دوست داری متن کاملاً **فارسی** باشد، بگو تا ترجمه‌اش کنم.
+* **ساختار فایل‌ها:** من یک ساختار فرضی (`Basics/`, `Arrays/`) نوشتم. اگر همه فایل‌ها در یک پوشه هستند، بخش "Repository Structure" را حذف کن یا تغییر بده.
+
+آیا می‌خواهی بخش خاصی از این فایل را تغییر دهم؟
+
+```
