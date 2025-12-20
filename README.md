@@ -6,14 +6,15 @@ Welcome to my personal projects repository! This collection serves as a playgrou
 ## 📖 About
 This repository contains a variety of personal projects and coding exercises. The main goal of this repo is to track my progress, test new ideas, and practice different programming concepts.
 
-## 🛠️ فناوری‌های مورد استفاده
+## 🛠️ Technologies & Tools
 
-این مخزن شامل پروژه‌ها و تمرین‌هایی است که با استفاده از ابزارها و زبان‌های زیر (که بخشی از تخصص‌های من هستند) پیاده‌سازی شده‌اند:
+The projects in this repository demonstrate my expertise across various domains, utilizing the following languages and tools:
 
-* **زبان‌های برنامه‌نویسی:** C, C++, Java, Python
-* **ابزارها و پلتفرم‌ها:** Git, Bash, Linux, Vim
-* **بیلد سیستم و دیباگ:** CMake, Makefiles, GDB
-* **مفاهیم کلیدی:** Data Structures, Algorithms
+* **Systems Programming:** C, C++ (STL, Smart Pointers), CMake, Makefiles, GDB
+* **Backend & Enterprise:** Java (Spring Boot, Hibernate, Maven)
+* **Scripting & Web:** Python, JavaScript, HTML5, CSS3
+* **Environment & Tools:** Linux, Git, Bash, Vim
+* **Core Concepts:** Data Structures, Algorithms, Design Patterns (SOLID), Graph Theory
 
 ## 📂 Repository Structure
 The repository is organized by project or topic:
