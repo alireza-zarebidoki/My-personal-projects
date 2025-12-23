@@ -1,0 +1,125 @@
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #0f172a;
+    color: #f1f5f9;
+    margin: 0; padding: 0;
+}
+
+.login-wrapper {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+}
+
+.login-box {
+    background: #1e293b; padding: 40px; border-radius: 16px; width: 100%; max-width: 400px;
+    border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center;
+}
+
+input, textarea {
+    width: 100%; background: #0f172a; border: 1px solid #334155; color: #fff;
+    padding: 12px; margin-bottom: 15px; border-radius: 8px; font-family: inherit; box-sizing: border-box;
+}
+input:focus, textarea:focus { border-color: #10b981; outline: none; }
+
+.btn-submit {
+    background: #10b981; color: #0f172a; width: 100%; padding: 12px;
+    border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem;
+    transition: 0.3s;
+}
+.btn-submit:hover { background: #059669; }
+
+.error-msg { color: #ef4444; margin-top: 10px; font-size: 0.9rem; }
+
+/* داشبورد */
+.admin-header {
+    background: #1e293b; padding: 15px 30px; border-bottom: 1px solid #334155;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.btn-logout {
+    background: #ef4444; color: white; border: none; padding: 8px 15px;
+    border-radius: 6px; cursor: pointer;
+}
+
+.container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+.card {
+    background: #1e293b; padding: 25px; border-radius: 12px; margin-bottom: 25px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.card h3 { margin-top: 0; color: #10b981; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+
+.posts-list { list-style: none; padding: 0; }
+.posts-list li {
+    background: #0f172a; padding: 15px; margin-bottom: 10px; border-radius: 8px;
+    display: flex; justify-content: space-between; align-items: center; border: 1px solid #334155;
+}
+.delete-btn { color: #ef4444; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
+.delete-btn:hover { transform: scale(1.2); }
+
+.btn-new {
+    background: transparent;
+    border: 1px solid #10b981;
+    color: #10b981;
+    padding: 5px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.btn-new:hover {
+    background: #10b981;
+    color: #0f172a;
+}
+.edit-btn {
+    color: #facc15; /* زرد */
+    cursor: pointer;
+    margin-left: 15px;
+    font-size: 1.1rem;
+}
+
+/* --- تم تاریک برای ادیتور متن (Quill Dark Mode) --- */
+
+/* 1. نوار ابزار بالا (Toolbar) */
+.ql-toolbar.ql-snow {
+    background-color: #1e293b; /* رنگ پس‌زمینه نوار ابزار */
+    border-color: #334155 !important; /* رنگ حاشیه */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* 2. بدنه ادیتور (جایی که مینویسید) */
+.ql-container.ql-snow {
+    background-color: #0f172a !important; /* رنگ پس‌زمینه متن */
+    border-color: #334155 !important;
+    color: #f1f5f9 !important; /* رنگ متن */
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    font-family: 'Vazirmatn', sans-serif; /* فونت وزیر */
+}
+
+/* 3. آیکون‌های نوار ابزار (Bold, Italic و...) */
+.ql-snow .ql-stroke {
+    stroke: #cbd5e1 !important; /* رنگ خط آیکون‌ها */
+}
+.ql-snow .ql-fill {
+    fill: #cbd5e1 !important; /* رنگ پر کردن آیکون‌ها */
+}
+.ql-snow .ql-picker {
+    color: #cbd5e1 !important; /* رنگ منوهای کشویی */
+}
+
+/* 4. اصلاح دکمه "نوشته جدید" */
+.btn-new {
+    border: 1px solid var(--accent) !important;
+    color: var(--accent) !important;
+    background: transparent !important;
+    transition: 0.3s;
+}
+.btn-new:hover {
+    background: var(--accent) !important;
+    color: #000 !important;
+}
+
+/* 5. متن placeholder (وقتی خالی است) */
+.ql-editor.ql-blank::before {
+    color: #64748b !important;
+    font-style: normal;
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>در حال بارگذاری...</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css?v=1.2"> <link rel="icon" href="images/logo.png" type="image/png">
+
+    <style>
+        /* فیکس کردن مشکل به هم چسبیدن متن‌ها */
+        .article-body {
+            white-space: pre-wrap; /* این خط طلایی است! اینترها را شناسایی می‌کند */
+            line-height: 2.2; /* فاصله خطوط بیشتر برای خوانایی */
+            font-size: 1.15rem;
+            color: #e2e8f0;
+            text-align: justify;
+        }
+        /* زیباتر کردن نام نویسنده */
+        .author-badge {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <header style="padding: 40px 20px; text-align: center;">
+        <a href="index.html" class="btn btn-outline" style="border-radius: 50px;">
+            <i class="fas fa-arrow-right"></i> بازگشت به لیست مقالات
+        </a>
+    </header>
+
+    <div class="container">
+
+        <div id="article-container" class="card" style="display: none; padding: 40px;">
+
+            <h1 id="post-title" class="section-title" style="font-size: 2.2rem; border-bottom: none; margin-bottom: 15px; display:block;"></h1>
+
+            <div class="article-meta" style="margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                <span class="author-badge"><i class="fas fa-user-astronaut"></i> علیرضا زارع بیدکی</span>
+                <span style="color: #94a3b8; font-size: 0.9rem;"><i class="far fa-calendar-alt"></i> <span id="post-date"></span></span>
+            </div>
+
+            <div id="post-body" class="article-body">
+                </div>
+
+        </div>
+
+        <div id="loading" style="text-align: center; color: #10b981; margin-top: 50px;">
+            <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/blog.js?v=1.2"></script>
+
+    <script>
+        // تنظیمات اصلاح شده پارتیکل‌ها (دقیقاً مثل صفحه اصلی - ریز و محو)
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#10b981" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false },
+                "size": { "value": 3, "random": true },  /* <--- اینجا باید عدد 3 باشد، نه بیشتر */
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#10b981",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" }
+                },
+                "modes": {
+                    "grab": { "distance": 140, "line_linked": { "opacity": 1 } }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
+</body>
+</html>

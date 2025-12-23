@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وبلاگ شخصی علیرضا زارع بیدکی</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/logo.png" type="image/png">
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <header>
+        <div style="margin-bottom: 20px;">
+            <img src="images/logo.png" class="profile-img" alt="لوگو علیرضا">
+        </div>
+
+        <h1 class="hero-title">_Alireza's Blog_</h1>
+
+        <p class="hero-subtitle">
+            <i class="fas fa-terminal" style="font-size: 0.8rem; margin-left: 5px;"></i>
+            یادداشت‌هایی درباره دنیای صفر و یک
+        </p>
+
+        <br>
+
+        <a href="https://zarebidoki.com" class="btn btn-outline" style="border-radius: 50px; font-size: 0.9rem;">
+            <i class="fas fa-home"></i> بازگشت به صفحه اصلی
+        </a>
+    </header>
+
+    <div class="container">
+        <div id="posts-container">
+            <div class="card" style="text-align: center;">
+                <i class="fas fa-circle-notch fa-spin" style="color: #10b981; font-size: 2rem;"></i>
+                <br><br>
+                در حال دریافت مطالب...
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/blog.js"></script>
+    <script>
+        // کانفیگ دقیق پارتیکل‌های سایت اصلی
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#10b981" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#10b981", "opacity": 0.2, "width": 1 },
+                "move": { "enable": true, "speed": 2 }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "grab" } }
+            }
+        });
+    </script>
+</body>
+</html>
