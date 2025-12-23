@@ -60,10 +60,12 @@ A protected dashboard to manage content.
 
 ```text
 my-personal-site/
-├── index.html            # Main Portfolio Entry
-├── script.js             # Terminal & UI Logic
-├── style.css             # Global Styles
-└── blog/                 # Blog Sub-system
+├── Main-page/            # Interactive Portfolio (Frontend)
+│   ├── index.html        # Main Portfolio Entry
+│   ├── script.js         # Terminal & UI Logic
+│   ├── style.css         # Global Styles
+│   └── images/           # Portfolio assets
+├── Blog/                 # Blog Sub-system
     ├── index.html        # Blog Home (Post List)
     ├── article.html      # Single Post View
     ├── css/              # Blog specific styles
@@ -78,7 +80,6 @@ my-personal-site/
     └── admin/            # Admin Panel UI
         ├── index.html    # Dashboard
         └── script.js     # Admin Logic & Quill Setup
-
 ```
 
 ---
