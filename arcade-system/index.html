@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade | Alireza Zarebidoki</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <div class="arcade-container">
+        <div class="cabinet-body">
+            <div class="marquee">
+                <div class="marquee-content">
+                    <span class="brand-name">ZAREBIDOKI</span>
+                    <span class="brand-sub">ARCADE SYSTEM</span>
+                </div>
+                <div class="screws">
+                    <div class="screw"></div><div class="screw"></div>
+                </div>
+            </div>
+
+            <div class="monitor-bezel">
+                <div class="crt-screen">
+                    <div class="scanlines"></div>
+                    <div class="screen-glow"></div>
+
+                    <div id="game-display" class="game-content">
+                        <div class="menu-overlay">
+                            <h2 class="blink-text">INSERT COIN / SELECT GAME</h2>
+                            <div class="game-carousel">
+                                <div class="game-item" data-url="chess_modified.cgi">
+                                    <i class="fas fa-chess-knight"></i>
+                                    <h3>شطرنج</h3>
+                                </div>
+
+                                <div class="game-item" data-url="rps_5move.cgi">
+                                    <i class="fas fa-hand-spock"></i>
+                                    <h3>سنگ کاغذ قیچی</h3>
+                                </div>
+
+                                <div class="game-item" data-url="tictactoe_limited.cgi">
+                                    <i class="fas fa-th"></i>
+                                    <h3>دوز محدود</h3>
+                                </div>
+
+                                <div class="game-item" data-url="hangman_battle.cgi">
+                                    <i class="fas fa-skull-crossbones"></i>
+                                    <h3>نبرد کلمات</h3>
+                                </div>
+
+                                <div class="game-item" data-url="fibonacci_2048.cgi">
+                                    <i class="fas fa-superscript"></i>
+                                    <h3>فیبوناچی 2048</h3>
+                                </div>
+
+                                <div class="game-item" data-url="checkers.cgi">
+                                    <i class="fas fa-chess-board"></i>
+                                    <h3>چکرز</h3>
+                                </div>
+                            </div>
+
+                            </div>
+                            <p class="instruction">برای حرکت از کلیدهای جهت‌نما ➡️⬅️ و برای شروع بازی از کلید Enter استفاده کنید</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="brand-logo">Mini Arcade</div>
+            </div>
+
+
+        <div class="control-deck">
+            <div class="deck-surface">
+                <div class="joystick-area">
+                    <div class="joystick-base"></div>
+                    <div class="joystick-stick"></div>
+                    <div class="joystick-ball"></div>
+                </div>
+
+                <div class="buttons-area">
+                    <div class="btn-group">
+                        <button class="arcade-btn red" onclick="selectGame()">A</button>
+                        <button class="arcade-btn blue" onclick="location.reload()">B</button>
+                    </div>
+                    <div class="btn-group-small">
+                        <button class="small-btn yellow">START</button>
+                        <button class="small-btn white">SELECT</button>
+                    </div>
+                </div>
+            </div>
+            <div class="deck-front">
+                <div class="coin-slot-entry">25¢</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
