@@ -1,0 +1,74 @@
+\contentsline {section}{\numberline {1}مقدمه}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}نگاهی کلی}{5}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}انگیزه و اهداف}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}دامنه کاربرد}{5}{subsection.1.3}%
+\contentsline {section}{\numberline {2}پیشینه و مفاهیم}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}سیستم‌های آرکید کلاسیک}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}معماری \lr {Common Gateway Interface (CGI)}}{6}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}معماری \lr {Stateless}}{6}{subsection.2.3}%
+\contentsline {section}{\numberline {3}معماری سیستم}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}نمای کلی معماری}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}ساختار پروژه}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}جریان اجرا}{9}{subsection.3.3}%
+\contentsline {section}{\numberline {4}بازی‌های موجود}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}حدس عدد (\lr {Guess Number})}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}دوز محدود (\lr {Tic-Tac-Toe Limited})}{10}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}سنگ کاغذ قیچی++ (\lr {RPS 5-Move})}{10}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}حلقه آویز (\lr {Hangman Battle})}{11}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}فیبوناچی ۲۰۴۸}{11}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}شطرنج تغییریافته}{12}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}چکرز (\lr {Checkers})}{12}{subsection.4.7}%
+\contentsline {section}{\numberline {5}جزئیات پیاده‌سازی}{12}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Backend: توابع کمکی \lr {CGI}}{12}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}تابع \texttt {print\_header()}}{12}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}تابع \texttt {get\_param()}}{13}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}تابع \texttt {url\_decode()}}{13}{subsubsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.2}Frontend: معماری \lr {JavaScript}}{14}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}کاروسل بازی‌ها}{14}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}ماژول احراز هویت}{14}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Frontend: افکت‌های بصری \lr {CSS}}{15}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}افکت نئونی (\lr {Neon Glow})}{15}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}افکت سه‌بعدی (\lr {3D Perspective})}{15}{subsubsection.5.3.2}%
+\contentsline {subsubsection}{\numberline {5.3.3}افکت \lr {CRT}}{16}{subsubsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.4}لایه داده: \lr {JSON Files}}{16}{subsection.5.4}%
+\contentsline {subsubsection}{\numberline {5.4.1}ساختار \texttt {users.json}}{16}{subsubsection.5.4.1}%
+\contentsline {subsubsection}{\numberline {5.4.2}ساختار \texttt {admin\_logs.json}}{16}{subsubsection.5.4.2}%
+\contentsline {section}{\numberline {6}تصمیمات طراحی}{17}{section.6}%
+\contentsline {subsection}{\numberline {6.1}انتخاب \lr {C} برای \lr {Backend}}{17}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}انتخاب \lr {CGI} به جای \lr {FastCGI}}{17}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}انتخاب \lr {Vanilla JavaScript}}{18}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}انتخاب فایل‌های \lr {JSON} به جای پایگاه داده}{18}{subsection.6.4}%
+\contentsline {section}{\numberline {7}چالش‌ها و محدودیت‌ها}{19}{section.7}%
+\contentsline {subsection}{\numberline {7.1}چالش‌های فنی}{19}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}مدیریت \lr {State} در \lr {CGI}}{19}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}\lr {Race Condition} در نوشتن فایل‌های \lr {JSON}}{19}{subsubsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.2}محدودیت‌های امنیتی}{19}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}رمزهای عبور \lr {Plain Text}}{19}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}عدم \lr {HTTPS}}{19}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}عدم \lr {CSRF Protection}}{20}{subsubsection.7.2.3}%
+\contentsline {section}{\numberline {8}تست و اعتبارسنجی}{20}{section.8}%
+\contentsline {subsection}{\numberline {8.1}تست دستی}{20}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}تست \lr {CGI}}{20}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}محدودیت‌های تست}{20}{subsection.8.3}%
+\contentsline {section}{\numberline {9}کارهای آینده}{20}{section.9}%
+\contentsline {subsection}{\numberline {9.1}بهبودهای فنی}{20}{subsection.9.1}%
+\contentsline {subsubsection}{\numberline {9.1.1}انتقال به پایگاه داده}{20}{subsubsection.9.1.1}%
+\contentsline {subsubsection}{\numberline {9.1.2}استفاده از \lr {WebSocket}}{21}{subsubsection.9.1.2}%
+\contentsline {subsubsection}{\numberline {9.1.3}امنیت}{21}{subsubsection.9.1.3}%
+\contentsline {subsection}{\numberline {9.2}فیچرهای جدید}{21}{subsection.9.2}%
+\contentsline {subsubsection}{\numberline {9.2.1}بازی‌های جدید}{21}{subsubsection.9.2.1}%
+\contentsline {subsubsection}{\numberline {9.2.2}\lr {Leaderboard}}{22}{subsubsection.9.2.2}%
+\contentsline {subsubsection}{\numberline {9.2.3}سیستم دستاوردها (\lr {Achievements})}{22}{subsubsection.9.2.3}%
+\contentsline {subsection}{\numberline {9.3}بهبودهای \lr {UI/UX}}{22}{subsection.9.3}%
+\contentsline {section}{\numberline {10}نتیجه‌گیری}{22}{section.10}%
+\contentsline {subsection}{\numberline {10.1}دستاوردها}{22}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}درس‌های آموخته شده}{23}{subsection.10.2}%
+\contentsline {subsubsection}{\numberline {10.2.1}معماری \lr {CGI}}{23}{subsubsection.10.2.1}%
+\contentsline {subsubsection}{\numberline {10.2.2}\lr {State Management}}{23}{subsubsection.10.2.2}%
+\contentsline {subsubsection}{\numberline {10.2.3}امنیت}{23}{subsubsection.10.2.3}%
+\contentsline {subsection}{\numberline {10.3}کاربردهای آموزشی}{23}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}جمع‌بندی نهایی}{24}{subsection.10.4}%
+\contentsline {section}{\numberline {آ}نصب و راه‌اندازی}{25}{appendix.Alph1}%
+\contentsline {subsection}{\numberline {آ.1}پیش‌نیازها}{25}{subsection.Alph1.1}%
+\contentsline {subsection}{\numberline {آ.2}کامپایل}{25}{subsection.Alph1.2}%
+\contentsline {subsection}{\numberline {آ.3}اجرا}{25}{subsection.Alph1.3}%
