@@ -1,0 +1,344 @@
+\doxysection{src/games/checkers/main.c File Reference}
+\hypertarget{checkers_2main_8c}{}\label{checkers_2main_8c}\index{src/games/checkers/main.c@{src/games/checkers/main.c}}
+
+
+CGI interface and game rendering for Modified Checkers.  
+
+
+{\ttfamily \#include "{}checkers.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{checkers_2main_8c_abe6937cb6d5e1b259b0a1d7487e64326}{checker\+\_\+cell\+\_\+bg}} (int row, int col)
+\item 
+void \mbox{\hyperlink{checkers_2main_8c_a7876d8c9a8578c06a32d801912dc9a59}{render\+\_\+checkers\+\_\+board}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game, int highlight\mbox{[}8\mbox{]}\mbox{[}8\mbox{]})
+\item 
+int \mbox{\hyperlink{checkers_2main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+CGI interface and game rendering for Modified Checkers. 
+
+@project arcade-\/system \begin{DoxyAuthor}{Author}
+Alireza Zarebidoki @date\+\_\+modified 2025-\/12-\/25 
+\end{DoxyAuthor}
+EN\+: Main CGI entry point for the modified checkers game. Handles board rendering, piece selection and movement, forced jump enforcement, and game state updates. Displays checkers board with color coding for regular moves (green) and forced jumps (red). Includes multi-\/jump sequence support and win condition checking.
+
+FA\+: نقطه ورودی CGI اصلی برای بازی چکرز تغییر‌یافته. مدیریت رندرینگ صفحه، انتخاب و حرکت مهره، اعمال پرش اجباری، و به‌روزرسانی وضعیت بازی. نمایش صفحه چکرز با کدگذاری رنگی برای حرکات معمولی (سبز) و پرش‌های اجباری (قرمز). شامل پشتیبانی دنباله‌های پرش چندگانه و بررسی شرایط برد.
+
+@responsibilities
+\begin{DoxyItemize}
+\item Render 8x8 checkerboard with custom coloring
+\item Highlight valid moves and forced jumps with colors
+\item Process mouse clicks for piece selection and movement
+\item Enforce forced jump rules
+\item Support multi-\/jump sequences
+\item Update board state after moves
+\item Check for piece promotion (Man to King)
+\item Detect game over conditions
+\item Display game status messages
+\item Serialize/deserialize game state for URL persistence
+\end{DoxyItemize}
+
+@interactions
+\begin{DoxyItemize}
+\item Receives\+: state (serialized game state), click (board coordinates)
+\item Sends\+: HTML board display with embedded game state
+\end{DoxyItemize}
+
+@notes
+\begin{DoxyItemize}
+\item Board coordinates\+: click parameter format "{}rowcol"{} (e.\+g., "{}0701"{})
+\item Pieces only on dark squares\+: valid row+col = odd
+\item Forced jumps prevent regular moves
+\item King promotion at last row 
+\end{DoxyItemize}
+
+Definition in file \mbox{\hyperlink{checkers_2main_8c_source}{main.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{checkers_2main_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{checkers_2main_8c_abe6937cb6d5e1b259b0a1d7487e64326}\index{main.c@{main.c}!checker\_cell\_bg@{checker\_cell\_bg}}
+\index{checker\_cell\_bg@{checker\_cell\_bg}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{checker\_cell\_bg()}{checker\_cell\_bg()}}
+{\footnotesize\ttfamily \label{checkers_2main_8c_abe6937cb6d5e1b259b0a1d7487e64326} 
+const char \texorpdfstring{$\ast$}{*} checker\+\_\+cell\+\_\+bg (\begin{DoxyParamCaption}\item[{int}]{row}{, }\item[{int}]{col}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2main_8c_source_l00045}{45}} of file \mbox{\hyperlink{checkers_2main_8c_source}{main.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ ((row\ +\ col)\ \%\ 2\ ==\ 0)\ ?\ \textcolor{stringliteral}{"{}\#e8e8e8"{}}\ :\ \textcolor{stringliteral}{"{}\#8b4513"{}};}
+\DoxyCodeLine{00047\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{checkers_2main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4} 
+int main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2main_8c_source_l00101}{101}} of file \mbox{\hyperlink{checkers_2main_8c_source}{main.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd}{print\_header}}(\textcolor{stringliteral}{"{}چکرز\ (Checkers)"{}});}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \mbox{\hyperlink{structCheckersState}{CheckersState}}\ game;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{char}\ buffer[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}];}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//\ دریافت\ وضعیت}}
+\DoxyCodeLine{00108\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}state"{}},\ buffer);}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a1046e6cd3eb647afba7723c69d2064bf}{deserialize\_checkers\_state}}(buffer,\ \&game);}
+\DoxyCodeLine{00111\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a85e5553ab1b1f08c114d39c59d7cb540}{init\_checkers\_board}}(\&game);}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a917fb9a7dba2734996f2a53de5af969c}{check\_global\_forced\_jump}}(\&game);}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ پردازش\ کلیک}}
+\DoxyCodeLine{00117\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}click"{}},\ buffer);}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0]\ \&\&\ strlen(buffer)\ ==\ 2\ \&\&\ !game.\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}})\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ click\_r\ =\ buffer[0]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ click\_c\ =\ buffer[1]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (click\_r\ >=\ 0\ \&\&\ click\_r\ <\ 8\ \&\&\ click\_c\ >=\ 0\ \&\&\ click\_c\ <\ 8)\ \{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ clicked\ =\ game.\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[click\_r][click\_c];}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ اگر\ مهره‌ای\ انتخاب\ شده}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ !=\ -\/1)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ تلاش\ برای\ حرکت}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{checkers_8h_a6cfe4623fb66fcf3fa7dbb05de07c559}{is\_valid\_checkers\_move}}(\&game,\ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}},\ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}},\ click\_r,\ click\_c))\ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ نیاز\ به\ ارتقاء}}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ moving\ =\ game.\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}][game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}];}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ needs\_promotion\ =\ 0;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (moving.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}})\ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((moving.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\ \&\&\ click\_r\ ==\ 0)\ ||}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (moving.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ \&\&\ click\_r\ ==\ 7))\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ needs\_promotion\ =\ 1;}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (needs\_promotion)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ نمایش\ منوی\ ارتقاء}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ state\_str[2048];}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a735f4aa53d19c3466eb4fc080287d9c2}{serialize\_checkers\_state}}(\&game,\ state\_str);}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>🎉\ ارتقاء\ مهره!</h2>"{}});}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p>نوع\ جدید\ را\ انتخاب\ کنید:</p>"{}});}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='display:flex;\ gap:20px;\ justify-\/content:center;\ margin:30px;'>"{}});}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ King}}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='checkers.cgi'\ method='GET'>"{}});}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='state'\ value='\%s'>"{}},\ state\_str);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='promote\_from'\ value='\%d\%d'>"{}},\ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}},\ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}});}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='promote\_to'\ value='\%d\%d'>"{}},\ click\_r,\ click\_c);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='promote\_type'\ value='\%d'>"{}},\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}});}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<button\ style='font-\/size:2rem;\ padding:20px;\ background:\#ffd700;'>"{}});}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}👑<br><b>King</b><br><small>حرکت\ مورب\ آزاد</small>"{}});}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</button></form>"{}});}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Queen}}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='checkers.cgi'\ method='GET'>"{}});}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='state'\ value='\%s'>"{}},\ state\_str);}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='promote\_from'\ value='\%d\%d'>"{}},\ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}},\ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}});}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='promote\_to'\ value='\%d\%d'>"{}},\ click\_r,\ click\_c);}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='promote\_type'\ value='\%d'>"{}},\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}});}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<button\ style='font-\/size:2rem;\ padding:20px;\ background:\#9b59b6;'>"{}});}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}💎<br><b>Queen</b><br><small>حرکت\ عمودی/افقی</small>"{}});}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</button></form>"{}});}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}{print\_footer}}();}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a074aba88a68956691a2f4fc1249cff7c}{make\_checkers\_move}}(\&game,\ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}},\ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}},\ click\_r,\ click\_c);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ -\/1;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ -\/1;}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ انتخاب\ مهره\ جدید}}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (clicked.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ !=\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}\ \&\&\ clicked.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ game.\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}})\ \{}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ اگر\ پرش\ اجباری\ فعال\ است،\ فقط\ آن\ مهره\ را\ می‌توان\ انتخاب\ کرد}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game.\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ \&\&\ (game.\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ !=\ click\_r\ ||\ game.\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ !=\ click\_c))\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ نادیده\ گرفته\ می‌شود}}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ click\_r;}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ click\_c;}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00191\ \ \ \ \ \}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{comment}{//\ پردازش\ ارتقاء}}
+\DoxyCodeLine{00194\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}promote\_from"{}},\ buffer);}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0]\ \&\&\ strlen(buffer)\ ==\ 2)\ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ from\_r\ =\ buffer[0]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ from\_c\ =\ buffer[1]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}promote\_to"{}},\ buffer);}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0]\ \&\&\ strlen(buffer)\ ==\ 2)\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ to\_r\ =\ buffer[0]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ to\_c\ =\ buffer[1]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}promote\_type"{}},\ buffer);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5}{CheckerType}}\ promo\_type\ =\ atoi(buffer);}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ moving\ =\ game.\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[from\_r][from\_c];}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ dr\ =\ to\_r\ -\/\ from\_r;}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ dc\ =\ to\_c\ -\/\ from\_c;}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ حذف\ مهره\ میانی\ در\ صورت\ پرش}}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs(dr)\ ==\ 2\ \&\&\ abs(dc)\ ==\ 2)\ \{}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mr\ =\ from\_r\ +\ dr\ /\ 2;}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mc\ =\ from\_c\ +\ dc\ /\ 2;}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[mr][mc]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\};}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ جابجایی\ با\ ارتقاء}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ moving.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ =\ promo\_type;}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[to\_r][to\_c]\ =\ moving;}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[from\_r][from\_c]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\};}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ تغییر\ نوبت}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ -\/1;}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ -\/1;}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a17f16a51c8691e105f817a7df000aa22}{multi\_jump}}\ =\ 0;}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ =\ (game.\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}})\ ?\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ :\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}};}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a917fb9a7dba2734996f2a53de5af969c}{check\_global\_forced\_jump}}(\&game);}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ پایان\ بازی}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ red\_count\ =\ \mbox{\hyperlink{checkers_8h_ad288d9dd6f16051640d90f688d324c45}{count\_pieces}}(\&game,\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}});}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ black\_count\ =\ \mbox{\hyperlink{checkers_8h_ad288d9dd6f16051640d90f688d324c45}{count\_pieces}}(\&game,\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}});}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (red\_count\ ==\ 0)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}}\ =\ 1;}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a01734ea659f240d7f22337c34f2b3e83}{winner}}\ =\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}};}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ strcpy(game.\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}سیاه\ برنده\ شد!"{}});}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (black\_count\ ==\ 0)\ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}}\ =\ 1;}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a01734ea659f240d7f22337c34f2b3e83}{winner}}\ =\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}};}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ strcpy(game.\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}قرمز\ برنده\ شد!"{}});}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(game.\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}نوبت\ \%s\%s"{}},}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (game.\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}})\ ?\ \textcolor{stringliteral}{"{}قرمز"{}}\ :\ \textcolor{stringliteral}{"{}سیاه"{}},}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game.\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ ?\ \textcolor{stringliteral}{"{}\ (پرش\ اجباری!)"{}}\ :\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00251\ \ \ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{comment}{//\ نمایش\ رابط}}
+\DoxyCodeLine{00254\ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>🔴\ چکرز\ (Checkers)\ ⚫</h2>"{}});}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \ \ \ \ \textcolor{comment}{//\ نمایش\ پیام}}
+\DoxyCodeLine{00257\ \ \ \ \ \textcolor{keywordflow}{if}\ (game.\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}})\ \{}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='margin:15px;\ padding:15px;\ background:rgba(46,204,113,0.3);\ border:2px\ solid\ \#2ecc71;\ border-\/radius:10px;\ font-\/size:1.5rem;'>"{}});}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}🎉\ \%s"{}},\ game.\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}});}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{00261\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game.\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}})\ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='margin:10px;\ padding:10px;\ background:rgba(231,76,60,0.3);\ border:2px\ solid\ \#e74c3c;\ border-\/radius:8px;\ font-\/size:1.2rem;'>"{}});}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}⚠️\ پرش\ اجباری\ فعال\ است!"{}});}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='margin:10px;\ font-\/size:1.2rem;'>\%s</div>"{}},\ game.\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}});}
+\DoxyCodeLine{00268\ \ \ \ \ \}}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{comment}{//\ نمایش\ امتیاز}}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{comment}{//\ نمایش\ صفحه\ با\ highlighting}}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordtype}{int}\ highlight[8][8]\ =\ \{0\};}
+\DoxyCodeLine{00274\ \ \ \ \ \textcolor{keywordflow}{if}\ (game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ !=\ -\/1\ \&\&\ !game.\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}})\ \{}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_ade17aeaf3d904e78b86c2f130302ee16}{get\_valid\_checkers\_moves}}(\&game,\ game.\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}},\ game.\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}},\ highlight);}
+\DoxyCodeLine{00276\ \ \ \ \ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \ \ \mbox{\hyperlink{checkers_2main_8c_a7876d8c9a8578c06a32d801912dc9a59}{render\_checkers\_board}}(\&game,\ highlight);}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \ \ \textcolor{comment}{//\ دکمه\ شروع\ مجدد}}
+\DoxyCodeLine{00281\ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><a\ href='checkers.cgi'><button\ style='background:\#f39c12;\ padding:10px\ 20px;'>🔄\ بازی\ جدید</button></a>"{}});}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}{print\_footer}}();}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00285\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2main_8c_a7876d8c9a8578c06a32d801912dc9a59}\index{main.c@{main.c}!render\_checkers\_board@{render\_checkers\_board}}
+\index{render\_checkers\_board@{render\_checkers\_board}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{render\_checkers\_board()}{render\_checkers\_board()}}
+{\footnotesize\ttfamily \label{checkers_2main_8c_a7876d8c9a8578c06a32d801912dc9a59} 
+void render\+\_\+checkers\+\_\+board (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{int}]{highlight}{\mbox{[}8\mbox{]}\mbox{[}8\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2main_8c_source_l00050}{50}} of file \mbox{\hyperlink{checkers_2main_8c_source}{main.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00051\ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='display:grid;\ grid-\/template-\/columns:repeat(8,50px);\ gap:0;\ margin:15px\ auto;\ width:fit-\/content;\ border:3px\ solid\ \#333;'>"{}});}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ piece\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j];}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ bg[100];}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ تعیین\ رنگ\ پس‌زمینه}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ ==\ i\ \&\&\ game-\/>\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ ==\ j)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bg,\ \textcolor{stringliteral}{"{}\#f1c40f"{}});\ \textcolor{comment}{//\ انتخاب\ شده}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (highlight\ \&\&\ highlight[i][j])\ \{}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (abs((game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ -\/\ i))\ ==\ 2)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bg,\ \textcolor{stringliteral}{"{}\#e74c3c"{}});\ \textcolor{comment}{//\ پرش\ (قرمز)}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bg,\ \textcolor{stringliteral}{"{}\#2ecc71"{}});\ \textcolor{comment}{//\ حرکت\ عادی\ (سبز)}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ \&\&\ game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ ==\ i\ \&\&\ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ ==\ j)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bg,\ \textcolor{stringliteral}{"{}\#ff6b6b"{}});\ \textcolor{comment}{//\ پرش\ اجباری\ (قرمز\ روشن)}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(bg,\ \textcolor{stringliteral}{"{}\%s"{}},\ \mbox{\hyperlink{checkers_2main_8c_abe6937cb6d5e1b259b0a1d7487e64326}{checker\_cell\_bg}}(i,\ j));}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ لینک\ برای\ کلیک}}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ state\_str[2048];}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_8h_a735f4aa53d19c3466eb4fc080287d9c2}{serialize\_checkers\_state}}(game,\ state\_str);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<a\ href='checkers.cgi?state=\%s\&click=\%d\%d'\ style='text-\/decoration:none;'>"{}},\ state\_str,\ i,\ j);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='width:50px;height:50px;background:\%s;display:flex;align-\/items:center;justify-\/content:center;font-\/size:1.8rem;cursor:pointer;border:1px\ solid\ \#777;'>"{}},\ bg);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ !=\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}})\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *icon\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *color\ =\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}})\ ?\ \textcolor{stringliteral}{"{}\#e74c3c"{}}\ :\ \textcolor{stringliteral}{"{}\#3498db"{}};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}})\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}}:\ icon\ =\ \textcolor{stringliteral}{"{}fas\ fa-\/circle"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}}:\ icon\ =\ \textcolor{stringliteral}{"{}fas\ fa-\/crown"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}}:\ icon\ =\ \textcolor{stringliteral}{"{}fas\ fa-\/chess-\/queen"{}};\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}:\ \textcolor{keywordflow}{default}:\ icon\ =\ \textcolor{stringliteral}{"{}"{}};\ \textcolor{keywordflow}{break};\ \textcolor{comment}{//\ default\ avoids\ -\/Wswitch\ warning}}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<i\ class='\%s'\ style='color:\%s;\ filter:drop-\/shadow(0\ 0\ 2px\ \#000);'></i>"{}},\ icon,\ color);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div></a>"{}});}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{00099\ \}}
+
+\end{DoxyCode}

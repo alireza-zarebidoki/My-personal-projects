@@ -1,0 +1,222 @@
+\doxysection{src/common/c\+\_\+utils.c File Reference}
+\hypertarget{c__utils_8c}{}\label{c__utils_8c}\index{src/common/c\_utils.c@{src/common/c\_utils.c}}
+
+
+Implementation of CGI utilities and HTML generation functions.  
+
+
+{\ttfamily \#include "{}c\+\_\+utils.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{c__utils_8c_a369266c24eacffb87046522897a570d5}{\+\_\+\+GNU\+\_\+\+SOURCE}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{c__utils_8c_a1108835d710fe755e0540a82fe93fd6f}{url\+\_\+decode\+\_\+internal}} (char \texorpdfstring{$\ast$}{*}str)
+\item 
+void \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\+\_\+param}} (const char \texorpdfstring{$\ast$}{*}key, char \texorpdfstring{$\ast$}{*}value)
+\item 
+void \mbox{\hyperlink{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd}{print\+\_\+header}} (const char \texorpdfstring{$\ast$}{*}title)
+\item 
+void \mbox{\hyperlink{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}{print\+\_\+footer}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementation of CGI utilities and HTML generation functions. 
+
+@project arcade-\/system \begin{DoxyAuthor}{Author}
+Alireza Zarebidoki @date\+\_\+modified 2025-\/12-\/25 
+\end{DoxyAuthor}
+EN\+: Implements URL decoding, query parameter extraction from GET/\+POST, and HTML header/footer generation for the arcade games. Handles character encoding and buffer safety for CGI environment.
+
+FA\+: پیاده‌سازی رمزگشایی URL، استخراج پارامترهای query از GET/\+POST، و تولید هدر/فوتر HTML برای بازی‌های arcade. مدیریت رمزگذاری کاراکتر و امنیت بافر را در محیط CGI انجام می‌دهد.
+
+@responsibilities
+\begin{DoxyItemize}
+\item Parse query strings (GET and POST methods)
+\item Decode URL-\/encoded characters (XX format)
+\item Output proper Content-\/\+Type headers
+\item Generate consistent HTML structure
+\end{DoxyItemize}
+
+@interactions
+\begin{DoxyItemize}
+\item Called by all game CGI modules
+\item Processes QUERY\+\_\+\+STRING and REQUEST\+\_\+\+METHOD environment variables
+\end{DoxyItemize}
+
+@notes
+\begin{DoxyItemize}
+\item Supports POST with CONTENT\+\_\+\+LENGTH checking
+\item Buffer overflow protection with size limits 
+\end{DoxyItemize}
+
+Definition in file \mbox{\hyperlink{c__utils_8c_source}{c\+\_\+utils.\+c}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{c__utils_8c_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{c__utils_8c_a369266c24eacffb87046522897a570d5}\index{c\_utils.c@{c\_utils.c}!\_GNU\_SOURCE@{\_GNU\_SOURCE}}
+\index{\_GNU\_SOURCE@{\_GNU\_SOURCE}!c\_utils.c@{c\_utils.c}}
+\doxysubsubsection{\texorpdfstring{\_GNU\_SOURCE}{\_GNU\_SOURCE}}
+{\footnotesize\ttfamily \label{c__utils_8c_a369266c24eacffb87046522897a570d5} 
+\#define \+\_\+\+GNU\+\_\+\+SOURCE}
+
+
+
+Definition at line \mbox{\hyperlink{c__utils_8c_source_l00032}{32}} of file \mbox{\hyperlink{c__utils_8c_source}{c\+\_\+utils.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{c__utils_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}\index{c\_utils.c@{c\_utils.c}!get\_param@{get\_param}}
+\index{get\_param@{get\_param}!c\_utils.c@{c\_utils.c}}
+\doxysubsubsection{\texorpdfstring{get\_param()}{get\_param()}}
+{\footnotesize\ttfamily \label{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d} 
+void get\+\_\+param (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{key}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{value}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{c__utils_8c_source_l00055}{55}} of file \mbox{\hyperlink{c__utils_8c_source}{c\+\_\+utils.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ value[0]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};\ \ \textcolor{comment}{//\ default\ when\ not\ found}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ Use\ a\ bounded\ local\ buffer\ to\ avoid\ large\ allocations}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{char}\ query\_buf[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}\ *\ 2];}
+\DoxyCodeLine{00059\ \ \ \ \ query\_buf[0]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ qlen\ =\ 0;}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{char}\ *method\ =\ getenv(\textcolor{stringliteral}{"{}REQUEST\_METHOD"{}});}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordflow}{if}\ (method\ \&\&\ strcmp(method,\ \textcolor{stringliteral}{"{}POST"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *content\_length\_str\ =\ getenv(\textcolor{stringliteral}{"{}CONTENT\_LENGTH"{}});}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (content\_length\_str)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ len\ =\ atoi(content\_length\_str);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ 0)\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ (\textcolor{keywordtype}{int})\textcolor{keyword}{sizeof}(query\_buf)\ -\/\ 1)\ len\ =\ (int)\textcolor{keyword}{sizeof}(query\_buf)\ -\/\ 1;}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ r\ =\ fread(query\_buf,\ 1,\ (\textcolor{keywordtype}{size\_t})len,\ stdin);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ query\_buf[r]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};\ qlen\ =\ r;}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordflow}{if}\ (qlen\ ==\ 0)\ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *env\_query\ =\ getenv(\textcolor{stringliteral}{"{}QUERY\_STRING"{}});}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (env\_query)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ strncpy(query\_buf,\ env\_query,\ \textcolor{keyword}{sizeof}(query\_buf)\ -\/\ 1);}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ query\_buf[\textcolor{keyword}{sizeof}(query\_buf)\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ qlen\ =\ strlen(query\_buf);}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{if}\ (qlen\ ==\ 0)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ Parse\ by\ \&\ and\ require\ exact\ "{}key=value"{}\ to\ avoid\ matching\ substrings\ like\ "{}c"{}\ in\ "{}action"{}}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{char}\ *cursor\ =\ query\_buf;}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{while}\ (cursor\ \&\&\ *cursor)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *amp\ =\ strchr(cursor,\ \textcolor{charliteral}{'\&'});}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ token\_len\ =\ amp\ ?\ (size\_t)(amp\ -\/\ cursor)\ :\ strlen(cursor);}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (token\_len\ >=\ \textcolor{keyword}{sizeof}(query\_buf))\ token\_len\ =\ \textcolor{keyword}{sizeof}(query\_buf)\ -\/\ 1;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ token[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}\ *\ 2];}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ memcpy(token,\ cursor,\ token\_len);}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ token[token\_len]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *eq\ =\ strchr(token,\ \textcolor{charliteral}{'='});}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (eq)\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ *eq\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *k\ =\ token;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *v\ =\ eq\ +\ 1;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(k,\ key)\ ==\ 0)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{c__utils_8c_a1108835d710fe755e0540a82fe93fd6f}{url\_decode\_internal}}(v);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ strncpy(value,\ v,\ \mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}\ -\/\ 1);}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ value[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!amp)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ cursor\ =\ amp\ +\ 1;}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ \}}
+
+\end{DoxyCode}
+\Hypertarget{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}\index{c\_utils.c@{c\_utils.c}!print\_footer@{print\_footer}}
+\index{print\_footer@{print\_footer}!c\_utils.c@{c\_utils.c}}
+\doxysubsubsection{\texorpdfstring{print\_footer()}{print\_footer()}}
+{\footnotesize\ttfamily \label{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354} 
+void print\+\_\+footer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{c__utils_8c_source_l00124}{124}} of file \mbox{\hyperlink{c__utils_8c_source}{c\+\_\+utils.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>\(\backslash\)n</body>\(\backslash\)n</html>\(\backslash\)n"{}});}
+\DoxyCodeLine{00126\ \}}
+
+\end{DoxyCode}
+\Hypertarget{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd}\index{c\_utils.c@{c\_utils.c}!print\_header@{print\_header}}
+\index{print\_header@{print\_header}!c\_utils.c@{c\_utils.c}}
+\doxysubsubsection{\texorpdfstring{print\_header()}{print\_header()}}
+{\footnotesize\ttfamily \label{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd} 
+void print\+\_\+header (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{title}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{c__utils_8c_source_l00112}{112}} of file \mbox{\hyperlink{c__utils_8c_source}{c\+\_\+utils.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Content-\/Type:\ text/html;\ charset=utf-\/8\(\backslash\)n\(\backslash\)n"{}});}
+\DoxyCodeLine{00114\ \ \ \ \ printf(\textcolor{stringliteral}{"{}<!DOCTYPE\ html>\(\backslash\)n<html\ lang='fa'\ dir='rtl'>\(\backslash\)n<head>\(\backslash\)n"{}});}
+\DoxyCodeLine{00115\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ <meta\ charset='UTF-\/8'>\(\backslash\)n\ \ \ \ <title>\%s\ |\ Arcade\ System</title>\(\backslash\)n"{}},\ title);}
+\DoxyCodeLine{00116\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ <link\ rel='stylesheet'\ href='https://cdnjs.cloudflare.com/ajax/libs/font-\/awesome/6.0.0/css/all.min.css'>\(\backslash\)n"{}});}
+\DoxyCodeLine{00117\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ <link\ rel='stylesheet'\ href='../style.css'>\(\backslash\)n"{}});}
+\DoxyCodeLine{00118\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ <style>\(\backslash\)n\ \ \ \ \ \ \ \ body\ \{\ background:\ transparent;\ color:\ \#10b981;\ font-\/family:\ 'Courier\ New',\ monospace;\ overflow-\/y:\ auto;\ text-\/align:\ center;\ \}\(\backslash\)n"{}});}
+\DoxyCodeLine{00119\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ .game-\/container\ \{\ padding:\ 120px\ 10px\ 10px\ 10px;\ border:\ 2px\ solid\ \#10b981;\ border-\/radius:\ 10px;\ background:\ rgba(0,0,0,0.8);\ max-\/width:\ 100\%\%;\ margin:\ 40px\ auto;\ overflow:\ visible;\ \}\(\backslash\)n"{}});}
+\DoxyCodeLine{00120\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ button\ \{\ background:\ \#10b981;\ color:\ \#000;\ border:\ none;\ padding:\ 10px\ 20px;\ cursor:\ pointer;\ font-\/weight:\ bold;\ \}\(\backslash\)n"{}});}
+\DoxyCodeLine{00121\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ \ \ </style>\(\backslash\)n</head>\(\backslash\)n<body>\(\backslash\)n<div\ class='game-\/container'>\(\backslash\)n"{}});}
+\DoxyCodeLine{00122\ \}}
+
+\end{DoxyCode}
+\Hypertarget{c__utils_8c_a1108835d710fe755e0540a82fe93fd6f}\index{c\_utils.c@{c\_utils.c}!url\_decode\_internal@{url\_decode\_internal}}
+\index{url\_decode\_internal@{url\_decode\_internal}!c\_utils.c@{c\_utils.c}}
+\doxysubsubsection{\texorpdfstring{url\_decode\_internal()}{url\_decode\_internal()}}
+{\footnotesize\ttfamily \label{c__utils_8c_a1108835d710fe755e0540a82fe93fd6f} 
+void url\+\_\+decode\+\_\+internal (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{str}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{c__utils_8c_source_l00036}{36}} of file \mbox{\hyperlink{c__utils_8c_source}{c\+\_\+utils.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{char}\ *pstr\ =\ str,\ *pdst\ =\ str;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordflow}{while}\ (*pstr)\ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (*pstr\ ==\ \textcolor{charliteral}{'\%'}\ \&\&\ pstr[1]\ \&\&\ pstr[2])\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ hex[3]\ =\ \{\ pstr[1],\ pstr[2],\ \textcolor{charliteral}{'\(\backslash\)0'}\ \};}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ *pdst\ =\ (char)strtol(hex,\ NULL,\ 16);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ pstr\ +=\ 3;}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (*pstr\ ==\ \textcolor{charliteral}{'+'})\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ *pdst\ =\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \ \ \ \ pstr++;}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ *pdst\ =\ *pstr;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ pstr++;}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ pdst++;}
+\DoxyCodeLine{00051\ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ *pdst\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00053\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,307 @@
+\doxysection{src/games/rps\+\_\+5move.c File Reference}
+\hypertarget{rps__5move_8c}{}\label{rps__5move_8c}\index{src/games/rps\_5move.c@{src/games/rps\_5move.c}}
+
+
+5-\/Move Rock Paper Scissors game with extended rules and bot AI  
+
+
+{\ttfamily \#include "{}../common/c\+\_\+utils.\+h"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{rps__5move_8c_aa1446c1a272461981af7b02aa72fa411}{MOVES\+\_\+\+COUNT}}~5
+\item 
+\#define \mbox{\hyperlink{rps__5move_8c_ab063997d8529ae1fb436fbf42396334f}{WIN\+\_\+\+SCORE}}~3
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rps__5move_8c_aa0275f36cfc209d8f4f96aa989b30f4d}{init\+\_\+actions}} ()
+\item 
+int \mbox{\hyperlink{rps__5move_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{rps__5move_8c_a46ce3744b45248bdb9b2b1e7e815932f}{MOVE\+\_\+\+NAMES}} \mbox{[}$\,$\mbox{]} = \{"{}سنگ"{}, "{}کاغذ"{}, "{}قیچی"{}, "{}مارمولک"{}, "{}اسپاک"{}\}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990}{MOVE\+\_\+\+ICONS}} \mbox{[}$\,$\mbox{]} = \{"{}🪨"{}, "{}📄"{}, "{}✂️"{}, "{}🦎"{}, "{}🖖"{}\}
+\item 
+const int \mbox{\hyperlink{rps__5move_8c_a741fd746f90cca7e94d7c0834b2e3a39}{RESULT\+\_\+\+MATRIX}} \mbox{[}5\mbox{]}\mbox{[}5\mbox{]}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\+\_\+\+ACTIONS}} \mbox{[}5\mbox{]}\mbox{[}5\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+5-\/Move Rock Paper Scissors game with extended rules and bot AI 
+
+@project arcade-\/system \begin{DoxyAuthor}{Author}
+Alireza Zarebidoki @date\+\_\+modified 2025-\/12-\/25 
+\end{DoxyAuthor}
+EN\+: Extended Rock Paper Scissors game featuring 5 moves (Rock, Paper, Scissors, Lizard, Spock). Supports single-\/player vs bot and two-\/player modes with multi-\/round scoring. Bot uses counter-\/strategy AI to predict and counter player moves.
+
+FA\+: بازی سنگ-\/کاغذ-\/قیچی گسترش‌یافته با ۵ حرکت (سنگ، کاغذ، قیچی، مارمولک، اسپاک). از حالت‌های یک نفره (برابر بات) و دو نفره با امتیازدهی چندگانه پشتیبانی می‌کند. بات از هوش مصنوعی استراتژی‌محور برای پیش‌بینی و مقابله حرکات بازیکن استفاده می‌کند.
+
+@responsibilities
+\begin{DoxyItemize}
+\item Render 5-\/move game options with icons
+\item Manage multi-\/round game state
+\item Implement win matrix logic
+\item Generate bot moves with strategy
+\item Track cumulative scores
+\item Determine round and match winners
+\end{DoxyItemize}
+
+@interactions
+\begin{DoxyItemize}
+\item Receives\+: mode, type, p1, s1, s2 parameters
+\item Sends\+: HTML with move options and result display
+\end{DoxyItemize}
+
+@notes
+\begin{DoxyItemize}
+\item WIN\+\_\+\+SCORE = 3 (first to 3 wins match)
+\item Bot uses counter-\/strategy when available
+\item All move descriptions in Persian 
+\end{DoxyItemize}
+
+Definition in file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{rps__5move_8c_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{rps__5move_8c_aa1446c1a272461981af7b02aa72fa411}\index{rps\_5move.c@{rps\_5move.c}!MOVES\_COUNT@{MOVES\_COUNT}}
+\index{MOVES\_COUNT@{MOVES\_COUNT}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{MOVES\_COUNT}{MOVES\_COUNT}}
+{\footnotesize\ttfamily \label{rps__5move_8c_aa1446c1a272461981af7b02aa72fa411} 
+\#define MOVES\+\_\+\+COUNT~5}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00038}{38}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+\Hypertarget{rps__5move_8c_ab063997d8529ae1fb436fbf42396334f}\index{rps\_5move.c@{rps\_5move.c}!WIN\_SCORE@{WIN\_SCORE}}
+\index{WIN\_SCORE@{WIN\_SCORE}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{WIN\_SCORE}{WIN\_SCORE}}
+{\footnotesize\ttfamily \label{rps__5move_8c_ab063997d8529ae1fb436fbf42396334f} 
+\#define WIN\+\_\+\+SCORE~3}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00039}{39}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{rps__5move_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{rps__5move_8c_aa0275f36cfc209d8f4f96aa989b30f4d}\index{rps\_5move.c@{rps\_5move.c}!init\_actions@{init\_actions}}
+\index{init\_actions@{init\_actions}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{init\_actions()}{init\_actions()}}
+{\footnotesize\ttfamily \label{rps__5move_8c_aa0275f36cfc209d8f4f96aa989b30f4d} 
+void init\+\_\+actions (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00053}{53}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ i<5;\ i++)\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ j=0;\ j<5;\ j++)\ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[i][j]\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00055\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[2][1]\ =\ \textcolor{stringliteral}{"{}قیچی\ کاغذ\ را\ می‌برد"{}};}
+\DoxyCodeLine{00056\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[1][0]\ =\ \textcolor{stringliteral}{"{}کاغذ\ سنگ\ را\ می‌پوشاند"{}};}
+\DoxyCodeLine{00057\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[0][3]\ =\ \textcolor{stringliteral}{"{}سنگ\ مارمولک\ را\ له\ می‌کند"{}};}
+\DoxyCodeLine{00058\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[3][4]\ =\ \textcolor{stringliteral}{"{}مارمولک\ اسپاک\ را\ مسموم\ می‌کند"{}};}
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[4][2]\ =\ \textcolor{stringliteral}{"{}اسپاک\ قیچی\ را\ می‌شکند"{}};}
+\DoxyCodeLine{00060\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[2][3]\ =\ \textcolor{stringliteral}{"{}قیچی\ سر\ مارمولک\ را\ می‌زند"{}};}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[3][1]\ =\ \textcolor{stringliteral}{"{}مارمولک\ کاغذ\ را\ می‌خورد"{}};}
+\DoxyCodeLine{00062\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[1][4]\ =\ \textcolor{stringliteral}{"{}کاغذ\ باطل‌کننده\ اسپاک\ است"{}};}
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[4][0]\ =\ \textcolor{stringliteral}{"{}اسپاک\ سنگ\ را\ بخار\ می‌کند"{}};}
+\DoxyCodeLine{00064\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[0][2]\ =\ \textcolor{stringliteral}{"{}سنگ\ قیچی\ را\ می‌شکند"{}};}
+\DoxyCodeLine{00065\ \}}
+
+\end{DoxyCode}
+\Hypertarget{rps__5move_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\index{rps\_5move.c@{rps\_5move.c}!main@{main}}
+\index{main@{main}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{rps__5move_8c_ae66f6b31b5ad750f1fe042a706a4e3d4} 
+int main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00067}{67}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00068\ \ \ \ \ srand(time(NULL));}
+\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{rps__5move_8c_aa0275f36cfc209d8f4f96aa989b30f4d}{init\_actions}}();}
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd}{print\_header}}(\textcolor{stringliteral}{"{}سنگ\ کاغذ\ قیچی\ ۵\ حرکتی"{}});}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{char}\ buffer[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}];}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{char}\ mode[50]\ =\ \textcolor{stringliteral}{"{}menu"{}};}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{int}\ game\_type\ =\ 1,\ p1\_move\ =\ -\/1,\ p2\_move\ =\ -\/1;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{int}\ s1\ =\ 0,\ s2\ =\ 0;\ \textcolor{comment}{//\ امتیازات}}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{int}\ last\_winner\_move\ =\ -\/1;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}mode"{}},\ buffer);\ \textcolor{keywordflow}{if}(buffer[0])\ strcpy(mode,\ buffer);}
+\DoxyCodeLine{00079\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}type"{}},\ buffer);\ \textcolor{keywordflow}{if}(buffer[0])\ game\_type\ =\ atoi(buffer);}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}p1"{}},\ buffer);\ \ \ \textcolor{keywordflow}{if}(buffer[0])\ p1\_move\ =\ atoi(buffer);}
+\DoxyCodeLine{00081\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}s1"{}},\ buffer);\ \ \ \textcolor{keywordflow}{if}(buffer[0])\ s1\ =\ atoi(buffer);}
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}s2"{}},\ buffer);\ \ \ \textcolor{keywordflow}{if}(buffer[0])\ s2\ =\ atoi(buffer);}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ ۱.\ منوی\ داخلی\ (انتخاب\ حالت)}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}menu"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>انتخاب\ حالت\ بازی</h2>"{}});}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='rps\_5move.cgi'><input\ type='hidden'\ name='mode'\ value='p1\_select'><button\ type='submit'\ name='type'\ value='1'>🤖\ تک\ نفره\ (vs\ Bot)</button></form><br>"{}});}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='rps\_5move.cgi'><input\ type='hidden'\ name='mode'\ value='p1\_select'><button\ type='submit'\ name='type'\ value='2'>👥\ دو\ نفره</button></form>"{}});}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ ۲.\ انتخاب\ بازیکن\ اول}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}p1\_select"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>دور\ جدید\ -\/\ امتیاز:\ \%d\ به\ \%d</h2>"{}},\ s1,\ s2);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p>حرکت\ خود\ را\ انتخاب\ کنید:</p><form\ action='rps\_5move.cgi'>"{}});}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='\%s'><input\ type='hidden'\ name='type'\ value='\%d'>"{}},\ (game\_type==1)?\textcolor{stringliteral}{"{}result"{}}:\textcolor{stringliteral}{"{}p2\_select"{}},\ game\_type);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='s1'\ value='\%d'><input\ type='hidden'\ name='s2'\ value='\%d'>"{}},\ s1,\ s2);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ i<5;\ i++)\ printf(\textcolor{stringliteral}{"{}<button\ name='p1'\ value='\%d'\ style='margin:5px;'>\%s\ \%s</button>"{}},\ i,\ \mbox{\hyperlink{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990}{MOVE\_ICONS}}[i],\ \mbox{\hyperlink{rps__5move_8c_a46ce3744b45248bdb9b2b1e7e815932f}{MOVE\_NAMES}}[i]);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</form>"{}});}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><a\ href='rps\_5move.cgi?mode=menu'><button\ style='background:\#555;'>🔙\ بازگشت\ به\ انتخاب\ حالت</button></a>"{}});}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{comment}{//\ ۳.\ انتخاب\ بازیکن\ دوم\ (PvP)}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}p2\_select"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>نوبت\ بازیکن\ دوم</h2><form\ action='rps\_5move.cgi'>"{}});}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='result'><input\ type='hidden'\ name='type'\ value='2'>"{}});}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='p1'\ value='\%d'><input\ type='hidden'\ name='s1'\ value='\%d'><input\ type='hidden'\ name='s2'\ value='\%d'>"{}},\ p1\_move,\ s1,\ s2);}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ i<5;\ i++)\ printf(\textcolor{stringliteral}{"{}<button\ name='p2'\ value='\%d'\ style='margin:5px;'>\%s\ \%s</button>"{}},\ i,\ \mbox{\hyperlink{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990}{MOVE\_ICONS}}[i],\ \mbox{\hyperlink{rps__5move_8c_a46ce3744b45248bdb9b2b1e7e815932f}{MOVE\_NAMES}}[i]);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</form>"{}});}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{comment}{//\ ۴.\ نتیجه\ دور\ و\ بررسی\ برنده\ نهایی}}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}result"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game\_type\ ==\ 1)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ نمره\ مازاد:\ هوش\ مصنوعی\ استراتژیک\ (Counter-\/Strategy)}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بات\ سعی\ می‌کند\ حرکتی\ را\ انتخاب\ کند\ که\ حرکت\ قبلی\ بازیکن\ را\ شکست\ می‌دهد}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ last\_winner\_move\ =\ -\/1;}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (last\_winner\_move\ ==\ -\/1)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p2\_move\ =\ rand()\ \%\ 5;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ m\ =\ 0;\ m\ <\ 5;\ m++)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\mbox{\hyperlink{rps__5move_8c_a741fd746f90cca7e94d7c0834b2e3a39}{RESULT\_MATRIX}}[m][last\_winner\_move]\ ==\ 1)\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ p2\_move\ =\ m;}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}p2"{}},\ buffer);}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ p2\_move\ =\ atoi(buffer);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ res\ =\ \mbox{\hyperlink{rps__5move_8c_a741fd746f90cca7e94d7c0834b2e3a39}{RESULT\_MATRIX}}[p1\_move][p2\_move];}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ ==\ 1)\ \{\ s1++;\ last\_winner\_move\ =\ p1\_move;\ \}}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (res\ ==\ 2)\ \{\ s2++;\ last\_winner\_move\ =\ p2\_move;\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h3>P1:\ \%s\ VS\ \%s\ :\%s</h3>"{}},\ \mbox{\hyperlink{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990}{MOVE\_ICONS}}[p1\_move],\ \mbox{\hyperlink{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990}{MOVE\_ICONS}}[p2\_move],\ (game\_type==1)?\textcolor{stringliteral}{"{}Bot"{}}:\textcolor{stringliteral}{"{}P2"{}});}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (res\ ==\ 0)\ printf(\textcolor{stringliteral}{"{}<h2\ style='color:yellow'>این\ دور\ مساوی\ شد!</h2>"{}});}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ printf(\textcolor{stringliteral}{"{}<h2\ style='color:white'>\%s</h2>"{}},\ (res==1)?\mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[p1\_move][p2\_move]:\mbox{\hyperlink{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}{WIN\_ACTIONS}}[p2\_move][p1\_move]);}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (s1\ >=\ \mbox{\hyperlink{rps__5move_8c_ab063997d8529ae1fb436fbf42396334f}{WIN\_SCORE}}\ ||\ s2\ >=\ \mbox{\hyperlink{rps__5move_8c_ab063997d8529ae1fb436fbf42396334f}{WIN\_SCORE}})\ \{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h1\ style='color:\#2ecc71'>🏆\ بازیکن\ \%s\ برنده\ نهایی\ شد!\ 🏆</h1>"{}},\ (s1>=\mbox{\hyperlink{rps__5move_8c_ab063997d8529ae1fb436fbf42396334f}{WIN\_SCORE}})?\textcolor{stringliteral}{"{}اول"{}}:\textcolor{stringliteral}{"{}دوم"{}});}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<a\ href='rps\_5move.cgi?mode=menu'><button>بازی\ جدید</button></a>"{}});}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>امتیاز\ فعلی:\ \%d\ -\/\ \%d</h2>"{}},\ s1,\ s2);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='rps\_5move.cgi'><input\ type='hidden'\ name='mode'\ value='p1\_select'>"{}});}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='type'\ value='\%d'><input\ type='hidden'\ name='s1'\ value='\%d'><input\ type='hidden'\ name='s2'\ value='\%d'>"{}},\ game\_type,\ s1,\ s2);}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<button\ type='submit'>ادامه\ به\ دور\ بعد\ ⏭️</button></form>"{}});}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \ \ \}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}{print\_footer}}();}
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00154\ \}}
+
+\end{DoxyCode}
+
+
+\label{doc-var-members}
+\Hypertarget{rps__5move_8c_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990}\index{rps\_5move.c@{rps\_5move.c}!MOVE\_ICONS@{MOVE\_ICONS}}
+\index{MOVE\_ICONS@{MOVE\_ICONS}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{MOVE\_ICONS}{MOVE\_ICONS}}
+{\footnotesize\ttfamily \label{rps__5move_8c_ab5bc4e09c9e004c6aacec9c437849990} 
+const char\texorpdfstring{$\ast$}{*} MOVE\+\_\+\+ICONS\mbox{[}$\,$\mbox{]} = \{"{}🪨"{}, "{}📄"{}, "{}✂️"{}, "{}🦎"{}, "{}🖖"{}\}}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00042}{42}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00042\ \{\textcolor{stringliteral}{"{}🪨"{}},\ \textcolor{stringliteral}{"{}📄"{}},\ \textcolor{stringliteral}{"{}✂️"{}},\ \textcolor{stringliteral}{"{}🦎"{}},\ \textcolor{stringliteral}{"{}🖖"{}}\};}
+
+\end{DoxyCode}
+\Hypertarget{rps__5move_8c_a46ce3744b45248bdb9b2b1e7e815932f}\index{rps\_5move.c@{rps\_5move.c}!MOVE\_NAMES@{MOVE\_NAMES}}
+\index{MOVE\_NAMES@{MOVE\_NAMES}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{MOVE\_NAMES}{MOVE\_NAMES}}
+{\footnotesize\ttfamily \label{rps__5move_8c_a46ce3744b45248bdb9b2b1e7e815932f} 
+const char\texorpdfstring{$\ast$}{*} MOVE\+\_\+\+NAMES\mbox{[}$\,$\mbox{]} = \{"{}سنگ"{}, "{}کاغذ"{}, "{}قیچی"{}, "{}مارمولک"{}, "{}اسپاک"{}\}}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00041}{41}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00041\ \{\textcolor{stringliteral}{"{}سنگ"{}},\ \textcolor{stringliteral}{"{}کاغذ"{}},\ \textcolor{stringliteral}{"{}قیچی"{}},\ \textcolor{stringliteral}{"{}مارمولک"{}},\ \textcolor{stringliteral}{"{}اسپاک"{}}\};}
+
+\end{DoxyCode}
+\Hypertarget{rps__5move_8c_a741fd746f90cca7e94d7c0834b2e3a39}\index{rps\_5move.c@{rps\_5move.c}!RESULT\_MATRIX@{RESULT\_MATRIX}}
+\index{RESULT\_MATRIX@{RESULT\_MATRIX}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{RESULT\_MATRIX}{RESULT\_MATRIX}}
+{\footnotesize\ttfamily \label{rps__5move_8c_a741fd746f90cca7e94d7c0834b2e3a39} 
+const int RESULT\+\_\+\+MATRIX\mbox{[}5\mbox{]}\mbox{[}5\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{}
+\DoxyCodeLine{\ \ \ \ \{0,\ 2,\ 1,\ 1,\ 2\},\ }
+\DoxyCodeLine{\ \ \ \ \{1,\ 0,\ 2,\ 2,\ 1\},\ }
+\DoxyCodeLine{\ \ \ \ \{2,\ 1,\ 0,\ 1,\ 2\},\ }
+\DoxyCodeLine{\ \ \ \ \{2,\ 1,\ 2,\ 0,\ 1\},\ }
+\DoxyCodeLine{\ \ \ \ \{1,\ 2,\ 1,\ 2,\ 0\}\ \ }
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00044}{44}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \{0,\ 2,\ 1,\ 1,\ 2\},\ \textcolor{comment}{//\ Rock}}
+\DoxyCodeLine{00046\ \ \ \ \ \{1,\ 0,\ 2,\ 2,\ 1\},\ \textcolor{comment}{//\ Paper}}
+\DoxyCodeLine{00047\ \ \ \ \ \{2,\ 1,\ 0,\ 1,\ 2\},\ \textcolor{comment}{//\ Scissors}}
+\DoxyCodeLine{00048\ \ \ \ \ \{2,\ 1,\ 2,\ 0,\ 1\},\ \textcolor{comment}{//\ Lizard}}
+\DoxyCodeLine{00049\ \ \ \ \ \{1,\ 2,\ 1,\ 2,\ 0\}\ \ \textcolor{comment}{//\ Spock}}
+\DoxyCodeLine{00050\ \};}
+
+\end{DoxyCode}
+\Hypertarget{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8}\index{rps\_5move.c@{rps\_5move.c}!WIN\_ACTIONS@{WIN\_ACTIONS}}
+\index{WIN\_ACTIONS@{WIN\_ACTIONS}!rps\_5move.c@{rps\_5move.c}}
+\doxysubsubsection{\texorpdfstring{WIN\_ACTIONS}{WIN\_ACTIONS}}
+{\footnotesize\ttfamily \label{rps__5move_8c_aca358ce669e22b9eb129ded52dd77ce8} 
+const char\texorpdfstring{$\ast$}{*} WIN\+\_\+\+ACTIONS\mbox{[}5\mbox{]}\mbox{[}5\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{rps__5move_8c_source_l00052}{52}} of file \mbox{\hyperlink{rps__5move_8c_source}{rps\+\_\+5move.\+c}}.
+

@@ -1,9 +1,67 @@
-/* File: public_html/style.css */
+/*
+ * ═══════════════════════════════════════════════════════════════════════════
+ *                        استایل‌های اصلی Arcade System
+ *                                  style.css
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * این فایل را من از صفر نوشتم تا حال و هوای یک آرکید واقعی را
+ * در مرورگر شبیه‌سازی کنم. تمرکز اصلی من روی:
+ * - تم نئونی سبز (مثل آرکیدهای قدیمی)
+ * - افکت‌های 3D برای کابینت
+ * - انیمیشن‌های نرم و روان
+ * - طراحی responsive
+ * - راست‌چین بودن تمام متون فارسی
+ *
+ * ساختار فایل:
+ * 1. متغیرهای CSS (CSS Variables)
+ * 2. استایل‌های پایه (body, reset)
+ * 3. نوار بالای احراز هویت (auth-strip)
+ * 4. دکمه و modal راهنما
+ * 5. کابینت آرکید اصلی
+ * 6. صفحه نمایش بازی
+ * 7. منوی چرخشی (carousel)
+ * 8. پنل حساب کاربری
+ * 9. پنل ادمین
+ * 10. modal احراز هویت
+ * 11. افکت‌ها و انیمیشن‌ها
+ *
+ * تکنولوژی‌های استفاده شده:
+ * - CSS Variables برای تم‌بندی
+ * - Flexbox برای layout
+ * - CSS Grid برای چیدمان‌های پیچیده
+ * - CSS Transforms برای 3D effects
+ * - CSS Animations برای حرکات
+ * - Backdrop Filter برای blur effects
+ *
+ * یادآوری برای خودم:
+ * - اگر رنگ تم را تغییر دادم، فقط variables را تغییر بدهم
+ * - تمام shadows و glows باید با رنگ نئون هماهنگ باشند
+ * - direction: rtl برای تمام متون فارسی حیاتی است
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *                          بخش ۱: متغیرهای CSS (Theme Variables)
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * این متغیرها قلب سیستم تم‌بندی هستند. با تغییر این متغیرها، تمام
+ * رنگ‌های سایت به صورت خودکار تغییر می‌کنند.
+ *
+ * چرا CSS Variables:
+ * - یک نقطه مرکزی برای تغییر رنگ‌ها
+ * - قابل تغییر با JavaScript (برای dark/light mode آینده)
+ * - performance بهتر از SASS variables در runtime
+ *
+ * رنگ‌های انتخابی:
+ * - bg-dark: پس‌زمینه مشکی (#050505) - تقریباً سیاه خالص
+ * - neon-green: رنگ اصلی تم (#10b981) - سبز نئونی تیم Tailwind
+ * - cabinet-body: رنگ بدنه کابینت (#1e293b) - خاکستری تیره
+ * - cabinet-shadow: سایه کابینت (#0f172a) - تقریباً مشکی
+ */
 :root {
-    --bg-dark: #050505;
-    --neon-green: #10b981;
-    --cabinet-body: #1e293b;
-    --cabinet-shadow: #0f172a;
+    --bg-dark: #050505;           /* پس‌زمینه اصلی - سیاه نزدیک به خالص */
+    --neon-green: #10b981;        /* رنگ نئونی اصلی - سبز درخشان */
+    --cabinet-body: #1e293b;      /* رنگ بدنه کابینت - خاکستری تیره */
+    --cabinet-shadow: #0f172a;    /* رنگ سایه کابینت - تقریباً مشکی */
 }
 
 body {
@@ -18,292 +76,1052 @@ body {
     perspective: 1000px;
 }
 
+.hidden { display: none !important; } /* این کلاس را گذاشتم تا هر المانی را که لازم بود سریع مخفی کنم */
+/* این بخش مربوط به نوار وضعیت کاربر است که بالای صفحه نگه داشتم تا همیشه در دسترس باشد */
+.auth-strip {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 30;
+    background: none;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.user-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #e2e8f0;
+    font-weight: 700;
+}
+
+.user-pill.online { color: var(--neon-green); }
+
+.user-pill i { color: var(--neon-green); text-shadow: 0 0 8px rgba(16, 185, 129, 0.7); }
+
+.auth-actions { display: flex; gap: 8px; }
+.auth-actions #open-auth { display: none; }
+.auth-strip .user-pill { display: none !important; }
+.auth-actions > :not(#account-btn) { display: none !important; }
+/* دکمه راهنما را اینجا شخصی‌سازی کردم تا سریع به توضیحات برسم */
+.help-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(16,185,129,0.7);
+    background: linear-gradient(145deg, rgba(16,185,129,0.18), rgba(16,185,129,0.1));
+    color: #e2e8f0;
+    box-shadow: 0 0 18px rgba(16,185,129,0.35);
+    cursor: pointer;
+    z-index: 95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.help-btn:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 0 22px rgba(16,185,129,0.45);  }
+.help-btn:active { transform: translateY(1px) scale(0.98);}
+.help-icon { font-weight: 900; font-size: 1.2rem;}
+/* لایه راهنما که وقتی نیاز دارم تمام توضیحات را ببینم فعال می‌شود */
+.help-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5,5,5,0.72);
+    backdrop-filter: blur(10px);
+    z-index: 130;
+}
+
+.help-modal {
+    width: min(640px, 92vw);
+    max-height: calc(100vh - 120px);
+    background: linear-gradient(145deg, rgba(8, 12, 20, 0.96), rgba(10, 16, 26, 0.94));
+    border: 1px solid rgba(16,185,129,0.55);
+    border-radius: 16px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.55), 0 0 28px rgba(16,185,129,0.35);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+    direction: rtl;
+}
+
+.help-header { display: flex; align-items: center; justify-content: space-between; }
+.help-header h3 { margin: 0; color: #e2e8f0; font-weight: 900; }
+.help-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(248,113,113,0.65);
+    background: radial-gradient(circle at 30% 30%, #ff7b7b, #b91c1c);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 12px rgba(248,113,113,0.55);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.help-close:hover { transform: translateY(-1px); box-shadow: 0 0 16px rgba(248,113,113,0.75); }
+.help-close:active { transform: translateY(1px); }
+
+.help-tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 8px;
+}
+
+.help-tab {
+    background: rgba(16, 185, 129, 0.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(16,185,129,0.45);
+    border-radius: 10px;
+    padding: 10px 8px;
+    cursor: pointer;
+    font-weight: 800;
+    text-align: center;
+    transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.help-tab.active {
+    background: rgba(16,185,129,0.22);
+    border-color: rgba(16,185,129,0.85);
+    box-shadow: 0 0 14px rgba(16,185,129,0.35);
+}
+
+/*
+ * ────────────────────────────────────────────────────────────────────────
+ *            محتوای راهنما (Help Content) با اسکرول سفارشی
+ * ────────────────────────────────────────────────────────────────────────
+ *
+ * این بخش محتوای راهنما را نمایش می‌دهد. چون ممکن است متن زیاد باشد،
+ * یک ارتفاع حداکثر گذاشتم و اسکرول فعال کردم.
+ *
+ * overflow-y: auto → وقتی محتوا بیشتر از ارتفاع باشد، اسکرول عمودی اضافه می‌شود
+ * max-height: 60vh → حداکثر ۶۰٪ ارتفاع صفحه را اشغال می‌کند
+ * inset box-shadow → سایه داخلی برای حس عمق
+ */
+.help-content {
+    background: rgba(6, 12, 20, 0.55);        /* پس‌زمینه تیره شفاف */
+    border: 1px solid rgba(16,185,129,0.35);  /* حاشیه نئونی ملایم */
+    border-radius: 12px;                      /* گوشه‌های گرد */
+    padding: 12px;                            /* فضای داخلی */
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.35); /* سایه داخلی برای عمق */
+    overflow-y: auto;                         /* اسکرول عمودی وقتی محتوا زیاد است */
+    max-height: 60vh;                         /* حداکثر ۶۰٪ ارتفاع viewport */
+}
+
+/*
+ * هر pane یک صفحه راهنما است که با کلیک روی tab‌ها سوئیچ می‌شود.
+ * فقط pane فعال (با کلاس active) نمایش داده می‌شود.
+ */
+.help-pane { display: none; color: #e2e8f0; line-height: 1.6; } /* همه pane‌ها پیش‌فرض مخفی */
+.help-pane.active { display: block; }                            /* فقط pane فعال نمایش داده شود */
+.help-pane h4 { margin: 0 0 8px; color: #cbd5e1; font-weight: 900; } /* عنوان‌های داخل راهنما */
+.help-pane p { margin: 0 0 10px; color: #cbd5e1; }               /* پاراگراف‌ها */
+.help-pane ul { margin: 0 0 12px 0; padding-inline-start: 20px; color: #cbd5e1; } /* لیست‌ها */
+.help-pane li { margin-bottom: 6px; }                            /* آیتم‌های لیست */
+/* دکمه‌های احراز هویت را با این استایل شخصی کردم که حس نئون بدهد */
+/*
+ * ────────────────────────────────────────────────────────────────────────
+ *                    بخش ۲: دکمه‌های احراز هویت (Auth Buttons)
+ * ────────────────────────────────────────────────────────────────────────
+ *
+ * این دکمه‌ها را من طراحی کردم تا حس نئونی داشته باشند و هم‌زمان
+ * در مقابل کلیک پاسخ‌دهی نرم و روان داشته باشند.
+ *
+ * ویژگی‌های طراحی:
+ * - پس‌زمینه شفاف با رنگ نئون
+ * - border درخشان
+ * - box-shadow برای حس درخشش
+ * - transition برای انیمیشن نرم
+ *
+ * این دکمه‌ها در نوار بالا، پنل حساب، و modal احراز هویت استفاده می‌شوند.
+ */
+.auth-btn {
+    background: rgba(16, 185, 129, 0.15);      /* پس‌زمینه شفاف با رنگ نئون */
+    color: #e2e8f0;                           /* رنگ متن روشن */
+    border: 1px solid rgba(16, 185, 129, 0.6); /* حاشیه نئونی */
+    padding: 8px 12px;                        /* فضای داخلی مناسب */
+    border-radius: 10px;                      /* گوشه‌های گرد */
+    cursor: pointer;                          /* نشانگر دست برای کلیک */
+    font-weight: 800;                         /* وزن فونت بالا برای خوانایی */
+    letter-spacing: 0.5px;                    /* فاصله حروف برای زیبایی */
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.25); /* سایه نورانی */
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s; /* انیمیشن نرم */
+}
+
+/* دکمه حساب کاربری را از بقیه جدا کردم تا دیده شود */
+#account-btn {
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.28), rgba(16,185,129,0.16));
+    border-style: solid;
+    box-shadow:
+        0 0 18px rgba(16,185,129,0.35),
+        0 0 32px rgba(16,185,129,0.18),
+        inset 0 0 8px rgba(16,185,129,0.25);
+    letter-spacing: 0.4px;
+    padding: 9px 18px;
+    font-weight: 900;
+}
+
+/*
+ * ════════════════════════════════════════════════════════════════════════
+ *                   بخش ۳: پنل حساب کاربری (Account Panel)
+ * ════════════════════════════════════════════════════════════════════════
+ *
+ * این پنل زمانی که کاربر روی دکمه حساب کلیک می‌کند، ظاهر می‌شود.
+ * اطلاعاتی مانند نام کاربری، سکه‌ها، و بازی‌های خریداری شده را نمایش می‌دهد.
+ *
+ * position: fixed → همیشه در جای ثابتی از صفحه می‌ماند
+ * top & right → گوشه بالا-راست (برای RTL مناسب است)
+ * backdrop-filter: blur → پس‌زمینه را blur می‌کند برای افکت مدرن
+ * z-index: 90 → بالای محتوای اصلی اما زیر modal‌های احراز هویت
+ * direction: rtl → جهت راست به چپ برای فارسی
+ */
+.account-panel {
+    position: fixed;                           /* موقعیت ثابت در صفحه */
+    top: 70px;                                 /* ۷۰ پیکسل از بالا (زیر auth-strip) */
+    right: 14px;                               /* ۱۴ پیکسل از راست */
+    width: 280px;                              /* عرض ثابت ۲۸۰ پیکسل */
+    min-height: 250px;                         /* حداقل ارتفاع */
+    max-width: calc(100vw - 20px);             /* حداکثر عرض برای موبایل */
+    background: linear-gradient(145deg, rgba(8, 12, 20, 0.95), rgba(10, 18, 30, 0.92)); /* گرادیانت تیره */
+    border: 1px solid rgba(16,185,129,0.55);   /* حاشیه نئونی */
+    border-radius: 14px;                       /* گوشه‌های گرد */
+    box-shadow: 0 18px 35px rgba(0,0,0,0.55), 0 0 20px rgba(16,185,129,0.35); /* سایه عمیق */
+    padding: 14px 16px 12px;                   /* فضای داخلی */
+    z-index: 90;                               /* لایه بالا */
+    backdrop-filter: blur(6px);                /* blur پس‌زمینه */
+    display: flex;                             /* flexbox برای چیدمان */
+    flex-direction: column;                    /* آیتم‌ها زیر هم */
+    gap: 8px;                                  /* فاصله بین آیتم‌ها */
+    direction: rtl;                            /* راست به چپ برای فارسی */
+}
+.account-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    color: #e2e8f0;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+.account-row:last-child { border-bottom: none; }
+.account-row .label { color: #94a3b8; font-size: 0.92rem; }
+.account-row .value { color: #10b981; font-weight: 900; text-shadow: 0 0 8px rgba(16,185,129,0.6); }
+.account-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.account-actions .auth-btn { width: 100%; }
+
+.admin-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,5,0.72);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 32px 18px;
+    z-index: 80;
+    backdrop-filter: blur(8px);
+}
+
+.admin-card {
+    width: min(900px, 96vw);
+    max-height: calc(100vh - 80px);
+    background: linear-gradient(145deg, rgba(8, 12, 20, 0.96), rgba(6, 10, 18, 0.94));
+    border: 1px solid rgba(16,185,129,0.55);
+    border-radius: 16px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.55), 0 0 28px rgba(16,185,129,0.35);
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.admin-title { color: #e2e8f0; font-weight: 900; font-size: 1.1rem; }
+.admin-sub { color: #94a3b8; font-size: 0.9rem; }
+
+.admin-section { border: 1px solid rgba(148,163,184,0.12); border-radius: 12px; padding: 10px; background: rgba(10, 16, 26, 0.6); box-shadow: inset 0 0 12px rgba(0,0,0,0.35); }
+.section-title { color: #cbd5e1; font-weight: 800; margin-bottom: 8px; }
+
+.admin-table { max-height: 260px; overflow: auto; border: 1px solid rgba(16,185,129,0.35); border-radius: 10px; }
+.admin-table table { width: 100%; border-collapse: collapse; color: #e2e8f0; table-layout: fixed; }
+.admin-table th, .admin-table td { padding: 8px 10px; border-bottom: 1px solid rgba(148,163,184,0.12); text-align: right; }
+.admin-table th { color: #94a3b8; font-weight: 800; background: rgba(16,185,129,0.08); }
+.admin-table td.actions { text-align: center; }
+
+.admin-form { display: flex; gap: 8px; flex-wrap: wrap; }
+.admin-form select, .admin-form input {
+    background: rgba(12, 18, 30, 0.9);
+    border: 1px solid rgba(16,185,129,0.5);
+    border-radius: 10px;
+    color: #e2e8f0;
+    padding: 10px 12px;
+    font-weight: 700;
+    min-width: 160px;
+}
+.admin-form input:focus, .admin-form select:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 12px rgba(16,185,129,0.5); }
+.admin-form button { padding: 10px 14px; }
+
+.admin-feedback { min-height: 20px; color: #fbbf24; margin-top: 6px; font-weight: 800; }
+
+.admin-logs {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 10px;
+    padding: 8px;
+    background: rgba(6, 12, 20, 0.65);
+}
+.admin-log-item { color: #e2e8f0; font-size: 0.9rem; margin-bottom: 6px; display: flex; justify-content: space-between; }
+.admin-log-item .meta { color: #94a3b8; font-size: 0.8rem; }
+
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    overflow: auto;
+    background: radial-gradient(circle at 20% 20%, rgba(16,185,129,0.12), transparent 45%),
+                radial-gradient(circle at 80% 30%, rgba(52,211,153,0.1), transparent 35%),
+                rgba(5,5,5,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 120;
+    backdrop-filter: blur(8px);
+}
+
+.auth-card {
+    width: min(420px, 90vw);
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(11, 17, 32, 0.95));
+    border: 1px solid rgba(16, 185, 129, 0.6);
+    border-radius: 16px;
+    padding: 20px 20px 14px 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 35px rgba(16,185,129,0.35);
+    position: relative;
+}
+
+.auth-close {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(248,113,113,0.65);
+    background: radial-gradient(circle at 30% 30%, #ff7b7b, #b91c1c);
+    box-shadow: 0 0 12px rgba(248,113,113,0.55);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.auth-close:hover { transform: translateY(-1px); box-shadow: 0 0 16px rgba(248,113,113,0.75); }
+.auth-close:active { transform: translateY(1px); }
+
+.auth-card-header { position: relative; padding-left: 8px; margin-bottom: 10px; }
+.auth-card-header h3 { margin: 0; color: #e2e8f0; }
+.auth-card-header p { margin: 6px 0 0; color: #94a3b8; font-size: 0.9rem; }
+.glow-dot {
+    position: absolute;
+    left: -4px; top: 6px;
+    width: 8px; height: 8px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(16,185,129,0.8), 0 0 20px rgba(16,185,129,0.6);
+}
+
+.auth-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 14px 0; }
+.tab-btn {
+    background: rgba(16, 185, 129, 0.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(16,185,129,0.4);
+    border-radius: 10px;
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+.tab-btn.active { background: rgba(16,185,129,0.2); box-shadow: 0 0 14px rgba(16,185,129,0.35); border-color: rgba(16,185,129,0.9); }
+
+.auth-form { display: none; flex-direction: column; gap: 8px; }
+.auth-form.active { display: flex; }
+.auth-form label { color: #cbd5e1; font-weight: 700; }
+.auth-form input {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(16,185,129,0.45);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: #e2e8f0;
+    font-weight: 700;
+}
+.auth-form input:focus { outline: none; border-color: var(--neon-green); box-shadow: 0 0 12px rgba(16,185,129,0.5); }
+.auth-form button.primary {
+    background: linear-gradient(90deg, rgba(16,185,129,0.9), rgba(16,185,129,0.7));
+    border: 1px solid rgba(16,185,129,0.9);
+    color: #0b0f1a;
+    font-weight: 900;
+    border-radius: 12px;
+    padding: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 18px rgba(16,185,129,0.35);
+}
+.auth-form button.primary:hover { filter: brightness(1.05); }
+
+.auth-feedback { min-height: 22px; color: #fbbf24; margin-top: 6px; font-weight: 700; }
+.form-hint { color: #94a3b8; font-size: 0.85rem; }
+.ghost {
+    margin-top: 6px;
+    width: 100%;
+    background: transparent;
+    border: 1px dashed rgba(148,163,184,0.6);
+    color: #cbd5e1;
+    border-radius: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+
 #particles-js {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
 }
 
-/* کانتینر دستگاه */
+/*
+ * ════════════════════════════════════════════════════════════════════════
+ *               بخش ۴: کابینت آرکید اصلی (Arcade Cabinet)
+ * ════════════════════════════════════════════════════════════════════════
+ *
+ * این بخش قلب سیستم است - کابینت آرکید واقعی را در مرورگر شبیه‌سازی می‌کند.
+ * تمام تلاش من این بود که حس یک دستگاه آرکید قدیمی را زنده کنم.
+ *
+ * ساختار کابینت:
+ * 1. arcade-container → ظرف اصلی که همه چیز را در خود دارد
+ * 2. cabinet-body → بدنه کابینت (قسمت بالایی)
+ * 3. marquee → تابلوی نورانی بالای کابینت
+ * 4. monitor-bezel → قاب مانیتور
+ * 5. crt-screen → صفحه نمایش CRT
+ * 6. control-deck → پنل کنترل با دکمه‌ها
+ *
+ * تکنیک‌های استفاده شده:
+ * - CSS Transform برای افکت 3D
+ * - Linear Gradient برای حس حجم
+ * - Box Shadow برای عمق و نور
+ * - Perspective برای دید سه‌بعدی
+ */
+
+/* ظرف اصلی که تمام کابینت را در خود جای می‌دهد */
 .arcade-container {
-    display: flex;
-    flex-direction: column; /* این خط باعث می‌شود اجزا زیر هم قرار بگیرند */
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    transform: scale(0.85); /* کمی کوچک‌تر برای جا شدن کامل در صفحه */
+    display: flex;                  /* flexbox برای چیدمان */
+    flex-direction: column;         /* اجزا زیر هم (بدنه، مانیتور، کنترل) */
+    align-items: center;            /* وسط‌چین کردن افقی */
+    justify-content: center;        /* وسط‌چین کردن عمودی */
+    width: 100%;                    /* تمام عرض */
+    height: auto;                   /* ارتفاع خودکار */
+    min-height: 100vh;              /* حداقل تمام ارتفاع صفحه */
+    transform: scale(0.85);         /* ۸۵٪ اندازه اصلی - برای فضای بهتر */
 }
 
-/* --- بدنه اصلی --- */
+/*
+ * بدنه اصلی کابینت - قسمتی که مانیتور در آن قرار دارد.
+ * من این قسمت را با gradient طراحی کردم تا حس حجم و عمق داشته باشد.
+ */
 .cabinet-body {
-    width: 600px;
-    background: linear-gradient(to right, #1e293b, #334155 50%, #1e293b);
-    border-radius: 30px 30px 0 0;
-    border: 8px solid #0f172a;
-    border-bottom: none;
-    padding: 25px;
+    width: 600px;                                      /* عرض استاندارد ۶۰۰ پیکسل */
+    background: linear-gradient(to right, #1e293b, #334155 50%, #1e293b); /* گرادیانت برای حجم */
+    border-radius: 30px 30px 0 0;                      /* گوشه‌های بالا گرد، پایین صاف */
+    border: 8px solid #0f172a;                         /* حاشیه ضخیم تیره */
+    border-bottom: none;                               /* حاشیه پایین نداریم (به control-deck وصل است) */
+    padding: 10px;                                     /* فضای داخلی */
+    max-width: 95%;                                    /* حداکثر ۹۵٪ عرض برای responsive */
     box-shadow:
-        0 0 50px rgba(16, 185, 129, 0.1),
-        inset 0 0 30px rgba(0,0,0,0.8);
-    z-index: 10;
-    position: relative;
+        0 0 50px rgba(16, 185, 129, 0.1),              /* درخشش نئونی بیرونی */
+        inset 0 0 30px rgba(0,0,0,0.8);                /* سایه داخلی برای عمق */
+    z-index: 10;                                       /* لایه بالا */
+    position: relative;                                /* برای positioning اجزای داخلی */
 }
 
-/* --- تابلوی نورانی (Marquee) --- */
+/*
+ * ────────────────────────────────────────────────────────────────────────
+ *                   تابلوی نورانی (Marquee) - لوگوی آرکید
+ * ────────────────────────────────────────────────────────────────────────
+ *
+ * این قسمت همان تابلوی درخشان بالای کابینت‌های آرکید قدیمی است.
+ * من اینجا با text-shadow چندگانه، افکت نئون واقعی ساختم.
+ *
+ * تکنیک text-shadow برای نئون:
+ * - لایه اول: shadow سفید کوچک (درخشش مرکزی)
+ * - لایه دوم: shadow سفید بزرگ‌تر (پراکندگی نور)
+ * - لایه سوم: shadow رنگ نئون متوسط
+ * - لایه چهارم: shadow رنگ نئون بزرگ (هاله)
+ *
+ * ::before pseudo-element → گرادیانت شفاف برای حس عمق
+ */
 .marquee {
-    background: #000;
-    border: 4px solid #333;
-    border-radius: 15px;
-    padding: 15px;
-    text-align: center;
-    margin-bottom: 25px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    background: #000;                            /* پس‌زمینه مشکی خالص */
+    border: 4px solid #333;                      /* حاشیه خاکستری تیره */
+    border-radius: 15px;                         /* گوشه‌های گرد */
+    padding: 15px;                               /* فضای داخلی */
+    text-align: center;                          /* متن وسط */
+    margin-bottom: 25px;                         /* فاصله از مانیتور */
+    position: relative;                          /* برای pseudo-element */
+    overflow: hidden;                            /* جلوگیری از سرریز */
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); /* درخشش بیرونی */
 }
 
+/* لایه گرادیانت برای حس عمق و درخشش */
 .marquee::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(45deg, rgba(16,185,129,0.2), transparent);
-    z-index: 0;
+    content: '';                                 /* محتوای خالی (فقط افکت بصری) */
+    position: absolute;                          /* موقعیت مطلق */
+    top: 0; left: 0; right: 0; bottom: 0;        /* پر کردن تمام فضا */
+    background: linear-gradient(45deg, rgba(16,185,129,0.2), transparent); /* گرادیانت نئونی */
+    z-index: 0;                                  /* پشت متن */
 }
 
+/*
+ * نام برند با افکت نئون واقعی
+ * text-transform: uppercase → تمام حروف بزرگ (سبک آرکید کلاسیک)
+ */
 .brand-name {
-    display: block;
-    font-family: 'Arial Black', sans-serif;
-    font-size: 2.2rem;
-    color: #fff;
-    text-transform: uppercase;
+    display: block;                              /* بلوک برای تمام عرض */
+    font-family: 'Arial Black', sans-serif;      /* فونت ضخیم برای تاثیر بیشتر */
+    font-size: 2.2rem;                           /* اندازه بزرگ */
+    color: #fff;                                 /* رنگ سفید */
+    text-transform: uppercase;                   /* حروف بزرگ */
     text-shadow:
-        0 0 5px #fff,
-        0 0 10px #fff,
-        0 0 20px var(--neon-green),
-        0 0 40px var(--neon-green);
-    position: relative; z-index: 1;
+        0 0 5px #fff,                            /* سایه سفید کوچک - درخشش مرکزی */
+        0 0 10px #fff,                           /* سایه سفید متوسط - پراکندگی */
+        0 0 20px var(--neon-green),              /* سایه نئون متوسط */
+        0 0 40px var(--neon-green);              /* سایه نئون بزرگ - هاله */
+    position: relative;                          /* جلوی pseudo-element */
+    z-index: 1;                                  /* لایه بالا */
 }
 
+/* زیرنویس برند با فاصله حروف زیاد برای سبک آرکید */
 .brand-sub {
-    color: #ccc; letter-spacing: 4px; font-size: 0.8rem; position: relative; z-index: 1;
+    color: #ccc;                                 /* خاکستری روشن */
+    letter-spacing: 4px;                         /* فاصله زیاد بین حروف */
+    font-size: 0.8rem;                           /* اندازه کوچک */
+    position: relative;                          /* جلوی pseudo-element */
+    z-index: 1;                                  /* لایه بالا */
 }
 
-/* پیچ‌ها */
-.screws { position: absolute; top: 50%; left: 10px; right: 10px; display: flex; justify-content: space-between; transform: translateY(-50%); pointer-events: none; }
+/*
+ * ────────────────────────────────────────────────────────────────────────
+ *                    پیچ‌های تزئینی (Decorative Screws)
+ * ────────────────────────────────────────────────────────────────────────
+ *
+ * این پیچ‌ها فقط برای زیبایی هستند و حس یک دستگاه فیزیکی را می‌دهند.
+ * با box-shadow inset، حس حجم و عمق به پیچ‌ها می‌دهم.
+ *
+ * pointer-events: none → موس از روی پیچ‌ها رد می‌شود (تعامل ندارند)
+ */
+.screws {
+    position: absolute;                          /* موقعیت مطلق */
+    top: 50%;                                    /* وسط عمودی */
+    left: 10px; right: 10px;                     /* ۱۰ پیکسل از چپ و راست */
+    display: flex;                               /* flexbox */
+    justify-content: space-between;              /* پیچ‌ها در دو طرف */
+    transform: translateY(-50%);                 /* تراز عمودی دقیق */
+    pointer-events: none;                        /* بدون تعامل موس */
+}
+
+/* هر پیچ - یک دایره کوچک با سایه برای حجم */
 .screw {
-    width: 12px; height: 12px;
-    background: #bdc3c7;
-    border-radius: 50%;
-    box-shadow: inset 1px 1px 2px #000, 1px 1px 2px rgba(0,0,0,0.5);
+    width: 12px; height: 12px;                   /* ۱۲×۱۲ پیکس�� */
+    background: #bdc3c7;                         /* خاکستری روشن */
+    border-radius: 50%;                          /* دایره کامل */
+    box-shadow:
+        inset 1px 1px 2px #000,                  /* سایه داخلی تیره - عمق */
+        1px 1px 2px rgba(0,0,0,0.5);             /* سایه بیرونی - برجستگی */
 }
 
-/* --- مانیتور و حاشیه --- */
+/*
+ * ────────────────────────────────────────────────────────────────────────
+ *                قاب مانیتور و صفحه CRT (Monitor & Screen)
+ * ────────────────────────────────────────────────────────────────────────
+ *
+ * این بخش صفحه نمایش آرکید را شبیه‌سازی می‌کند.
+ * من قاب مانیتور (bezel) و صفحه CRT را جدا کردم تا واقعی‌تر باشد.
+ *
+ * border-radius: 80px / 30px → شکل بیضوی برای CRT کلاسیک
+ * inset box-shadow → عمق قاب
+ * overflow: hidden → محتوا از قاب بیرون نزند
+ */
+
+/* قاب دور مانیتور - بخش پلاستیکی/فلزی */
 .monitor-bezel {
-    background: #111;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: inset 0 0 30px #000;
-    position: relative;
+    background: #111;                            /* تقریباً مشکی */
+    padding: 30px;                               /* فضای قاب دور صفحه */
+    border-radius: 20px;                         /* گوشه‌های گرد */
+    box-shadow: inset 0 0 30px #000;             /* سایه داخلی برای عمق */
+    position: relative;                          /* برای positioning اجزای داخلی */
 }
 
+/*
+ * صفحه نمایش CRT اصلی
+ * border-radius: 80px / 30px → elliptical corners (شکل بیضوی CRT کلاسیک)
+ * ارتفاع ۴۶۰px را انتخاب کردم تا هم در دسکتاپ و هم موبایل مناسب باشد
+ */
 .crt-screen {
-    background: #000;
-    width: 100%;
-    height: 420px; /* ارتفاع از 320 به 420 افزایش یافت تا فضای کافی برای بازی‌ها فراهم شود */
-    border-radius: 80px / 30px;
-    position: relative;
-    overflow: hidden; /* جلوگیری از بیرون زدگی محتوا و حفظ ظاهر کلاسیک */
-    border: 2px solid #222;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+    background: #000;                            /* پس‌زمینه مشکی خالص */
+    width: 100%;                                 /* تمام عرض */
+    height: 460px;                               /* ارتفاع ثابت ۴۶۰ پیکسل */
+    overflow-y: auto;                            /* اسکرول عمودی در صورت نیاز */
+    border-radius: 80px / 30px;                  /* گوشه‌های بیضوی CRT */
+    position: relative;                          /* برای pseudo-elements */
+    overflow: hidden;                            /* محتوا از قاب بیرون نزند */
+    border: 2px solid #222;                      /* حاشیه نازک تیره */
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.15); /* درخشش نئونی ملایم */
 }
 
-/* اصلاح کانتینر محتوای بازی برای استفاده حداکثری از فضا */
+/*
+ * کانتینر محتوای بازی داخل صفحه
+ * flexbox با justify-content: center → محتوا را وسط صفحه قرار می‌دهد
+ */
 .game-content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    width: 100%;                                 /* تمام عرض */
+    height: 100%;                                /* تمام ارتفاع */
+    display: flex;                               /* flexbox */
+    flex-direction: column;                      /* آیتم‌ها زیر هم */
+    justify-content: center;                     /* وسط عمودی */
+    align-items: center;                         /* وسط افقی */
 }
 
+/*
+ * افکت بازتاب نور روی شیشه CRT (Reflection Effect)
+ * این pseudo-element یک گرادیانت شفاف سفید در گوشه بالا-چپ ایجاد می‌کند
+ * که حس بازتاب نور را شبیه‌سازی می‌کند.
+ *
+ * pointer-events: none → موس از روی آن رد می‌شود (تعامل ندارد)
+ * z-index: 20 → بالاتر از محتوای بازی اما زیر UI
+ */
 .crt-screen::after {
-    content: "";
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%);
-    pointer-events: none;
-    z-index: 20;
-    border-radius: 80px / 30px;
+    content: "";                                 /* محتوای خالی */
+    position: absolute;                          /* موقعیت مطلق */
+    top: 0; left: 0; right: 0; bottom: 0;        /* پر کردن تمام فضا */
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%); /* گرادیانت بازتاب */
+    pointer-events: none;                        /* بدون تعامل موس */
+    z-index: 20;                                 /* لایه بالا */
+    border-radius: 80px / 30px;                  /* همان شکل بیضوی CRT */
 }
 
+/*
+ * خطوط اسکن (Scanlines) - افکت کلاسیک مانیتورهای CRT قدیمی
+ * این خطوط افقی باریک باعث می‌شوند صفحه شبیه یک مانیتور واقعی قدیمی بشود.
+ *
+ * تکنیک: linear-gradient با background-size کوچک که تکرار می‌شود
+ * rgba(18, 16, 16, 0) → نیمی شفاف
+ * rgba(0, 0, 0, 0.25) → نیمی تیره
+ * background-size: 100% 3px → هر خط 3 پیکسل ارتفاع دارد
+ */
 .scanlines {
-    position: absolute; top:0; left:0; right:0; bottom:0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 3px;
-    pointer-events: none; z-index: 5;
+    position: absolute;                          /* موقعیت مطلق */
+    top:0; left:0; right:0; bottom:0;            /* پر کردن تمام صفحه */
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%); /* الگوی خط */
+    background-size: 100% 3px;                   /* هر خط 3 پیکسل */
+    pointer-events: none;                        /* بدون تعامل موس */
+    z-index: 5;                                  /* بالای محتوا، زیر reflection */
 }
 
-/* --- بخش داخلی مانیتور (اصلاح شده) --- */
-
+/*
+ * ═══════════════════════════════════════════════════════════════════════════
+ *                   بخش ۵: نمایشگر بازی (Game Display Area)
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * این div اصلی‌ترین کانتینر محتوای بازی است. تمام بازی‌ها (منو، کاروسل، iframe)
+ * داخل این المان قرار می‌گیرند.
+ *
+ * direction: ltr → عمداً LTR گذاشتم تا محاسبات JavaScript برای carousel
+ *                  به‌هم نریزد (فرمول‌های transform با LTR کار می‌کنند)
+ * overflow: hidden → محتوای اضافی پنهان می‌شود
+ * position: relative → برای positioning مطلق اجزای داخلی
+ */
 #game-display {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    background: #000;
-    /* جهت کلی را LTR میکنیم تا محاسبات اسلایدر بهم نریزد */
-    /* متن‌ها را جداگانه RTL میکنیم */
-    direction: ltr;
+    width: 100%;                                 /* تمام عرض */
+    height: 100%;                                /* تمام ارتفاع */
+    overflow: hidden;                            /* مخفی کردن محتوای اضافی */
+    position: relative;                          /* برای اجزای absolute داخلی */
+    background: #000;                            /* پس‌زمینه مشکی */
+    direction: ltr;                              /* LTR برای carousel calculations */
 }
 
-/* متن بالا (INSERT COIN) */
+/*
+ * متن چشمک‌زن "INSERT COIN" در بالای منو
+ * این متن با انیمیشن blink چشمک می‌زند و حس آرکیدهای قدیمی را زنده می‌کند.
+ *
+ * position: absolute + top: 20px → بالای منو
+ * width: 100% + text-align: center → وسط‌چین افقی
+ * font-family: 'Courier New' → فونت monospace برای سبک رترو
+ * text-shadow → درخشش زرد
+ */
 .menu-overlay h2.blink-text {
-    position: absolute;
-    top: 20px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    margin: 0;
-    z-index: 20;
-    font-size: 1rem;
-    color: #facc15;
-    text-shadow: 0 0 5px #facc15;
-    font-family: 'Courier New', monospace; /* فونت انگلیسی برای متن انگلیسی */
+    position: absolute;                          /* موقعیت مطلق */
+    top: 20px;                                   /* ۲۰ پیکسل از بالا */
+    left: 0;                                     /* از چپ */
+    width: 100%;                                 /* تمام عرض */
+    text-align: center;                          /* متن وسط */
+    margin: 0;                                   /* بدون margin */
+    z-index: 20;                                 /* بالای carousel */
+    font-size: 1rem;                             /* اندازه متن */
+    color: #facc15;                              /* زرد روشن */
+    text-shadow: 0 0 5px #facc15;                /* درخشش زرد */
+    font-family: 'Courier New', monospace;       /* فونت monospace رترو */
 }
 
-/* نوار بازی‌ها */
+/*
+ * ─────────────────────────────────────────────────────────────────────────
+ *                  کاروسل بازی‌ها (Game Carousel)
+ * ─────────────────────────────────────────────────────────────────────────
+ *
+ * این کاروسل یک ردیف افقی از کارت‌های بازی است که با دکمه‌های چپ/راست
+ * می‌چرخد. بازی وسط (active) بزرگ‌تر و درخشان‌تر است.
+ *
+ * مکانیک چرخش:
+ * 1. همه کارت‌ها در یک ردیف flexbox
+ * 2. کل carousel با transform: translateX جابجا می‌شود
+ * 3. JavaScript مبدا (left: 50%) را حساب می‌کند
+ * 4. فرمول: translateX = -(index × (itemWidth + gap)) + offset
+ *
+ * position: absolute + left: 50% → مبدا در وسط صفحه
+ * margin-top: -60px → تراز عمودی (نصف ارتفاع کارت)
+ * gap: 50px → فاصله بین کارت‌ها (هماهنگ با JS)
+ * direction: ltr → ضروری برای فرمول‌های transform
+ * transition: cubic-bezier → انیمیشن نرم و طبیعی
+ */
 .game-carousel {
-    display: flex;
-    align-items: center;
-    gap: 50px; /* باید با JS برابر باشد */
-    padding: 0;
-    margin: 0;
+    display: flex;                               /* flexbox برای ردیف افقی */
+    align-items: center;                         /* تراز عمودی */
+    gap: 50px;                                   /* فاصله ۵۰px بین کارت‌ها */
+    padding: 0;                                  /* بدون padding */
+    margin: 0;                                   /* بدون margin */
 
-    position: absolute;
-    top: 50%;
-    left: 50%; /* وسط‌چین مبنا */
-    margin-top: -60px; /* نصف ارتفاع آیتم */
+    position: absolute;                          /* موقعیت مطلق */
+    top: 50%;                                    /* ۵۰% از بالا */
+    left: 50%;                                   /* ۵۰% از چپ (مبدا وسط) */
+    margin-top: -60px;                           /* offset عمودی (نصف ۱۲۰px) */
 
-    /* جهت چیدمان آیتم‌ها چپ به راست باشد تا فرمول ریاضی کار کند */
-    flex-direction: row;
+    flex-direction: row;                         /* ردیف افقی (LTR) */
 
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    z-index: 10;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* انیمیشن نرم */
+    z-index: 10;                                 /* بالای پس‌زمینه */
 }
 
-/* آیتم‌های بازی */
+/*
+ * کارت هر بازی (Game Item Card)
+ * هر بازی یک کارت مربعی دارد با آیکون، نام، و قیمت.
+ *
+ * حالت عادی (غیرفعال):
+ * - opacity: 0.3 → کدر و کم‌رنگ
+ * - transform: scale(0.8) → کوچک‌تر
+ * - border: #333 → خاکستری معمولی
+ *
+ * حالت فعال (.active):
+ * - opacity: 1 → کاملاً واضح
+ * - transform: scale(1.25) → ۲۵٪ بزرگ‌تر
+ * - border: neon-green → حاشیه نئونی درخشان
+ * - box-shadow → درخشش نئونی
+ *
+ * direction: rtl → متن فارسی راست‌چین
+ * width & min-width: 120px → هماهنگ با فرمول JS
+ */
 .game-item {
-    width: 120px;  /* <<< اصلاح شد: دقیقاً برابر با JS */
-    min-width: 120px; /* برای اطمینان */
-    height: 120px;
-    background: rgba(20, 20, 20, 0.8);
-    border: 2px solid #333;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    opacity: 0.3;
-    transform: scale(0.8);
-    transition: all 0.4s ease;
+    width: 120px;                                /* عرض ثابت ۱۲۰px */
+    min-width: 120px;                            /* حداقل عرض برای اطمینان */
+    height: 120px;                               /* ارتفاع ۱۲۰px (مربع) */
+    background: rgba(20, 20, 20, 0.8);           /* پس‌زمینه تیره شفاف */
+    border: 2px solid #333;                      /* حاشیه خاکستری */
+    border-radius: 12px;                         /* گوشه‌های گرد */
+    display: flex;                               /* flexbox */
+    flex-direction: column;                      /* آیتم‌ها زیر هم */
+    align-items: center;                         /* وسط افقی */
+    justify-content: center;                     /* وسط عمودی */
+    text-align: center;                          /* متن وسط */
+    opacity: 0.3;                                /* کدر (غیرفعال) */
+    transform: scale(0.8);                       /* کوچک (غیرفعال) */
+    transition: all 0.4s ease;                   /* انیمیشن نرم */
 
-    /* محتوای داخل کارت‌ها فارسی و راست‌چین باشد */
-    direction: rtl;
-    font-family: 'Vazirmatn', sans-serif;
+    direction: rtl;                              /* راست‌چین برای فارسی */
+    font-family: 'Vazirmatn', sans-serif;        /* فونت فارسی */
 }
 
+/*
+ * کارت فعال - بازی‌ای که در مرکز است
+ * این کارت بزرگ‌تر، روشن‌تر و درخشان‌تر است تا توجه را جلب کند.
+ */
 .game-item.active {
-    opacity: 1;
-    transform: scale(1.25); /* کمی بزرگتر برای تاکید */
-    border-color: var(--neon-green);
-    background: rgba(0, 0, 0, 0.95);
-    box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
-    z-index: 15;
+    opacity: 1;                                  /* کاملاً واضح */
+    transform: scale(1.25);                      /* ۲۵٪ بزرگ‌تر از عادی */
+    border-color: var(--neon-green);             /* حاشیه نئونی سبز */
+    background: rgba(0, 0, 0, 0.95);             /* پس‌زمینه تقریباً مشکی */
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); /* درخشش نئونی */
+    z-index: 15;                                 /* جلوتر از بقیه کارت‌ها */
 }
 
+/* آیکون بازی - در حالت عادی خاکستری، در حالت فعال نئونی */
 .game-item i { font-size: 2.5rem; margin-bottom: 10px; color: #777; }
 .game-item.active i { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
-.game-item h3 { font-size: 0.85rem; margin: 0; color: #fff; font-weight: normal; }
-.badge { font-size: 0.6rem; color: #aaa; margin-top: 5px; font-family: sans-serif; }
 
-/* متن راهنما */
+/* نام بازی - متن سفید */
+.game-item h3 { font-size: 0.85rem; margin: 0; color: #fff; font-weight: normal; }
+
+/* نشان وضعیت (مثل "2 Players") */
+.badge { font-size: 0.6rem; color: #aaa; margin-top: 5px; font-family: sans-serif; }
+.price-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: rgba(12, 20, 32, 0.45);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 8px;
+    box-shadow: none;
+    color: #e2e8f0;
+    font-weight: 800;
+    font-size: 0.78rem;
+}
+.coin-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffd166, #f6c343 45%, #dca423);
+    box-shadow: 0 0 8px rgba(246, 195, 67, 0.5);
+    display: inline-block;
+}
+.price-coin { box-shadow: 0 0 10px rgba(246, 195, 67, 0.75); }
+.price-value { color: #facc15; font-weight: 900; letter-spacing: 0.2px; }
+
+/*
+ * متن راهنمای پایین صفحه (Instruction Text)
+ * این متن فارسی به کاربر می‌گوید چگونه بازی را انتخاب کند.
+ *
+ * position: absolute + bottom: 25px → پایین صفحه
+ * direction: rtl → راست‌چین برای فارسی
+ * color: #555 → خاکستری تیره (محو)
+ */
 .instruction {
-    position: absolute;
-    bottom: 25px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: #555;
-    font-size: 0.75rem;
-    margin: 0;
-    z-index: 20;
-    direction: rtl; /* متن فارسی */
-    font-family: 'Vazirmatn', sans-serif;
+    position: absolute;                          /* موقعیت مطلق */
+    bottom: 25px;                                /* ۲۵px از پایین */
+    left: 0;                                     /* از چپ */
+    width: 100%;                                 /* تمام عرض */
+    text-align: center;                          /* متن وسط */
+    color: #555;                                 /* خاکستری تیره */
+    font-size: 0.75rem;                          /* اندازه کوچک */
+    margin: 0;                                   /* بدون margin */
+    z-index: 20;                                 /* بالای محتوا */
+    direction: rtl;                              /* راست‌چین برای فارسی */
+    font-family: 'Vazirmatn', sans-serif;        /* فونت فارسی */
 }
 
+/*
+ * انیمیشن چشمک‌زن (Blink Animation)
+ * برای متن "INSERT COIN" که چشمک می‌زند
+ */
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .blink-text { animation: blink 1s infinite; margin-bottom: 20px; color: #facc15; }
 
-/* --- پنل کنترل --- */
+/*
+ * ═══════════════════════════════════════════════════════════════════════════
+ *               بخش ۶: پنل کنترل (Control Deck) - دکمه‌ها و joystick
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * این بخش قسمت پایینی کابینت را شبیه‌سازی می‌کند که دکمه‌ها و joystick روی آن هستند.
+ * من از CSS Transform با perspective استفاده کردم تا افکت 3D بسازم.
+ *
+ * perspective: 500px → عمق دید سه‌بعدی
+ * margin-top: -10px → اتصال به cabinet-body
+ * z-index: 20 → بالای بدنه کابینت
+ *
+ * اجزای control-deck:
+ * 1. deck-surface → سطح اصلی که دکمه‌ها روی آن هستند
+ * 2. joystick-area → جای‌استیک (base + stick + ball)
+ * 3. arcade-btn → دکمه‌های بزرگ گرد (قرمز، آبی)
+ * 4. small-btn → دکمه‌های کوچک (START, SELECT, COIN)
+ * 5. coin-hud → نمایشگر تعداد سکه‌ها
+ */
 .control-deck {
-    width: 650px;
-    height: 140px;
-    margin-top: -10px;
-    perspective: 500px;
-    z-index: 20;
+    width: 650px;                                /* عرض ۶۵۰px */
+    height: 140px;                               /* ارتفاع ۱۴۰px */
+    margin-top: -10px;                           /* اتصال به بدنه */
+    perspective: 500px;                          /* عمق دید 3D */
+    z-index: 20;                                 /* بالای بدنه */
+    position: relative;                          /* برای positioning اجزای داخلی */
 }
 
+/*
+ * سطح اصلی پنل کنترل (Deck Surface)
+ * این سطح با transform: rotateX(20deg) شیب داده شده تا افکت 3D داشته باشد.
+ *
+ * transform: rotateX(20deg) → ۲۰ درجه چرخش افقی (دید از بالا)
+ * transform-origin: top → مبدا چرخش بالای المان
+ * background-image → الگوی grid برای بافت
+ * border-radius → گوشه‌های پایین گردتر (۴۰px)
+ */
 .deck-surface {
-    background: #2c3e50;
-    height: 100%;
-    border-radius: 10px 10px 40px 40px;
-    border-top: 2px solid #555;
-    transform: rotateX(20deg);
-    transform-origin: top;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 50px;
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background: #2c3e50;                         /* رنگ خاکستری-آبی */
+    height: 100%;                                /* تمام ارتفاع */
+    border-radius: 10px 10px 40px 40px;          /* گوشه‌های بالا کم‌تر گرد، پایین خیلی گرد */
+    border-top: 2px solid #555;                  /* حاشیه بالا */
+    transform: rotateX(20deg);                   /* چرخش ۲۰ درجه برای دید 3D */
+    transform-origin: top;                       /* مبدا چرخش: بالا */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.8);     /* سایه عمیق */
+    display: flex;                               /* flexbox */
+    justify-content: space-around;               /* فضای یکسان بین اجزا */
+    align-items: center;                         /* تراز عمودی */
+    padding: 0 50px;                             /* فضای داخلی چپ و راست */
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); /* الگوی grid */
+    background-size: 20px 20px;                  /* اندازه خانه‌های grid */
+    position: relative;                          /* برای positioning اجزا */
 }
 
-.joystick-area { position: relative; width: 80px; height: 80px; }
+/* ناحیه جای‌استیک (Joystick Area) */
+.joystick-area { position: relative; width: 80px; height: 80px; transform: translateX(-22px); }
+
+/* پایه دایره‌ای جای‌استیک (Joystick Base) */
 .joystick-base {
-    width: 80px; height: 80px; background: #000; border-radius: 50%;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.5); border: 2px solid #333;
-}
-.joystick-stick {
-    width: 12px; height: 50px; background: #7f8c8d;
-    position: absolute; top: -20px; left: 34px; z-index: 2;
-    background: linear-gradient(to right, #95a5a6, #2c3e50);
-}
-.joystick-ball {
-    width: 40px; height: 40px;
-    background: radial-gradient(circle at 30% 30%, #e74c3c, #c0392b);
-    border-radius: 50%; position: absolute; top: -50px; left: 20px; z-index: 3;
-    box-shadow: 2px 5px 10px rgba(0,0,0,0.4), inset -2px -2px 5px rgba(0,0,0,0.3);
-    cursor: pointer;
+    width: 80px; height: 80px;                   /* دایره ۸۰×۸۰ */
+    background: #000;                            /* مشکی */
+    border-radius: 50%;                          /* دایره کامل */
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);      /* سایه */
+    border: 2px solid #333;                      /* حاشیه تیره */
 }
 
-.arcade-btn {
-    width: 55px; height: 55px; border-radius: 50%; border: none;
-    cursor: pointer; position: relative; margin: 0 12px;
-    box-shadow: 0 6px 0 rgba(0,0,0,0.3), 0 10px 10px rgba(0,0,0,0.3);
-    transition: transform 0.1s, box-shadow 0.1s;
+/* میله جای‌استیک (Joystick Stick) */
+.joystick-stick {
+    width: 12px; height: 50px;                   /* میله باریک */
+    background: #7f8c8d;                         /* خاکستری */
+    position: absolute; top: -20px; left: 34px;  /* بالای پایه */
+    z-index: 2;                                  /* بالای پایه */
+    background: linear-gradient(to right, #95a5a6, #2c3e50); /* گرادیانت برای حجم */
 }
+
+/* گوی قرمز جای‌استیک (Joystick Ball) */
+.joystick-ball {
+    width: 40px; height: 40px;                   /* دایره ۴۰×۴۰ */
+    background: radial-gradient(circle at 30% 30%, #e74c3c, #c0392b); /* گرادیانت قرمز شعاعی */
+    border-radius: 50%;                          /* دایره کامل */
+    position: absolute; top: -50px; left: 20px;  /* بالای میله */
+    z-index: 3;                                  /* بالاترین لایه */
+    box-shadow:
+        2px 5px 10px rgba(0,0,0,0.4),           /* سایه بیرونی */
+        inset -2px -2px 5px rgba(0,0,0,0.3);    /* سایه داخلی برای عمق */
+    cursor: pointer;                             /* نشانگر دست */
+}
+
+/*
+ * نمایشگر سکه (Coin HUD)
+ * این المان تعداد سکه‌های کاربر را در گوشه راست-پایین پنل کنترل نمایش می‌دهد.
+ *
+ * position: absolute → موقعیت مطلق نسبت به deck
+ * radial-gradient در coin-icon-lg → سکه طلایی درخشان
+ * text-shadow → درخشش نئونی سبز برای عدد
+ */
+.coin-hud {
+    position: absolute;                          /* موقعیت مطلق */
+    right: 32px;                                 /* ۳۲px از راست */
+    bottom: 44px;                                /* ۴۴px از پایین */
+    display: inline-flex;                        /* inline flexbox */
+    align-items: center;                         /* تراز عمودی */
+    gap: 10px;                                   /* فاصله بین آیکون و عدد */
+    padding: 7px 14px;                           /* فضای داخلی */
+    background: linear-gradient(145deg, rgba(7, 11, 20, 0.92), rgba(10, 18, 28, 0.88)); /* گرادیانت تیره */
+    border: 1px solid rgba(16,185,129,0.55);     /* حاشیه نئونی */
+    border-radius: 12px;                         /* گوشه‌های گرد */
+    box-shadow: 0 12px 25px rgba(0,0,0,0.55), 0 0 18px rgba(16,185,129,0.25); /* سایه عمیق */
+    color: #10b981;                              /* رنگ نئونی سبز */
+    font-weight: 900;                            /* وزن فونت بالا */
+    letter-spacing: 0.3px;                       /* فاصله حروف */
+}
+
+/* آیکون سکه طلایی بزرگ */
+.coin-icon-lg {
+    width: 22px; height: 22px;                   /* دایره ۲۲×۲۲ */
+    border-radius: 50%;                          /* دایره کامل */
+    background: radial-gradient(circle at 35% 35%, #ffe29f, #ffc857 45%, #f2b705 70%, #c98a05); /* طلایی درخشان */
+    box-shadow: 0 0 14px rgba(242, 183, 5, 0.8), 0 0 24px rgba(242,183,5,0.45); /* درخشش طلایی */
+}
+
+/* تعداد سکه‌ها با فونت monospace */
+.coin-amount {
+    color: #10b981;                              /* سبز نئونی */
+    text-shadow: 0 0 8px rgba(16,185,129,0.65);  /* درخشش نئونی */
+    font-size: 1.05rem;                          /* اندازه متن */
+    font-family: 'Courier New', monospace;       /* فونت monospace */
+}
+
+/*
+ * دکمه‌های بزرگ آرکید (Arcade Buttons)
+ * دکمه‌های گرد قرمز و آبی که با کلیک فرو می‌روند.
+ *
+ * box-shadow ۲ لایه → سایه برای حجم و عمق
+ * :active → وقتی کلیک می‌شود، translateY(6px) → فرو می‌رود
+ */
+.arcade-btn {
+    width: 55px; height: 55px;                   /* دایره ۵۵×۵۵ */
+    border-radius: 50%;                          /* دایره کامل */
+    border: none;                                /* بدون حاشیه */
+    cursor: pointer;                             /* نشانگر دست */
+    position: relative;                          /* برای position */
+    margin: 0 12px;                              /* فاصله بین دکمه‌ها */
+    box-shadow: 0 6px 0 rgba(0,0,0,0.3), 0 10px 10px rgba(0,0,0,0.3); /* سایه عمق */
+    transition: transform 0.1s, box-shadow 0.1s; /* انیمیشن نرم */
+}
+/* حالت کلیک - دکمه فرو می‌رود */
 .arcade-btn:active { transform: translateY(6px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
 
+/* دکمه قرمز با گرادیانت شعاعی */
 .red { background: radial-gradient(circle at 30% 30%, #ff5252, #b71c1c); border: 2px solid #b71c1c; }
+/* دکمه آبی با گرادیانت شعاعی */
 .blue { background: radial-gradient(circle at 30% 30%, #448aff, #1565c0); border: 2px solid #1565c0; }
 
+/*
+ * دکمه‌های کوچک (START, SELECT, COIN)
+ * این دکمه‌ها کوچک‌تر و بیضوی هستند.
+ *
+ * transform: rotateX(-20deg) → چرخش معکوس برای تراز با سطح 3D
+ */
 .btn-group-small { display: flex; gap: 15px; margin-top: 30px; transform: rotateX(-20deg); }
 .small-btn {
-    padding: 6px 18px; border-radius: 20px; border: none;
-    font-weight: 900; font-size: 0.7rem; cursor: pointer; letter-spacing: 1px;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+    padding: 6px 18px;                           /* فضای داخلی */
+    border-radius: 20px;                         /* گوشه‌های خیلی گرد */
+    border: none;                                /* بدون حاشیه */
+    font-weight: 900;                            /* وزن فونت بالا */
+    font-size: 0.7rem;                           /* اندازه کوچک */
+    cursor: pointer;                             /* نشانگر دست */
+    letter-spacing: 1px;                         /* فاصله حروف */
+    box-shadow: 0 4px 0 rgba(0,0,0,0.4);         /* سایه عمق */
 }
+/* حالت کلیک - دکمه فرو می‌رود */
 .small-btn:active { transform: translateY(4px); box-shadow: none; }
-.yellow { background: #f1c40f; color: #000; }
-.white { background: #ecf0f1; color: #000; }
+
+/* رنگ‌های دکمه‌های کوچک */
+.yellow { background: #f1c40f; color: #000; }    /* زرد - COIN */
+.white { background: #ecf0f1; color: #000; }     /* سفید - SELECT */
+.green { background: #2ecc71; color: #000; }     /* سبز - START */

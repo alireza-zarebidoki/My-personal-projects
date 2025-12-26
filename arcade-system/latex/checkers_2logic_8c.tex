@@ -1,0 +1,357 @@
+\doxysection{src/games/checkers/logic.c File Reference}
+\hypertarget{checkers_2logic_8c}{}\label{checkers_2logic_8c}\index{src/games/checkers/logic.c@{src/games/checkers/logic.c}}
+
+
+Game logic and move validation for Modified Checkers.  
+
+
+{\ttfamily \#include "{}checkers.\+h"{}}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{checkers_2logic_8c_a644634108511a04366c67570e53a2e77}{can\+\_\+jump\+\_\+from}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game, int row, int col)
+\item 
+int \mbox{\hyperlink{checkers_2logic_8c_a917fb9a7dba2734996f2a53de5af969c}{check\+\_\+global\+\_\+forced\+\_\+jump}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game)
+\item 
+int \mbox{\hyperlink{checkers_2logic_8c_a6cfe4623fb66fcf3fa7dbb05de07c559}{is\+\_\+valid\+\_\+checkers\+\_\+move}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game, int from\+\_\+r, int from\+\_\+c, int to\+\_\+r, int to\+\_\+c)
+\item 
+int \mbox{\hyperlink{checkers_2logic_8c_ad288d9dd6f16051640d90f688d324c45}{count\+\_\+pieces}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game, \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0f}{Checker\+Color}} color)
+\item 
+void \mbox{\hyperlink{checkers_2logic_8c_a074aba88a68956691a2f4fc1249cff7c}{make\+\_\+checkers\+\_\+move}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game, int from\+\_\+r, int from\+\_\+c, int to\+\_\+r, int to\+\_\+c)
+\item 
+void \mbox{\hyperlink{checkers_2logic_8c_ade17aeaf3d904e78b86c2f130302ee16}{get\+\_\+valid\+\_\+checkers\+\_\+moves}} (\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}game, int row, int col, int valid\mbox{[}8\mbox{]}\mbox{[}8\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Game logic and move validation for Modified Checkers. 
+
+@project arcade-\/system \begin{DoxyAuthor}{Author}
+Alireza Zarebidoki @date\+\_\+modified 2025-\/12-\/25 
+\end{DoxyAuthor}
+EN\+: Core checkers logic implementation including piece movement rules, jump validation, forced jump detection and enforcement, piece promotion, and end-\/game conditions. Implements the complete rule set for checkers including multi-\/jump sequences and special piece behaviors (Man vs King vs Queen).
+
+FA\+: پیاده‌سازی منطق اصلی چکرز شامل قوانین حرکت مهره، تایید پرش، تشخیص و اعمال پرش اجباری، ارتقاء مهره، و شرایط پایان بازی. پیاده‌سازی کامل مجموعه قوانین چکرز شامل دنباله‌های پرش چندگانه و رفتارهای خاص مهره (Man، King، Queen).
+
+@responsibilities
+\begin{DoxyItemize}
+\item Validate piece movement rules for each type (Man, King, Queen)
+\item Check direction constraints for movement
+\item Validate jump moves (must jump over opponent pieces)
+\item Detect available forced jumps
+\item Enforce global forced jump rule
+\item Handle piece promotion (Man to King at last row)
+\item Support multi-\/jump sequences
+\item Detect game over conditions (no pieces or no moves)
+\item Check for stalemate/draw conditions
+\end{DoxyItemize}
+
+@interactions
+\begin{DoxyItemize}
+\item Called by\+: main.\+c (move validation and game state updates)
+\item Uses\+: \doxylink{structCheckersState}{Checkers\+State} structure and piece types
+\end{DoxyItemize}
+
+@notes
+\begin{DoxyItemize}
+\item Man\+: diagonal forward only, becomes King at back row
+\item King\+: all diagonal directions
+\item Queen\+: vertical/horizontal with special rules
+\item Forced jumps take priority over regular moves
+\item Multi-\/jump sequences mandatory if available
+\item Jump removes captured piece from board 
+\end{DoxyItemize}
+
+Definition in file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{checkers_2logic_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{checkers_2logic_8c_a644634108511a04366c67570e53a2e77}\index{logic.c@{logic.c}!can\_jump\_from@{can\_jump\_from}}
+\index{can\_jump\_from@{can\_jump\_from}!logic.c@{logic.c}}
+\doxysubsubsection{\texorpdfstring{can\_jump\_from()}{can\_jump\_from()}}
+{\footnotesize\ttfamily \label{checkers_2logic_8c_a644634108511a04366c67570e53a2e77} 
+int can\+\_\+jump\+\_\+from (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{int}]{row}{, }\item[{int}]{col}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2logic_8c_source_l00047}{47}} of file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ piece\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[row][col];}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}})\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{comment}{//\ جهات\ پرش\ ممکن}}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{int}\ dirs[4][2]\ =\ \{\{-\/2,\ -\/2\},\ \{-\/2,\ 2\},\ \{2,\ -\/2\},\ \{2,\ 2\}\};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ d\ =\ 0;\ d\ <\ 4;\ d++)\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nr\ =\ row\ +\ dirs[d][0];}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ nc\ =\ col\ +\ dirs[d][1];}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mr\ =\ row\ +\ dirs[d][0]\ /\ 2;\ \textcolor{comment}{//\ خانه\ میانی}}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mc\ =\ col\ +\ dirs[d][1]\ /\ 2;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ محدوده}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nr\ <\ 0\ ||\ nr\ >\ 7\ ||\ nc\ <\ 0\ ||\ nc\ >\ 7)\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ جهت\ برای\ مهره\ عادی}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}})\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\ \&\&\ dirs[d][0]\ >\ 0)\ \textcolor{keywordflow}{continue};\ \textcolor{comment}{//\ قرمز\ فقط\ به\ بالا}}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ \&\&\ dirs[d][0]\ <\ 0)\ \textcolor{keywordflow}{continue};\ \textcolor{comment}{//\ سیاه\ فقط\ به\ پایین}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ King\ و\ Queen\ می‌توانند\ به\ هر\ جهتی\ بروند}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ شرایط\ پرش}}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ mid\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[mr][mc];}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ target\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[nr][nc];}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mid.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ !=\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}\ \&\&\ mid.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ !=\ piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ \&\&\ target.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}})\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;\ \textcolor{comment}{//\ پرش\ ممکن\ است}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00080\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2logic_8c_a917fb9a7dba2734996f2a53de5af969c}\index{logic.c@{logic.c}!check\_global\_forced\_jump@{check\_global\_forced\_jump}}
+\index{check\_global\_forced\_jump@{check\_global\_forced\_jump}!logic.c@{logic.c}}
+\doxysubsubsection{\texorpdfstring{check\_global\_forced\_jump()}{check\_global\_forced\_jump()}}
+{\footnotesize\ttfamily \label{checkers_2logic_8c_a917fb9a7dba2734996f2a53de5af969c} 
+int check\+\_\+global\+\_\+forced\+\_\+jump (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2logic_8c_source_l00083}{83}} of file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ p\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j];}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ !=\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}\ \&\&\ p.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}})\ \{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{checkers_2logic_8c_a644634108511a04366c67570e53a2e77}{can\_jump\_from}}(game,\ i,\ j))\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ =\ 1;}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ =\ i;}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ =\ j;}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ =\ 0;}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00100\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2logic_8c_ad288d9dd6f16051640d90f688d324c45}\index{logic.c@{logic.c}!count\_pieces@{count\_pieces}}
+\index{count\_pieces@{count\_pieces}!logic.c@{logic.c}}
+\doxysubsubsection{\texorpdfstring{count\_pieces()}{count\_pieces()}}
+{\footnotesize\ttfamily \label{checkers_2logic_8c_ad288d9dd6f16051640d90f688d324c45} 
+int count\+\_\+pieces (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{\mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0f}{Checker\+Color}}}]{color}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2logic_8c_source_l00161}{161}} of file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordtype}{int}\ count\ =\ 0;}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ !=\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}\ \&\&\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ color)}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ count++;}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{return}\ count;}
+\DoxyCodeLine{00168\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2logic_8c_ade17aeaf3d904e78b86c2f130302ee16}\index{logic.c@{logic.c}!get\_valid\_checkers\_moves@{get\_valid\_checkers\_moves}}
+\index{get\_valid\_checkers\_moves@{get\_valid\_checkers\_moves}!logic.c@{logic.c}}
+\doxysubsubsection{\texorpdfstring{get\_valid\_checkers\_moves()}{get\_valid\_checkers\_moves()}}
+{\footnotesize\ttfamily \label{checkers_2logic_8c_ade17aeaf3d904e78b86c2f130302ee16} 
+void get\+\_\+valid\+\_\+checkers\+\_\+moves (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{int}]{row}{, }\item[{int}]{col}{, }\item[{int}]{valid}{\mbox{[}8\mbox{]}\mbox{[}8\mbox{]}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2logic_8c_source_l00238}{238}} of file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ valid[i][j]\ =\ 0;}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[row][col].\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}})\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{comment}{//\ اگر\ پرش\ اجباری\ فعال\ است\ و\ این\ مهره\ نیست\ که\ باید\ پرش\ کند}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ \&\&\ (game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ !=\ row\ ||\ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ !=\ col))\ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00248\ \ \ \ \ \}}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{checkers_2logic_8c_a6cfe4623fb66fcf3fa7dbb05de07c559}{is\_valid\_checkers\_move}}(game,\ row,\ col,\ i,\ j))\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ valid[i][j]\ =\ 1;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2logic_8c_a6cfe4623fb66fcf3fa7dbb05de07c559}\index{logic.c@{logic.c}!is\_valid\_checkers\_move@{is\_valid\_checkers\_move}}
+\index{is\_valid\_checkers\_move@{is\_valid\_checkers\_move}!logic.c@{logic.c}}
+\doxysubsubsection{\texorpdfstring{is\_valid\_checkers\_move()}{is\_valid\_checkers\_move()}}
+{\footnotesize\ttfamily \label{checkers_2logic_8c_a6cfe4623fb66fcf3fa7dbb05de07c559} 
+int is\+\_\+valid\+\_\+checkers\+\_\+move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{int}]{from\+\_\+r}{, }\item[{int}]{from\+\_\+c}{, }\item[{int}]{to\+\_\+r}{, }\item[{int}]{to\+\_\+c}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2logic_8c_source_l00103}{103}} of file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{comment}{//\ بررسی\ محدوده}}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{if}\ (to\_r\ <\ 0\ ||\ to\_r\ >\ 7\ ||\ to\_c\ <\ 0\ ||\ to\_c\ >\ 7)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ piece\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[from\_r][from\_c];}
+\DoxyCodeLine{00108\ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ target\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[to\_r][to\_c];}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{comment}{//\ مقصد\ باید\ خالی\ باشد}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordflow}{if}\ (target.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ !=\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}})\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{comment}{//\ مقصد\ باید\ خانه\ تیره\ باشد}}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{if}\ ((to\_r\ +\ to\_c)\ \%\ 2\ ==\ 0)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{int}\ dr\ =\ to\_r\ -\/\ from\_r;}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{int}\ dc\ =\ to\_c\ -\/\ from\_c;}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{comment}{//\ حرکت\ عادی\ (یک\ خانه\ مورب)}}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (abs(dr)\ ==\ 1\ \&\&\ abs(dc)\ ==\ 1)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ اگر\ پرش\ اجباری\ است،\ حرکت\ عادی\ مجاز\ نیست}}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}})\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ جهت\ برای\ مهره\ عادی}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}})\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\ \&\&\ dr\ >\ 0)\ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ قرمز\ فقط\ به\ بالا}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ \&\&\ dr\ <\ 0)\ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ سیاه\ فقط\ به\ پایین}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{comment}{//\ حرکت\ Queen\ (عمودی\ یا\ افقی)}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}})\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dr\ ==\ 0\ \&\&\ abs(dc)\ ==\ 1)\ \textcolor{keywordflow}{return}\ 1;\ \textcolor{comment}{//\ یک\ خانه\ افقی}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (dc\ ==\ 0\ \&\&\ abs(dr)\ ==\ 1)\ \textcolor{keywordflow}{return}\ 1;\ \textcolor{comment}{//\ یک\ خانه\ عمودی}}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{comment}{//\ پرش\ (دو\ خانه\ مورب)}}
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordflow}{if}\ (abs(dr)\ ==\ 2\ \&\&\ abs(dc)\ ==\ 2)\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mr\ =\ from\_r\ +\ dr\ /\ 2;}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mc\ =\ from\_c\ +\ dc\ /\ 2;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ mid\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[mr][mc];}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ خانه\ میانی\ باید\ حریف\ باشد}}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mid.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}\ ||\ mid.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}})\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ جهت\ برای\ مهره\ عادی}}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}})\ \{}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\ \&\&\ dr\ >\ 0)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (piece.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ \&\&\ dr\ <\ 0)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00158\ \}}
+
+\end{DoxyCode}
+\Hypertarget{checkers_2logic_8c_a074aba88a68956691a2f4fc1249cff7c}\index{logic.c@{logic.c}!make\_checkers\_move@{make\_checkers\_move}}
+\index{make\_checkers\_move@{make\_checkers\_move}!logic.c@{logic.c}}
+\doxysubsubsection{\texorpdfstring{make\_checkers\_move()}{make\_checkers\_move()}}
+{\footnotesize\ttfamily \label{checkers_2logic_8c_a074aba88a68956691a2f4fc1249cff7c} 
+void make\+\_\+checkers\+\_\+move (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCheckersState}{Checkers\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{int}]{from\+\_\+r}{, }\item[{int}]{from\+\_\+c}{, }\item[{int}]{to\+\_\+r}{, }\item[{int}]{to\+\_\+c}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{checkers_2logic_8c_source_l00171}{171}} of file \mbox{\hyperlink{checkers_2logic_8c_source}{logic.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \mbox{\hyperlink{structChecker}{Checker}}\ moving\ =\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[from\_r][from\_c];}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordtype}{int}\ dr\ =\ to\_r\ -\/\ from\_r;}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordtype}{int}\ dc\ =\ to\_c\ -\/\ from\_c;}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{comment}{//\ اگر\ پرش\ بود،\ حذف\ مهره\ میانی}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{int}\ is\_jump\ =\ 0;}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keywordflow}{if}\ (abs(dr)\ ==\ 2\ \&\&\ abs(dc)\ ==\ 2)\ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mr\ =\ from\_r\ +\ dr\ /\ 2;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ mc\ =\ from\_c\ +\ dc\ /\ 2;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[mr][mc]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\};}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ is\_jump\ =\ 1;}
+\DoxyCodeLine{00183\ \ \ \ \ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{comment}{//\ جابجایی\ مهره}}
+\DoxyCodeLine{00186\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[to\_r][to\_c]\ =\ moving;}
+\DoxyCodeLine{00187\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[from\_r][from\_c]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\};}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{comment}{//\ بررسی\ ارتقاء}}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{if}\ (moving.\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}})\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((moving.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\ \&\&\ to\_r\ ==\ 0)\ ||\ (moving.\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ \&\&\ to\_r\ ==\ 7))\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ارتقاء\ رخ\ داده\ -\/\ باید\ در\ main.c\ منوی\ انتخاب\ نمایش\ دهیم}}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ فعلاً\ پیش‌فرض\ King}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[to\_r][to\_c].\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ =\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}};}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{comment}{//\ بررسی\ پرش\ چندگانه}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_jump\ \&\&\ \mbox{\hyperlink{checkers_2logic_8c_a644634108511a04366c67570e53a2e77}{can\_jump\_from}}(game,\ to\_r,\ to\_c))\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a17f16a51c8691e105f817a7df000aa22}{multi\_jump}}\ =\ 1;}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ to\_r;}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ to\_c;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ =\ 1;}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ =\ to\_r;}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ =\ to\_c;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};\ \textcolor{comment}{//\ ادامه\ پرش}}
+\DoxyCodeLine{00207\ \ \ \ \ \}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{comment}{//\ تغییر\ نوبت}}
+\DoxyCodeLine{00210\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a17f16a51c8691e105f817a7df000aa22}{multi\_jump}}\ =\ 0;}
+\DoxyCodeLine{00211\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ -\/1;}
+\DoxyCodeLine{00212\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ -\/1;}
+\DoxyCodeLine{00213\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ =\ (game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}})\ ?\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\ :\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}};}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{comment}{//\ بررسی\ پرش\ اجباری\ برای\ نوبت\ بعد}}
+\DoxyCodeLine{00216\ \ \ \ \ \mbox{\hyperlink{checkers_2logic_8c_a917fb9a7dba2734996f2a53de5af969c}{check\_global\_forced\_jump}}(game);}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{comment}{//\ بررسی\ پایان\ بازی}}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keywordtype}{int}\ red\_count\ =\ \mbox{\hyperlink{checkers_2logic_8c_ad288d9dd6f16051640d90f688d324c45}{count\_pieces}}(game,\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}});}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{int}\ black\_count\ =\ \mbox{\hyperlink{checkers_2logic_8c_ad288d9dd6f16051640d90f688d324c45}{count\_pieces}}(game,\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}});}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keywordflow}{if}\ (red\_count\ ==\ 0)\ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}}\ =\ 1;}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a01734ea659f240d7f22337c34f2b3e83}{winner}}\ =\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}};}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ strcpy(game-\/>\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}سیاه\ برنده\ شد!"{}});}
+\DoxyCodeLine{00226\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (black\_count\ ==\ 0)\ \{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}}\ =\ 1;}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a01734ea659f240d7f22337c34f2b3e83}{winner}}\ =\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}};}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ strcpy(game-\/>\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}قرمز\ برنده\ شد!"{}});}
+\DoxyCodeLine{00230\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ sprintf(game-\/>\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}نوبت\ \%s\%s"{}},}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}})\ ?\ \textcolor{stringliteral}{"{}قرمز"{}}\ :\ \textcolor{stringliteral}{"{}سیاه"{}},}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ ?\ \textcolor{stringliteral}{"{}\ (پرش\ اجباری!)"{}}\ :\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00234\ \ \ \ \ \}}
+\DoxyCodeLine{00235\ \}}
+
+\end{DoxyCode}

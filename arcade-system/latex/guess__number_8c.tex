@@ -1,0 +1,292 @@
+\doxysection{src/games/guess\+\_\+number.c File Reference}
+\hypertarget{guess__number_8c}{}\label{guess__number_8c}\index{src/games/guess\_number.c@{src/games/guess\_number.c}}
+
+
+Advanced number guessing game with difficulty levels and smart hints.  
+
+
+{\ttfamily \#include "{}../common/c\+\_\+utils.\+h"{}}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{guess__number_8c_ae8c97b21a905b75e4a30587c5837ee1a}{LEVEL\+\_\+\+EASY}}~1
+\item 
+\#define \mbox{\hyperlink{guess__number_8c_aa6ac30e07e337fc09c92384499c69ae5}{LEVEL\+\_\+\+MEDIUM}}~2
+\item 
+\#define \mbox{\hyperlink{guess__number_8c_a9290fd3095da9bb74366d566982de7e6}{LEVEL\+\_\+\+HARD}}~3
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{guess__number_8c_abea8df1f683677a9076f06f4c8cdf5ab}{get\+\_\+random\+\_\+int}} (int min, int max)
+\item 
+int \mbox{\hyperlink{guess__number_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Advanced number guessing game with difficulty levels and smart hints. 
+
+@project arcade-\/system \begin{DoxyAuthor}{Author}
+Alireza Zarebidoki @date\+\_\+modified 2025-\/12-\/25 
+\end{DoxyAuthor}
+EN\+: CGI-\/based number guessing game featuring three difficulty levels (Easy/\+Medium/\+Hard), dynamic range hints, and intelligent feedback. Players guess a secret number within a limited number of attempts based on difficulty.
+
+FA\+: بازی حدس عدد مبتنی بر CGI با سه سطح دشواری (آسان/متوسط/سخت)، راهنمایی بازه پویا، و بازخورد هوشمند. بازیکنان باید عدد مخفی را با تعداد محدودی تلاش (بر اساس سطح دشواری) حدس بزنند.
+
+@responsibilities
+\begin{DoxyItemize}
+\item Initialize random secret number
+\item Manage game state across requests
+\item Process and validate player guesses
+\item Provide intelligent range hints
+\item Track remaining attempts
+\item Determine win/loss conditions
+\end{DoxyItemize}
+
+@interactions
+\begin{DoxyItemize}
+\item Receives\+: mode, level, secret, attempts, min, max, guess parameters
+\item Sends\+: HTML game interface with persistent state
+\end{DoxyItemize}
+
+@notes
+\begin{DoxyItemize}
+\item Easy level\+: 10 attempts with range hints
+\item Medium level\+: 7 attempts without hints
+\item Hard level\+: 5 attempts with minimal feedback 
+\end{DoxyItemize}
+
+Definition in file \mbox{\hyperlink{guess__number_8c_source}{guess\+\_\+number.\+c}}.
+
+
+
+\label{doc-define-members}
+\Hypertarget{guess__number_8c_doc-define-members}
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{guess__number_8c_ae8c97b21a905b75e4a30587c5837ee1a}\index{guess\_number.c@{guess\_number.c}!LEVEL\_EASY@{LEVEL\_EASY}}
+\index{LEVEL\_EASY@{LEVEL\_EASY}!guess\_number.c@{guess\_number.c}}
+\doxysubsubsection{\texorpdfstring{LEVEL\_EASY}{LEVEL\_EASY}}
+{\footnotesize\ttfamily \label{guess__number_8c_ae8c97b21a905b75e4a30587c5837ee1a} 
+\#define LEVEL\+\_\+\+EASY~1}
+
+
+
+Definition at line \mbox{\hyperlink{guess__number_8c_source_l00039}{39}} of file \mbox{\hyperlink{guess__number_8c_source}{guess\+\_\+number.\+c}}.
+
+\Hypertarget{guess__number_8c_a9290fd3095da9bb74366d566982de7e6}\index{guess\_number.c@{guess\_number.c}!LEVEL\_HARD@{LEVEL\_HARD}}
+\index{LEVEL\_HARD@{LEVEL\_HARD}!guess\_number.c@{guess\_number.c}}
+\doxysubsubsection{\texorpdfstring{LEVEL\_HARD}{LEVEL\_HARD}}
+{\footnotesize\ttfamily \label{guess__number_8c_a9290fd3095da9bb74366d566982de7e6} 
+\#define LEVEL\+\_\+\+HARD~3}
+
+
+
+Definition at line \mbox{\hyperlink{guess__number_8c_source_l00041}{41}} of file \mbox{\hyperlink{guess__number_8c_source}{guess\+\_\+number.\+c}}.
+
+\Hypertarget{guess__number_8c_aa6ac30e07e337fc09c92384499c69ae5}\index{guess\_number.c@{guess\_number.c}!LEVEL\_MEDIUM@{LEVEL\_MEDIUM}}
+\index{LEVEL\_MEDIUM@{LEVEL\_MEDIUM}!guess\_number.c@{guess\_number.c}}
+\doxysubsubsection{\texorpdfstring{LEVEL\_MEDIUM}{LEVEL\_MEDIUM}}
+{\footnotesize\ttfamily \label{guess__number_8c_aa6ac30e07e337fc09c92384499c69ae5} 
+\#define LEVEL\+\_\+\+MEDIUM~2}
+
+
+
+Definition at line \mbox{\hyperlink{guess__number_8c_source_l00040}{40}} of file \mbox{\hyperlink{guess__number_8c_source}{guess\+\_\+number.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{guess__number_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{guess__number_8c_abea8df1f683677a9076f06f4c8cdf5ab}\index{guess\_number.c@{guess\_number.c}!get\_random\_int@{get\_random\_int}}
+\index{get\_random\_int@{get\_random\_int}!guess\_number.c@{guess\_number.c}}
+\doxysubsubsection{\texorpdfstring{get\_random\_int()}{get\_random\_int()}}
+{\footnotesize\ttfamily \label{guess__number_8c_abea8df1f683677a9076f06f4c8cdf5ab} 
+int get\+\_\+random\+\_\+int (\begin{DoxyParamCaption}\item[{int}]{min}{, }\item[{int}]{max}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{guess__number_8c_source_l00044}{44}} of file \mbox{\hyperlink{guess__number_8c_source}{guess\+\_\+number.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ min\ +\ rand()\ \%\ (max\ -\/\ min\ +\ 1);}
+\DoxyCodeLine{00046\ \}}
+
+\end{DoxyCode}
+\Hypertarget{guess__number_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\index{guess\_number.c@{guess\_number.c}!main@{main}}
+\index{main@{main}!guess\_number.c@{guess\_number.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{guess__number_8c_ae66f6b31b5ad750f1fe042a706a4e3d4} 
+int main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{guess__number_8c_source_l00049}{49}} of file \mbox{\hyperlink{guess__number_8c_source}{guess\+\_\+number.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ مقداردهی\ اولیه\ برای\ اعداد\ تصادفی}}
+\DoxyCodeLine{00051\ \ \ \ \ srand(time(NULL));}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{comment}{//\ چاپ\ هدر\ HTML}}
+\DoxyCodeLine{00054\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd}{print\_header}}(\textcolor{stringliteral}{"{}بازی\ حدس\ عدد\ پیشرفته"{}});}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{comment}{//\ متغیرهای\ وضعیت\ بازی}}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{char}\ buffer[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}];}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{int}\ secret\ =\ -\/1;\ \ \ \ \ \textcolor{comment}{//\ عدد\ مخفی}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{int}\ attempts\ =\ -\/1;\ \ \ \textcolor{comment}{//\ تعداد\ تلاش‌های\ باقی‌مانده}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{int}\ min\_range\ =\ 1;\ \ \ \textcolor{comment}{//\ کف\ بازه\ فعلی}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{int}\ max\_range\ =\ 100;\ \textcolor{comment}{//\ سقف\ بازه\ فعلی}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{int}\ level\ =\ 0;\ \ \ \ \ \ \ \textcolor{comment}{//\ سطح\ دشواری}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{int}\ guess\ =\ -\/1;\ \ \ \ \ \ \textcolor{comment}{//\ حدس\ کاربر}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{int}\ game\_state\ =\ 0;\ \ \textcolor{comment}{//\ 0:\ Menu,\ 1:\ Playing,\ 2:\ Win,\ 3:\ Lose}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{comment}{//\ دریافت\ پارامترها\ از\ URL}}
+\DoxyCodeLine{00067\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}mode"{}},\ buffer);}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{char}\ mode[50];}
+\DoxyCodeLine{00069\ \ \ \ \ strcpy(mode,\ buffer);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}level"{}},\ buffer);}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ level\ =\ atoi(buffer);}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}secret"{}},\ buffer);}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ secret\ =\ atoi(buffer);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}attempts"{}},\ buffer);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ attempts\ =\ atoi(buffer);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}min"{}},\ buffer);}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ min\_range\ =\ atoi(buffer);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}max"{}},\ buffer);}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ max\_range\ =\ atoi(buffer);}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}guess"{}},\ buffer);}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0])\ guess\ =\ atoi(buffer);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ منطق\ بازی\ -\/-\/-\/}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{comment}{//\ حالت\ ۱:\ شروع\ بازی\ (انتخاب\ سطح)}}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}start"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ secret\ =\ \mbox{\hyperlink{guess__number_8c_abea8df1f683677a9076f06f4c8cdf5ab}{get\_random\_int}}(1,\ 100);}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ min\_range\ =\ 1;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ max\_range\ =\ 100;}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (level\ ==\ \mbox{\hyperlink{guess__number_8c_ae8c97b21a905b75e4a30587c5837ee1a}{LEVEL\_EASY}})\ attempts\ =\ 10;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (level\ ==\ \mbox{\hyperlink{guess__number_8c_aa6ac30e07e337fc09c92384499c69ae5}{LEVEL\_MEDIUM}})\ attempts\ =\ 7;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (level\ ==\ \mbox{\hyperlink{guess__number_8c_a9290fd3095da9bb74366d566982de7e6}{LEVEL\_HARD}})\ attempts\ =\ 5;}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ game\_state\ =\ 1;\ \textcolor{comment}{//\ شروع\ بازی}}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{comment}{//\ حالت\ ۲:\ پردازش\ حدس\ کاربر}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}play"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ game\_state\ =\ 1;\ \textcolor{comment}{//\ پیش‌فرض\ در\ حال\ بازی}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (guess\ ==\ -\/1)\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p\ style='color:red;'>⚠️\ لطفاً\ یک\ عدد\ معتبر\ وارد\ کنید!</p>"{}});}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ منطق\ اصلی\ بررسی\ حدس}}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (guess\ ==\ secret)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game\_state\ =\ 2;\ \textcolor{comment}{//\ برد}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ attempts-\/-\/;}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (attempts\ <=\ 0)\ \{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game\_state\ =\ 3;\ \textcolor{comment}{//\ باخت}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ به‌روزرسانی\ هوشمند\ بازه\ فقط\ در\ حالت\ آسان}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (level\ ==\ \mbox{\hyperlink{guess__number_8c_ae8c97b21a905b75e4a30587c5837ee1a}{LEVEL\_EASY}})\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (guess\ <\ secret\ \&\&\ guess\ >=\ min\_range)\ min\_range\ =\ guess\ +\ 1;}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (guess\ >\ secret\ \&\&\ guess\ <=\ max\_range)\ max\_range\ =\ guess\ -\/\ 1;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ نمایش\ رابط\ کاربری\ (UI)\ -\/-\/-\/}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keywordflow}{if}\ (game\_state\ ==\ 0)\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ منوی\ انتخاب\ سطح}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>🎮\ انتخاب\ سطح\ دشواری</h2>"{}});}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p>برای\ شروع،\ مهارت\ خود\ را\ محک\ بزنید:</p>"{}});}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='guess\_number.cgi'\ method='GET'>"{}});}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='start'>"{}});}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<button\ type='submit'\ name='level'\ value='1'\ style='border-\/color:\#2ecc71;\ color:\#2ecc71;'>🟢\ آسان\ (۱۰\ تلاش\ +\ راهنمایی\ کامل)</button><br><br>"{}});}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<button\ type='submit'\ name='level'\ value='2'\ style='border-\/color:\#f1c40f;\ color:\#f1c40f;'>🟡\ متوسط\ (۷\ تلاش\ +\ راهنمایی\ استاندارد)</button><br><br>"{}});}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<button\ type='submit'\ name='level'\ value='3'\ style='border-\/color:\#e74c3c;\ color:\#e74c3c;'>🔴\ سخت\ (۵\ تلاش\ +\ راهنمایی\ مبهم)</button>"{}});}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</form>"{}});}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (game\_state\ ==\ 1)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ صفحه\ اصلی\ بازی}}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>🤔\ عدد\ را\ حدس\ بزنید</h2>"{}});}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='font-\/size:\ 1.5rem;\ margin:\ 20px;'>بازه\ فعلی:\ <span\ style='color:\#fff;'>[\%d\ تا\ \%d]</span></div>"{}},\ min\_range,\ max\_range);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='margin-\/bottom:\ 20px;'>تلاش‌های\ باقی‌مانده:\ "{}});}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ i<attempts;\ i++)\ printf(\textcolor{stringliteral}{"{}❤️"{}});}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ نمایش\ پیام\ راهنما\ بر\ اساس\ حدس\ قبلی}}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (guess\ !=\ -\/1\ \&\&\ guess\ !=\ secret)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ diff\ =\ abs(secret\ -\/\ guess);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='background:\#333;\ padding:10px;\ border-\/radius:5px;\ margin-\/bottom:15px;'>"{}});}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ راهنمایی\ جهت\ (بالاتر/پایین‌تر)}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (level\ !=\ \mbox{\hyperlink{guess__number_8c_a9290fd3095da9bb74366d566982de7e6}{LEVEL\_HARD}})\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (guess\ <\ secret)\ printf(\textcolor{stringliteral}{"{}⬆️\ عدد\ من\ <b>بزرگتر</b>\ است.<br>"{}});}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ printf(\textcolor{stringliteral}{"{}⬇️\ عدد\ من\ <b>کوچکتر</b>\ است.<br>"{}});}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ راهنمایی\ دما\ (نزدیک/دور)}}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (diff\ <=\ 5)\ printf(\textcolor{stringliteral}{"{}🔥\ <b>خیلی\ داغ!</b>\ (بسیار\ نزدیک)"{}});}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (diff\ <=\ 15)\ printf(\textcolor{stringliteral}{"{}♨️\ <b>گرم</b>\ (نسبتاً\ نزدیک)"{}});}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (diff\ <=\ 30)\ printf(\textcolor{stringliteral}{"{}❄️\ <b>سرد</b>\ (دور)"{}});}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ printf(\textcolor{stringliteral}{"{}🧊\ <b>یخبندان</b>\ (خیلی\ دور!)"{}});}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ راهنمایی\ زوج/فرد\ (فقط\ در\ حالت\ آسان\ و\ یک\ بار\ در\ میان\ به\ صورت\ تصادفی\ یا\ ثابت)}}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (level\ ==\ \mbox{\hyperlink{guess__number_8c_ae8c97b21a905b75e4a30587c5837ee1a}{LEVEL\_EASY}}\ \&\&\ attempts\ \%\ 2\ ==\ 0)\ \{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br>💡\ نکته:\ عدد\ مخفی\ \%s\ است."{}},\ (secret\ \%\ 2\ ==\ 0)\ ?\ \textcolor{stringliteral}{"{}زوج"{}}\ :\ \textcolor{stringliteral}{"{}فرد"{}});}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ فرم\ دریافت\ حدس\ بعدی}}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='guess\_number.cgi'\ method='GET'>"{}});}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='play'>"{}});}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='level'\ value='\%d'>"{}},\ level);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='secret'\ value='\%d'>"{}},\ secret);}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='attempts'\ value='\%d'>"{}},\ attempts);}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='min'\ value='\%d'>"{}},\ min\_range);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='max'\ value='\%d'>"{}},\ max\_range);}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='number'\ name='guess'\ placeholder='عدد\ اینجا...'\ autofocus\ required\ min='\%d'\ max='\%d'>"{}},\ min\_range,\ max\_range);}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><button\ type='submit'>بررسی\ حدس\ 🚀</button>"{}});}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</form>"{}});}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (game\_state\ ==\ 2)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ صفحه\ برد}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h1\ style='color:\#2ecc71;\ animation:\ blink\ 1s\ infinite;'>🎉\ تبریک!\ 🎉</h1>"{}});}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h3>شما\ عدد\ <b\ style='color:\#fff;\ font-\/size:2rem;'>\%d</b>\ را\ پیدا\ کردید!</h3>"{}},\ secret);}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p>سطح\ دشواری:\ \%s</p>"{}},\ (level==1)?\textcolor{stringliteral}{"{}آسان"{}}:(level==2)?\textcolor{stringliteral}{"{}متوسط"{}}:\textcolor{stringliteral}{"{}سخت"{}});}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><a\ href='guess\_number.cgi'><button>🔄\ بازی\ مجدد</button></a>"{}});}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><br><a\ href='../index.html'\ target='\_top'\ style='color:\#aaa;\ text-\/decoration:none;'>🏠\ بازگشت\ به\ منوی\ اصلی</a>"{}});}
+\DoxyCodeLine{00196\ \ \ \ \ \}}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (game\_state\ ==\ 3)\ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ صفحه\ باخت}}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h1\ style='color:\#e74c3c;'>💀\ Game\ Over\ 💀</h1>"{}});}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p>تلاش‌های\ شما\ تمام\ شد.</p>"{}});}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h3>عدد\ مخفی\ <b\ style='color:\#fff;'>\%d</b>\ بود.</h3>"{}},\ secret);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><a\ href='guess\_number.cgi'><button>🔄\ تلاش\ دوباره</button></a>"{}});}
+\DoxyCodeLine{00203\ \ \ \ \ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}{print\_footer}}();}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00207\ \}}
+
+\end{DoxyCode}

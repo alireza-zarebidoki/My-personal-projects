@@ -1,0 +1,144 @@
+\doxysection{state.\+c}
+\hypertarget{checkers_2state_8c_source}{}\label{checkers_2state_8c_source}\index{src/games/checkers/state.c@{src/games/checkers/state.c}}
+\mbox{\hyperlink{checkers_2state_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00041}00041\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{checkers_8h}{checkers.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00043}00043\ \textcolor{comment}{//\ مقداردهی\ اولیه\ صفحه\ چکرز}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00044}\mbox{\hyperlink{checkers_8h_a85e5553ab1b1f08c114d39c59d7cb540}{00044}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{checkers_2state_8c_a85e5553ab1b1f08c114d39c59d7cb540}{init\_checkers\_board}}(\mbox{\hyperlink{structCheckersState}{CheckersState}}\ *game)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00045}00045\ \ \ \ \ \textcolor{comment}{//\ خالی\ کردن\ صفحه}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00046}00046\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00050}00050\ \ \ \ \ \textcolor{comment}{//\ چیدمان\ مهره‌های\ سیاه\ (۳\ ردیف\ بالا)}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00051}00051\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 3;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((i\ +\ j)\ \%\ 2\ ==\ 1)\ \{\ \textcolor{comment}{//\ فقط\ خانه‌های\ تیره}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0fa1922852c6d7cdb6baf7399418ef6b1a3}{BLACK\_C}}\};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00056}00056\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00057}00057\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00059}00059\ \ \ \ \ \textcolor{comment}{//\ چیدمان\ مهره‌های\ قرمز\ (۳\ ردیف\ پایین)}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00060}00060\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 5;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((i\ +\ j)\ \%\ 2\ ==\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j]\ =\ (\mbox{\hyperlink{structChecker}{Checker}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}},\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}}\};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00066}00066\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00068}00068\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ =\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00069}00069\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00070}00070\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00071}00071\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00072}00072\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00073}00073\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00074}00074\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a17f16a51c8691e105f817a7df000aa22}{multi\_jump}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00075}00075\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00076}00076\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a01734ea659f240d7f22337c34f2b3e83}{winner}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00077}00077\ \ \ \ \ strcpy(game-\/>\mbox{\hyperlink{structCheckersState_a72a895e599b418a063cacce701849235}{message}},\ \textcolor{stringliteral}{"{}نوبت\ قرمز"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00078}00078\ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00080}00080\ \textcolor{comment}{//\ تبدیل\ وضعیت\ به\ رشته}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00081}\mbox{\hyperlink{checkers_8h_a735f4aa53d19c3466eb4fc080287d9c2}{00081}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{checkers_2state_8c_a735f4aa53d19c3466eb4fc080287d9c2}{serialize\_checkers\_state}}(\mbox{\hyperlink{structCheckersState}{CheckersState}}\ *game,\ \textcolor{keywordtype}{char}\ *buffer)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00082}00082\ \ \ \ \ \textcolor{keywordtype}{char}\ temp[2048]\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ ذخیره\ صفحه}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00085}00085\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ cell[4];}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(cell,\ \textcolor{stringliteral}{"{}\%d\%d"{}},\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}}\ ?\ 0\ :\ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ strcat(temp,\ cell);}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00092}00092\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00094}00094\ \ \ \ \ sprintf(buffer,\ \textcolor{stringliteral}{"{}\%s|\%d|\%d|\%d|\%d|\%d|\%d|\%d|\%d"{}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ temp,}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a17f16a51c8691e105f817a7df000aa22}{multi\_jump}},}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00104}00104\ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00106}00106\ \textcolor{comment}{//\ بازسازی\ وضعیت\ از\ رشته}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00107}\mbox{\hyperlink{checkers_8h_a1046e6cd3eb647afba7723c69d2064bf}{00107}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{checkers_2state_8c_a1046e6cd3eb647afba7723c69d2064bf}{deserialize\_checkers\_state}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *buffer,\ \mbox{\hyperlink{structCheckersState}{CheckersState}}\ *game)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00108}00108\ \ \ \ \ \textcolor{keywordflow}{if}\ (!buffer\ ||\ strlen(buffer)\ <\ 128)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{checkers_2state_8c_a85e5553ab1b1f08c114d39c59d7cb540}{init\_checkers\_board}}(game);}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00111}00111\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00113}00113\ \ \ \ \ \textcolor{keywordtype}{char}\ temp[2048];}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00114}00114\ \ \ \ \ strncpy(temp,\ buffer,\ \textcolor{keyword}{sizeof}(temp)\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00115}00115\ \ \ \ \ temp[\textcolor{keyword}{sizeof}(temp)\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00117}00117\ \ \ \ \ \textcolor{keywordtype}{char}\ *tok\ =\ strtok(temp,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00118}00118\ \ \ \ \ \textcolor{keywordflow}{if}\ (!tok)\ \{\ \mbox{\hyperlink{checkers_2state_8c_a85e5553ab1b1f08c114d39c59d7cb540}{init\_checkers\_board}}(game);\ \textcolor{keywordflow}{return};\ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00120}00120\ \ \ \ \ \textcolor{comment}{//\ بازسازی\ صفحه}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00121}00121\ \ \ \ \ \textcolor{keywordtype}{int}\ idx\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00122}00122\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ +\ 1\ <\ (\textcolor{keywordtype}{int})strlen(tok))\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a1b1cc3676e45719d591b5d861b431caf}{type}}\ =\ tok[idx]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a57364432c4bdb6768c5789978c31eeca}{board}}[i][j].\mbox{\hyperlink{structChecker_a7abf7451e8e96a665b7004e917ab5765}{color}}\ =\ tok[idx\ +\ 1]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ idx\ +=\ 2;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00130}00130\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00132}00132\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00133}00133\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_aeda10401e317f78baf1f3c12af174e97}{current\_turn}}\ =\ tok\ ?\ atoi(tok)\ :\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00135}00135\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00136}00136\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a8aabf82f4841952a9f6b89dd8e613ce8}{selected\_row}}\ =\ tok\ ?\ atoi(tok)\ :\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00138}00138\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00139}00139\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a81035caa6d1bb105f4ebd2439f74ac7d}{selected\_col}}\ =\ tok\ ?\ atoi(tok)\ :\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00141}00141\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00142}00142\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a02fe4e20d504fa76ad44100650d11ae4}{must\_jump}}\ =\ tok\ ?\ atoi(tok)\ :\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00144}00144\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00145}00145\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a29f54fa725e9c44ef6e9259c58df54c9}{jump\_from\_r}}\ =\ tok\ ?\ atoi(tok)\ :\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00147}00147\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00148}00148\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a5a4fb5d054e0f74359a3736209f8c1e6}{jump\_from\_c}}\ =\ tok\ ?\ atoi(tok)\ :\ -\/1;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00150}00150\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00151}00151\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_a17f16a51c8691e105f817a7df000aa22}{multi\_jump}}\ =\ tok\ ?\ atoi(tok)\ :\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00153}00153\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00154}00154\ \ \ \ \ game-\/>\mbox{\hyperlink{structCheckersState_afc27c33bee83427da63d8202c09c50b3}{game\_over}}\ =\ tok\ ?\ atoi(tok)\ :\ 0;}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00155}00155\ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00157}00157\ \textcolor{comment}{//\ تبدیل\ مهره\ به\ یونیکد}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00158}\mbox{\hyperlink{checkers_8h_a60f331d44f0cbcbd025192f796712da5}{00158}}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{checkers_2state_8c_a60f331d44f0cbcbd025192f796712da5}{checker\_to\_unicode}}(\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5}{CheckerType}}\ type,\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0f}{CheckerColor}}\ color)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00159}00159\ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a749fe417c4678143b753d47589a511db}{EMPTY\_C}})\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00161}00161\ \ \ \ \ \textcolor{keywordflow}{if}\ (color\ ==\ \mbox{\hyperlink{checkers_8h_a0aaa4de4fedf724b22d3b85c3bdf5f0faf80f9a890089d211842d59625e561f88}{RED}})\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(type)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🔴"{}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}👑"{}};\ \textcolor{comment}{//\ King\ قرمز}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}💎"{}};\ \textcolor{comment}{//\ Queen\ قرمز}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}?"{}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00168}00168\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(type)\ \{}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5ab306058e139ccf79bd61149820f7898f}{MAN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}⚫"{}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♔"{}};\ \textcolor{comment}{//\ King\ سیاه}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♕"{}};\ \textcolor{comment}{//\ Queen\ سیاه}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}?"{}};}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00175}00175\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{checkers_2state_8c_source_l00176}00176\ \}}
+
+\end{DoxyCode}

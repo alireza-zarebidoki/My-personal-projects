@@ -1,0 +1,149 @@
+\doxysection{hangman\+\_\+battle.\+c}
+\hypertarget{hangman__battle_8c_source}{}\label{hangman__battle_8c_source}\index{src/games/hangman\_battle.c@{src/games/hangman\_battle.c}}
+\mbox{\hyperlink{hangman__battle_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{c__utils_8h}{../common/c\_utils.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00036}00036\ \textcolor{preprocessor}{\#include\ <ctype.h>}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00037}00037\ \textcolor{preprocessor}{\#include\ <time.h>}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00039}\mbox{\hyperlink{hangman__battle_8c_acd24df7121adef94ef8ff697ad56fb4f}{00039}}\ \textcolor{preprocessor}{\#define\ MAX\_WORD\_LEN\ 20}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00040}\mbox{\hyperlink{hangman__battle_8c_a3652158e56c9d1423bfa5d1c5bd3d243}{00040}}\ \textcolor{preprocessor}{\#define\ MAX\_LIVES\ 6}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00042}\mbox{\hyperlink{hangman__battle_8c_ae483e3fb1eafc8e48eb3c4cd974a7b54}{00042}}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{hangman__battle_8c_ae483e3fb1eafc8e48eb3c4cd974a7b54}{RANDOM\_WORDS}}[]\ =\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00043}00043\ \ \ \ \ \textcolor{stringliteral}{"{}COMPUTER"{}},\ \textcolor{stringliteral}{"{}ALGORITHM"{}},\ \textcolor{stringliteral}{"{}PROGRAM"{}},\ \textcolor{stringliteral}{"{}DATABASE"{}},\ \textcolor{stringliteral}{"{}NETWORK"{}},}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00044}00044\ \ \ \ \ \textcolor{stringliteral}{"{}SECURITY"{}},\ \textcolor{stringliteral}{"{}VARIABLE"{}},\ \textcolor{stringliteral}{"{}POINTER"{}},\ \textcolor{stringliteral}{"{}COMPILER"{}},\ \textcolor{stringliteral}{"{}STRUCTURE"{}},}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00045}00045\ \ \ \ \ \textcolor{stringliteral}{"{}FUNCTION"{}},\ \textcolor{stringliteral}{"{}ARCADE"{}},\ \textcolor{stringliteral}{"{}SYSTEM"{}},\ \textcolor{stringliteral}{"{}HARDWARE"{}},\ \textcolor{stringliteral}{"{}SOFTWARE"{}}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00046}00046\ \};}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00047}00047\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00048}\mbox{\hyperlink{hangman__battle_8c_a3597a775adfd0c6af108825bba6d8d69}{00048}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{hangman__battle_8c_a3597a775adfd0c6af108825bba6d8d69}{has\_guessed}}(\textcolor{keywordtype}{char}\ letter,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *guesses)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00049}00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (!letter\ ||\ !guesses)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{return}\ (strchr(guesses,\ tolower(letter))\ !=\ NULL\ ||\ strchr(guesses,\ toupper(letter))\ !=\ NULL);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00051}00051\ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00053}\mbox{\hyperlink{hangman__battle_8c_a6d9cb4488784ec950ee9766717cab26e}{00053}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{hangman__battle_8c_a6d9cb4488784ec950ee9766717cab26e}{print\_masked\_word}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *word,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *guesses)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00054}00054\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ word[i];\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{hangman__battle_8c_a3597a775adfd0c6af108825bba6d8d69}{has\_guessed}}(word[i],\ guesses))\ printf(\textcolor{stringliteral}{"{}\%c\ "{}},\ word[i]);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00056}00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ printf(\textcolor{stringliteral}{"{}\_\ "{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00057}00057\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00058}00058\ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00060}\mbox{\hyperlink{hangman__battle_8c_a49b350181ad444c092822d14078fe730}{00060}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{hangman__battle_8c_a49b350181ad444c092822d14078fe730}{count\_mistakes}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *word,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *guesses)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00061}00061\ \ \ \ \ \textcolor{keywordtype}{int}\ mistakes\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00062}00062\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ guesses[i];\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ found\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ word[j];\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tolower(word[j])\ ==\ tolower(guesses[i]))\ \{\ found\ =\ 1;\ \textcolor{keywordflow}{break};\ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!found)\ mistakes++;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00068}00068\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00069}00069\ \ \ \ \ \textcolor{keywordflow}{return}\ mistakes;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00070}00070\ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00072}\mbox{\hyperlink{hangman__battle_8c_adff394bf5e0adfc16823dc41ed1d56d8}{00072}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{hangman__battle_8c_adff394bf5e0adfc16823dc41ed1d56d8}{print\_hangman}}(\textcolor{keywordtype}{int}\ mistakes)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00073}00073\ \ \ \ \ printf(\textcolor{stringliteral}{"{}<pre\ style='font-\/family:monospace;\ line-\/height:1.1;\ color:\#e74c3c;\ background:rgba(0,0,0,0.5);\ padding:10px;\ border-\/radius:5px;\ display:inline-\/block;\ text-\/align:left;\ font-\/size:1rem;'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00074}00074\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ +-\/-\/-\/+\(\backslash\)n\ \ |\ \ \ |\(\backslash\)n\ \ \%s\ \ \ |\(\backslash\)n\ \%s\%s\%s\ \ |\(\backslash\)n\ \%s\ \%s\ \ |\(\backslash\)n\ \ \ \ \ \ |\(\backslash\)n=========\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00075}00075\ \ \ \ \ \ \ \ \ mistakes\ >=\ 1\ ?\ \textcolor{stringliteral}{"{}O"{}}\ :\ \textcolor{stringliteral}{"{}\ "{}},\ mistakes\ >=\ 3\ ?\ \textcolor{stringliteral}{"{}/"{}}\ :\ \textcolor{stringliteral}{"{}\ "{}},\ mistakes\ >=\ 2\ ?\ \textcolor{stringliteral}{"{}|"{}}\ :\ \textcolor{stringliteral}{"{}\ "{}},\ mistakes\ >=\ 4\ ?\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)"{}}\ :\ \textcolor{stringliteral}{"{}\ "{}},}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00076}00076\ \ \ \ \ \ \ \ \ mistakes\ >=\ 5\ ?\ \textcolor{stringliteral}{"{}/"{}}\ :\ \textcolor{stringliteral}{"{}\ "{}},\ mistakes\ >=\ 6\ ?\ \textcolor{stringliteral}{"{}\(\backslash\)\(\backslash\)"{}}\ :\ \textcolor{stringliteral}{"{}\ "{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00077}00077\ \ \ \ \ printf(\textcolor{stringliteral}{"{}</pre>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00078}00078\ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00080}\mbox{\hyperlink{hangman__battle_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{00080}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{hangman__battle_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}}()\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00081}00081\ \ \ \ \ srand(time(NULL));}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00082}00082\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ae48d3ef26c4fe8468a0f84dba99e2dbd}{print\_header}}(\textcolor{stringliteral}{"{}نبرد\ کلمات\ (Hangman\ Battle)"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00084}00084\ \ \ \ \ \textcolor{keywordtype}{char}\ buffer[\mbox{\hyperlink{c__utils_8h_a1d5dab30b404fab91608086105afc78c}{MAX\_BUFFER}}];}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00085}00085\ \ \ \ \ \textcolor{keywordtype}{char}\ mode[50]\ =\ \textcolor{stringliteral}{"{}setup"{}},\ p1\_word[21]\ =\ \textcolor{stringliteral}{"{}"{}},\ p2\_word[21]\ =\ \textcolor{stringliteral}{"{}"{}},\ p1\_guesses[30]\ =\ \textcolor{stringliteral}{"{}"{}},\ p2\_guesses[30]\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00086}00086\ \ \ \ \ \textcolor{keywordtype}{int}\ turn\ =\ 1,\ is\_bot\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00088}00088\ \ \ \ \ \textcolor{comment}{//\ دریافت\ دقیق\ پارامترها\ از\ URL}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00089}00089\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}mode"{}},\ buffer);\ \textcolor{keywordflow}{if}\ (buffer[0])\ strcpy(mode,\ buffer);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00090}00090\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}p1w"{}},\ p1\_word);\ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}p2w"{}},\ p2\_word);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00091}00091\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}p1g"{}},\ p1\_guesses);\ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}p2g"{}},\ p2\_guesses);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00092}00092\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}turn"{}},\ buffer);\ \textcolor{keywordflow}{if}\ (buffer[0])\ turn\ =\ atoi(buffer);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00093}00093\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}bot"{}},\ buffer);\ \textcolor{keywordflow}{if}\ (buffer[0])\ is\_bot\ =\ atoi(buffer);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00094}00094\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_aedf8917f9a0c63c4e52f16a97029503d}{get\_param}}(\textcolor{stringliteral}{"{}guess"{}},\ buffer);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00096}00096\ \ \ \ \ \textcolor{comment}{//\ پردازش\ حدس\ جدید\ در\ جریان\ بازی}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00097}00097\ \ \ \ \ \textcolor{keywordflow}{if}\ (buffer[0]\ \&\&\ strcmp(mode,\ \textcolor{stringliteral}{"{}play"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00098}00098\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ g\ =\ tolower(buffer[0]);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ *cg\ =\ (turn\ ==\ 1)\ ?\ p1\_guesses\ :\ p2\_guesses;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!strchr(cg,\ g))\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ l\ =\ strlen(cg);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ cg[l]\ =\ g;\ cg[l+1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ turn\ =\ (turn\ ==\ 1)\ ?\ 2\ :\ 1;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00105}00105\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00107}00107\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ مدیریت\ منوها\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00108}00108\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}setup"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>گام\ ۱:\ انتخاب\ نوع\ نبرد</h2><div\ style='display:flex;\ justify-\/content:center;\ gap:20px;'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'><input\ type='hidden'\ name='mode'\ value='word\_menu'><input\ type='hidden'\ name='bot'\ value='0'><button\ class='blue'\ style='width:150px;\ height:80px;'>👥\ دو\ نفره\ (PvP)</button></form>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'><input\ type='hidden'\ name='mode'\ value='word\_menu'><input\ type='hidden'\ name='bot'\ value='1'><button\ class='yellow'\ style='width:150px;\ height:80px;'>🤖\ حریف\ بات\ (Bot)</button></form></div>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00112}00112\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00113}00113\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}word\_menu"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2>گام\ ۲:\ تعیین\ کلمات\ بازی</h2><div\ style='display:flex;\ flex-\/direction:column;\ gap:15px;\ align-\/items:center;'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'><input\ type='hidden'\ name='mode'\ value='p1\_setup'><input\ type='hidden'\ name='bot'\ value='\%d'><button\ class='blue'>✍️\ وارد\ کردن\ کلمه\ به\ صورت\ دستی</button></form>"{}},\ is\_bot);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00116}00116\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'><input\ type='hidden'\ name='mode'\ value='play'><input\ type='hidden'\ name='bot'\ value='\%d'>"{}},\ is\_bot);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00117}00117\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='p1w'\ value='\%s'><input\ type='hidden'\ name='p2w'\ value='\%s'><button\ class='yellow'>🎲\ انتخاب\ کلمه\ به\ صورت\ تصادفی</button></form>"{}},\ \mbox{\hyperlink{hangman__battle_8c_ae483e3fb1eafc8e48eb3c4cd974a7b54}{RANDOM\_WORDS}}[rand()\%15],\ \mbox{\hyperlink{hangman__battle_8c_ae483e3fb1eafc8e48eb3c4cd974a7b54}{RANDOM\_WORDS}}[rand()\%15]);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00119}00119\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}p1\_setup"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2\ style='color:\#facc15;'>نوبت\ بازیکن\ ۱</h2><p>کلمه\ مخفی\ برای\ حریف\ را\ بنویسید:</p>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'\ method='GET'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='\%s'><input\ type='hidden'\ name='bot'\ value='\%d'>"{}},\ is\_bot\ ?\ \textcolor{stringliteral}{"{}play"{}}\ :\ \textcolor{stringliteral}{"{}p2\_setup"{}},\ is\_bot);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(is\_bot)\ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='p1w'\ value='\%s'>"{}},\ \mbox{\hyperlink{hangman__battle_8c_ae483e3fb1eafc8e48eb3c4cd974a7b54}{RANDOM\_WORDS}}[rand()\%15]);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='text'\ name='\%s'\ required\ autofocus\ autocomplete='off'\ style='background:\#000;\ color:\#fff;\ border:1px\ solid\ \#10b981;\ padding:10px;'>"{}},\ is\_bot\ ?\ \textcolor{stringliteral}{"{}p2w"{}}\ :\ \textcolor{stringliteral}{"{}p1w"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><br><button>تایید\ و\ ادامه</button></form>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00127}00127\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00128}00128\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}p2\_setup"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h2\ style='color:\#3498db;'>نوبت\ بازیکن\ ۲</h2><p>کلمه\ مخفی\ برای\ بازیکن\ ۱\ را\ بنویسید:</p>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'\ method='GET'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00131}00131\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='play'><input\ type='hidden'\ name='bot'\ value='0'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00132}00132\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='p1w'\ value='\%s'>"{}},\ p1\_word);\ \textcolor{comment}{//\ انتقال\ کلمه\ P1\ به\ مرحله\ نهایی}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00133}00133\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='text'\ name='p2w'\ required\ autofocus\ autocomplete='off'\ style='background:\#000;\ color:\#fff;\ border:1px\ solid\ \#10b981;\ padding:10px;'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00134}00134\ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<br><br><button>شروع\ نبرد</button></form>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00135}00135\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00136}00136\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcmp(mode,\ \textcolor{stringliteral}{"{}play"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (p1\_word[0]\ ==\ \textcolor{charliteral}{'\(\backslash\)0'}\ ||\ p2\_word[0]\ ==\ \textcolor{charliteral}{'\(\backslash\)0'})\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p\ style='color:red;'>خطا:\ کلمات\ بارگذاری\ نشدند!\ لطفاً\ مجدداً\ شروع\ کنید.</p><a\ href='hangman\_battle.cgi'><button>بازگشت\ به\ منو</button></a>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00139}00139\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ m1\ =\ \mbox{\hyperlink{hangman__battle_8c_a49b350181ad444c092822d14078fe730}{count\_mistakes}}(p2\_word,\ p1\_guesses);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ m2\ =\ \mbox{\hyperlink{hangman__battle_8c_a49b350181ad444c092822d14078fe730}{count\_mistakes}}(p1\_word,\ p2\_guesses);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ w1\ =\ 0,\ w2\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ بررسی\ وضعیت\ پیروزی}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ complete1\ =\ 1;\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ p2\_word[i];\ i++)\ \textcolor{keywordflow}{if}(!\mbox{\hyperlink{hangman__battle_8c_a3597a775adfd0c6af108825bba6d8d69}{has\_guessed}}(p2\_word[i],\ p1\_guesses))\ complete1\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ complete2\ =\ 1;\ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ p1\_word[i];\ i++)\ \textcolor{keywordflow}{if}(!\mbox{\hyperlink{hangman__battle_8c_a3597a775adfd0c6af108825bba6d8d69}{has\_guessed}}(p1\_word[i],\ p2\_guesses))\ complete2\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (complete1\ ||\ m2\ >=\ \mbox{\hyperlink{hangman__battle_8c_a3652158e56c9d1423bfa5d1c5bd3d243}{MAX\_LIVES}})\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h1>🎉\ بازیکن\ ۱\ برنده\ شد!</h1><p>کلمه\ حریف:\ \%s</p><a\ href='hangman\_battle.cgi'><button>بازی\ جدید</button></a>"{}},\ p2\_word);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (complete2\ ||\ m1\ >=\ \mbox{\hyperlink{hangman__battle_8c_a3652158e56c9d1423bfa5d1c5bd3d243}{MAX\_LIVES}})\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<h1>🎉\ بازیکن\ ۲\ برنده\ شد!</h1><p>کلمه\ حریف:\ \%s</p><a\ href='hangman\_battle.cgi'><button>بازی\ جدید</button></a>"{}},\ p1\_word);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div\ style='display:flex;\ justify-\/content:space-\/around;'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div><h3>Player\ 1</h3>"{}});\ \mbox{\hyperlink{hangman__battle_8c_adff394bf5e0adfc16823dc41ed1d56d8}{print\_hangman}}(m1);\ printf(\textcolor{stringliteral}{"{}<br>"{}});\ \mbox{\hyperlink{hangman__battle_8c_a6d9cb4488784ec950ee9766717cab26e}{print\_masked\_word}}(p2\_word,\ p1\_guesses);\ printf(\textcolor{stringliteral}{"{}</div>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<div><h3>Player\ 2\ \%s</h3>"{}},\ is\_bot?\textcolor{stringliteral}{"{}(Bot)"{}}:\textcolor{stringliteral}{"{}"{}});\ \mbox{\hyperlink{hangman__battle_8c_adff394bf5e0adfc16823dc41ed1d56d8}{print\_hangman}}(m2);\ printf(\textcolor{stringliteral}{"{}<br>"{}});\ \mbox{\hyperlink{hangman__battle_8c_a6d9cb4488784ec950ee9766717cab26e}{print\_masked\_word}}(p1\_word,\ p2\_guesses);\ printf(\textcolor{stringliteral}{"{}</div></div>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00155}00155\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (is\_bot\ \&\&\ turn\ ==\ 2)\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *bp\ =\ \textcolor{stringliteral}{"{}ETAOINSHRDLCUMWFGYPBVKJXQZ"{}};\ \textcolor{keywordtype}{char}\ bg\ =\ \textcolor{charliteral}{'A'};}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i=0;\ bp[i];\ i++)\ \textcolor{keywordflow}{if}(!\mbox{\hyperlink{hangman__battle_8c_a3597a775adfd0c6af108825bba6d8d69}{has\_guessed}}(bp[i],\ p2\_guesses))\ \{\ bg\ =\ bp[i];\ \textcolor{keywordflow}{break};\ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<meta\ http-\/equiv='refresh'\ content='1;url=hangman\_battle.cgi?mode=play\&bot=1\&p1w=\%s\&p2w=\%s\&p1g=\%s\&p2g=\%s\%c\&turn=1'>"{}},\ p1\_word,\ p2\_word,\ p1\_guesses,\ p2\_guesses,\ bg);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<p>حریف\ بات\ در\ حال\ فکر\ کردن...</p>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<form\ action='hangman\_battle.cgi'\ method='GET'\ style='margin-\/top:20px;'>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='mode'\ value='play'><input\ type='hidden'\ name='turn'\ value='\%d'>"{}},\ turn);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='bot'\ value='\%d'><input\ type='hidden'\ name='p1w'\ value='\%s'><input\ type='hidden'\ name='p2w'\ value='\%s'>"{}},\ is\_bot,\ p1\_word,\ p2\_word);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}<input\ type='hidden'\ name='p1g'\ value='\%s'><input\ type='hidden'\ name='p2g'\ value='\%s'>"{}},\ p1\_guesses,\ p2\_guesses);}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}نوبت\ \%s:\ <input\ name='guess'\ maxlength='1'\ size='1'\ autofocus\ required\ autocomplete='off'\ style='background:\#000;\ color:\#fff;\ border:1px\ solid\ \#10b981;\ padding:5px;\ text-\/align:center;'>"{}},\ (turn==1)?\textcolor{stringliteral}{"{}P1"{}}:\textcolor{stringliteral}{"{}P2"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ <button\ type='submit'>حدس\ بزن</button></form>"{}});}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00171}00171\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00173}00173\ \ \ \ \ \mbox{\hyperlink{c__utils_8c_ad1b781b41f2d13290ca18e5e635ac354}{print\_footer}}();}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00174}00174\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{hangman__battle_8c_source_l00175}00175\ \}}
+
+\end{DoxyCode}

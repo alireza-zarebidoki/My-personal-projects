@@ -1,0 +1,141 @@
+% File: docs/report.tex
+% Author: Alireza Zarebidoki
+% Description: مستندات کامل پروژه مینی آرکید
+
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{xgreek}
+\usepackage{xepersian}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{float}
+
+\usepackage{xepersian}
+% تنظیمات نمایش کد
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize\setlatintextfont{Courier New},
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    direction=LTR
+}
+
+\lstset{style=mystyle}
+
+\title{\textbf{مستندات فنی پروژه مینی آرکید}\\
+\large Mini Arcade Project Documentation}
+\author{علیرضا زارع‌بیدکی \\ Alireza Zarebidoki}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{مقدمه (Introduction)}
+این سند به تشریح جزئیات پیاده‌سازی پروژه مینی آرکید می‌پردازد. هدف، ساخت یک پلتفرم متمرکز بازی تحت وب با استفاده از زبان C و استاندارد CGI است که شامل ۷ بازی با قوانین تغییر یافته می‌باشد.
+
+\section{ساختار فنی (Technical Architecture)}
+پروژه از الگوی طراحی ماژولار بهره می‌برد:
+\begin{latin}
+\begin{itemize}
+    \item \textbf{Frontend:} HTML5, CSS3 (Arcade Style with CRT effects), JS (Carousel Menu).
+    \item \textbf{Backend:} C (CGI Scripts handling game logic & state).
+    \item \textbf{Inter-Process Communication:} Using Query Strings and Hidden Form Fields to maintain state in a stateless HTTP environment.
+\end{itemize}
+\end{latin}
+
+\section{بازی‌های پیاده‌سازی شده}
+
+\subsection{۱. شطرنج تغییر یافته (Modified Chess)}
+پیچیده‌ترین بخش پروژه که در آن مهره‌های جدید جایگزین شده‌اند.
+\subsubsection{منطق حرکت مهره‌ها}
+توابع اعتبارسنجی حرکت (\texttt{is\_valid\_move\_logic}) برای هر مهره بازنویسی شده‌اند:
+\begin{itemize}
+    \item \textbf{Gryphon:} ابتدا یک خانه مورب، سپس حرکت مانند رخ. برای پیاده‌سازی، ابتدا بررسی می‌شود مقصد در راستای افقی/عمودی یکی از ۴ خانه مورب اطراف مبدا باشد.
+    \item \textbf{Dragon:} ترکیب حرکت اسب و شاه.
+    \item \textbf{Thief:} حرکت فیل با قابلیت پرش از روی حداکثر ۱ مانع (\texttt{count\_obstacles\_diag <= 1}).
+\end{itemize}
+\subsubsection{ویژگی‌های مازاد پیاده‌سازی شده}
+\begin{itemize}
+    \item نمایش گرافیکی حرکات مجاز (Highlighting) با رنگ سبز.
+    \item تشخیص وضعیت کیش (Check Alert).
+    \item ارتقاء سرباز (Pawn Promotion).
+\end{itemize}
+
+\subsection{۲. چکرز (Checkers)}
+نسخه اصلاح شده با قوانین خاص ارتقاء.
+\subsubsection{چالش‌های فنی}
+\begin{itemize}
+    \item \textbf{پرش اجباری (Forced Jump):} تابعی سراسری (\texttt{check\_global\_forced\_jump}) قبل از هر نوبت تمام مهره‌ها را بررسی می‌کند. اگر پرشی ممکن باشد، متغیر \texttt{must\_jump} فعال شده و سایر حرکات قفل می‌شوند.
+    \item \textbf{ارتقاء خاص:} پس از رسیدن به انتهای زمین، پنلی باز می‌شود تا کاربر بین King (حرکت مورب آزاد) و Queen (حرکت عمودی خاص) انتخاب کند.
+\end{itemize}
+
+\subsection{۳. حدس عدد پیشرفته (Advanced Guess Number)}
+این بازی شامل سه سطح دشواری (آسان، متوسط، سخت) با تعداد تلاش متفاوت است. در حالت آسان بازه حدس پس از هر تلاش به‌صورت هوشمند به‌روزرسانی می‌شود تا بازیکن راهنمایی دقیق‌تری بگیرد. ورودی‌ها و وضعیت بازی از طریق Query String مدیریت می‌شود تا منطق در C باقی بماند.
+
+\subsection{۴. فیبوناچی ۲۰۴۸ (Fibonacci 2048)}
+\subsubsection{منطق ادغام}
+برخلاف ۲۰۴۸ کلاسیک، ادغام بر اساس آرایه ثابت دنباله فیبوناچی انجام می‌شود:
+\begin{latin}
+\begin{lstlisting}[language=C]
+const int FIB_SEQ[] = {1, 1, 2, 3, 5, 8, ...};
+// Check neighbors in sequence
+if ((a == FIB_SEQ[i] && b == FIB_SEQ[i+1]) ...) return a+b;
+\end{lstlisting}
+\end{latin}
+\subsubsection{نمره مازاد}
+امکان انتخاب سایز صفحه (۴×۴، ۵×۵، ۶×۶) در ابتدای بازی فراهم شده است.
+
+\subsection{۵. نبرد کلمات (Battle Hangman)}
+نسخه دو نفره (PvP) که در آن هر بازیکن برای دیگری کلمه‌ای تعیین می‌کند.
+\subsubsection{مدیریت وضعیت}
+وضعیت دو بازی موازی در یک رشته State ذخیره می‌شود. سیستم نوبت‌دهی تضمین می‌کند که پس از هر حدس، نوبت به حریف واگذار شود.
+
+\subsection{۶. سنگ کاغذ قیچی ۵ حالته (RPS 5-Move)}
+پیاده‌سازی قوانین Sheldon با ماتریس مجاورت ۵×۵.
+\subsubsection{هوش مصنوعی (Bot)}
+برای نمره مازاد، بات بازی از الگوی "تلاش برای شکست دادن برنده قبلی" استفاده می‌کند. اگر دور قبل "سنگ" برنده شده باشد، بات احتمالاً "کاغذ" یا "اسپاک" را انتخاب می‌کند.
+
+\subsection{۷. دوز محدود (Tic Tac Toe Limited)}
+\subsubsection{ساختار داده صف (Queue)}
+برای پیاده‌سازی قانون حذف مهره چهارم، از یک آرایه چرخشی برای هر بازیکن استفاده شده است. با ورود مهره جدید، قدیمی‌ترین اندیس از آرایه حذف می‌شود.
+
+\section{رابط کاربری (User Interface)}
+رابط کاربری با الهام از دستگاه‌های آرکید دهه ۸۰ طراحی شده است. استفاده از \texttt{iframe} برای ایزوله کردن منطق CGI از پوسته گرافیکی، باعث شده تا تجربه کاربری روان و بدون پرش صفحه (Full Page Reload) به نظر برسد.
+
+\section{جزئیات نمرات مازاد (Extra Features Summary)}
+در این پروژه، موارد زیر جهت کسب نمره مازاد به طور کامل پیاده‌سازی شده‌اند:
+\begin{itemize}
+    \item \textbf{شطرنج:} پیاده‌سازی تایمر معکوس با استفاده از JavaScript، سیستم ارتقای پیاده (Pawn Promotion) به هر ۴ مهره خاص، هایلایت گرافیکی تمام حرکات مجاز و تشخیص بن‌بست (Stalemate).
+    \item \textbf{چکرز:} هایلایت کردن مسیرهای حرکتی و پرشی و پیاده‌سازی سیستم پرش اجباری (Forced Jump).
+    \item \textbf{۲۰۴۸ فیبوناچی:} امکان انتخاب اندازه صفحه (۴، ۵ و ۶) توسط کاربر در منوی شروع.
+    \item \textbf{سنگ کاغذ قیچی:} طراحی هوش مصنوعی با استراتژی ضدحمله (Smart Bot) به جای انتخاب تصادفی.
+    \item \textbf{نبرد کلمات:} افزودن حریف بات (Bot) و لیست کلمات تصادفی.
+    \item \textbf{حدس عدد پیشرفته:} سطوح دشواری با تعداد تلاش متفاوت و به‌روزرسانی هوشمند بازه در حالت آسان برای ارائه راهنمایی دقیق.
+    \item \textbf{رابط کاربری:} طراحی پوسته کامل Arcade با افکت‌های CRT، سیستم پیمایش چرخشی (Carousel)، و استفاده از آیکون‌های Font Awesome برای مهره‌های شطرنج و چکرز.
+\end{itemize}
+
+
+\end{document}

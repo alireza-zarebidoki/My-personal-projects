@@ -1,14 +1,476 @@
+<!--
+    این فایل HTML اصلی پروژه بازی‌لند است که من خودم از صفر طراحی و پیاده‌سازی کردم.
+    هدفم این بوده که یک کابینت آرکید کلاسیک را به صورت وب شبیه‌سازی کنم.
+    تمام ساختار این صفحه بر اساس تجربه شخصی‌ام از بازی‌های قدیمی طراحی شده.
+    اگر بعداً این فایل را ویرایش کنم، باید مطمئن بشوم که ساختار کلی کابینت حفظ بماند.
+-->
 <!DOCTYPE html>
+<!-- زبان را فارسی و جهت را راست‌به‌چپ گذاشتم چون کل رابط فارسی است -->
 <html lang="fa" dir="rtl">
 <head>
+    <!-- متا تگ charset را UTF-8 گذاشتم تا فارسی درست نمایش داده شود -->
     <meta charset="UTF-8">
+    <!-- viewport را برای واکنش‌گرا بودن در موبایل تنظیم کردم -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcade | Alireza Zarebidoki</title>
+    <!-- آیکون سایت؛ اگر فایل logo.png نباشد مرورگر ۴۰۴ می‌دهد ولی مشکلی ایجاد نمی‌کند -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <!-- عنوان تب مرورگر را اینجا مشخص کردم تا حرفه‌ای به نظر برسد -->
+    <title>BAZI LAND | ARCADE SYSTEM</title>
+    <!-- فونت فارسی وزیرمتن را از CDN بارگذاری می‌کنم تا تایپوگرافی زیبا باشد -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <!-- کتابخانه Font Awesome برای آیکون‌های بازی‌ها و دکمه‌ها -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- فایل استایل اصلی من که همه ظاهر کابینت را کنترل می‌کند -->
     <link rel="stylesheet" href="style.css">
 </head>
+<!-- بادی اصلی صفحه؛ اینجا کل کابینت آرکید قرار می‌گیرد -->
 <body>
+    <!--
+        دکمه راهنما:
+        این دکمه را گوشه بالا سمت چپ گذاشتم تا کاربر همیشه بتواند به راهنمای کامل دسترسی داشته باشد.
+        وقتی روی این دکمه کلیک شود، یک مدال تمام‌صفحه با تب‌های مختلف باز می‌شود.
+        هدفم این بوده که اگر کسی نمی‌دانست چطور بازی کند، همه چیز را توضیح بدهم.
+        اگر این دکمه را حذف کنم، کاربرها ممکن است گیج شوند و ندانند قوانین بازی‌ها چیست.
+    -->
+    <button class="help-btn" id="help-btn" aria-label="راهنما">
+        <!-- علامت سوال داخل دکمه؛ نماد جهانی راهنما -->
+        <span class="help-icon">?</span>
+    </button>
+
+    <!--
+        نوار احراز هویت (Authentication Strip):
+        این نوار را در گوشه بالا سمت راست قرار دادم تا همیشه وضعیت ورود کاربر مشخص باشد.
+        شامل نام کاربر، دکمه حساب کاربری، دکمه ورود/خروج و دکمه پنل ادمین (فقط برای ادمین‌ها) است.
+        JavaScript بعداً این بخش را بر اساس session به‌روز می‌کند.
+        اگر کاربر وارد نشده باشد، به‌جای نام «مهمان» نشان داده می‌شود.
+        مهم: این نوار ثابت است و در تمام حالات صفحه قابل دسترسی می‌ماند.
+    -->
+    <div class="auth-strip">
+        <!-- pill نمایشگر نام و وضعیت کاربر -->
+        <div class="user-pill" id="user-pill">
+            <!-- آیکون کاربر؛ اگر online باشد سبز می‌شود -->
+            <i class="fas fa-user-circle"></i>
+            <!-- نام کاربری که از JS پر می‌شود؛ پیش‌فرض «مهمان» است -->
+            <span id="user-display">مهمان</span>
+        </div>
+        <!-- دکمه‌های عملیاتی -->
+        <div class="auth-actions">
+            <!-- دکمه حساب کاربری؛ وقتی کاربر لاگین کرده باشد پنل اطلاعات را نشان می‌دهد -->
+            <button class="auth-btn account-btn ghosty" id="account-btn">حساب کاربری</button>
+            <!-- دکمه پنل ادمین؛ فقط برای کاربرانی که role ادمین دارند نمایش داده می‌شود -->
+            <button class="auth-btn admin hidden" id="admin-btn">ادمین</button>
+            <!-- دکمه ورود؛ مدال ورود/ثبت‌نام را باز می‌کند -->
+            <button class="auth-btn" id="open-auth">ورود</button>
+            <!-- دکمه خروج؛ فقط وقتی لاگین کرده باشد نمایش داده می‌شود -->
+            <button class="auth-btn danger hidden" id="logout-btn">خروج</button>
+        </div>
+    </div>
+
+    <!-- این لایه راهنما رو برای خودم گذاشتم تا توضیحات بازی‌ها همیشه دم دست باشه -->
+    <div class="help-overlay hidden" id="help-overlay">
+        <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+
+            <div class="help-header">
+                <h3 id="help-title">
+                    <i class="fas fa-book-open"></i> راهنمای جامع بازی‌لند
+                </h3>
+                <button class="help-close" id="help-close" aria-label="بستن">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="help-tabs" id="help-tabs">
+                <button type="button" class="help-tab active" data-help-tab="overview">
+                    <i class="fas fa-info-circle"></i> کلیات
+                </button>
+                <button type="button" class="help-tab" data-help-tab="games">
+                    <i class="fas fa-gamepad"></i> بازی‌ها
+                </button>
+                <button type="button" class="help-tab" data-help-tab="about">
+                    <i class="fas fa-laptop-code"></i> سازنده
+                </button>
+                <button type="button" class="help-tab" data-help-tab="contact">
+                    <i class="fas fa-envelope"></i> ارتباط
+                </button>
+                <button type="button" class="help-tab" data-help-tab="credits">
+                    <i class="fas fa-heart"></i> تشکر
+                </button>
+            </div>
+
+            <div class="help-content">
+                <div class="help-pane active" data-help-pane="overview">
+                    <div style="background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05)); padding: 15px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.3); margin-bottom: 20px; text-align: center;">
+                        <h4 style="margin: 0; color: #fff; font-size: 1.4rem;">👋 به دنیای بازی‌لند خوش آمدید</h4>
+                        <p style="margin: 8px 0 0; color: #d1fae5; font-size: 0.9rem;">تلاقی نوستالژی آرکید دهه ۸۰ با قدرت زبان C</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin-bottom: 20px;">
+
+                        <div style="background: rgba(255,255,255,0.04); padding: 15px; border-radius: 12px; border-right: 3px solid #3498db;">
+                            <strong style="color: #3498db; display: block; margin-bottom: 8px;">
+                                <i class="fas fa-user-shield"></i> حساب کاربری
+                            </strong>
+                            <ul style="margin: 0; padding-right: 20px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                                <li><strong>مهمان:</strong> فقط تماشای منو (بدون بازی).</li>
+                                <li><strong>کاربر عضو:</strong> ثبت رکورد، ذخیره سکه و بازی.</li>
+                                <li><strong>ادمین:</strong> دسترسی به پنل مدیریت سکه‌ها.</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.04); padding: 15px; border-radius: 12px; border-right: 3px solid #f1c40f;">
+                            <strong style="color: #f1c40f; display: block; margin-bottom: 8px;">
+                                <i class="fas fa-coins"></i> اقتصاد بازی
+                            </strong>
+                            <ul style="margin: 0; padding-right: 20px; font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                                <li><strong>ورودی:</strong> کسر سکه هنگام شروع.</li>
+                                <li><strong>پیروزی:</strong> بازگشت <span style="color:#f1c40f">۲ برابر</span> هزینه ورودی.</li>
+                                <li><strong>باخت:</strong> از دست دادن سکه ورودی.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 10px;">
+                        <div style="text-align: center;">
+                            <span style="display:inline-block; background:#334155; padding:4px 8px; border-radius:4px; border-bottom:2px solid #1e293b; color:#fff; font-family:monospace;">►</span>
+                            <span style="display:inline-block; background:#334155; padding:4px 8px; border-radius:4px; border-bottom:2px solid #1e293b; color:#fff; font-family:monospace;">◄</span>
+                            <div style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">انتخاب</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <span style="display:inline-block; background:#10b981; padding:4px 12px; border-radius:4px; border-bottom:2px solid #059669; color:#fff; font-weight:bold; font-size:0.8rem;">ENTER</span>
+                            <div style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">شروع / تایید</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <span style="display:inline-block; background:#ef4444; padding:4px 12px; border-radius:4px; border-bottom:2px solid #b91c1c; color:#fff; font-weight:bold; font-size:0.8rem;">ESC</span>
+                            <div style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">خروج / منو</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-pane" data-help-pane="games">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin: 0;">لیست کامل بازی‌ها، قوانین اختصاصی و هزینه ورودی</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 10px; max-height: 400px; overflow-y: auto; padding-left: 5px; padding-right: 5px;">
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(59, 130, 246, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #60a5fa;">
+                                <i class="fas fa-chess-knight" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">شطرنج تغییریافته</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۱۵ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    شامل مهره‌های جدید: <b>Dragon</b> (ترکیب شاه و اسب)، <b>Thief</b> (فیل با پرش) و <b>Gryphon</b>. دارای تایمر ۱۰ دقیقه‌ای.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(239, 68, 68, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #f87171;">
+                                <i class="fas fa-chess-board" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">چکرز (Checkers)</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۱۰ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    با قانون سخت‌گیرانه <b>پرش اجباری</b> (Forced Jump). امکان ارتقاء به King یا Queen خاص در انتهای زمین.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(16, 185, 129, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #34d399;">
+                                <i class="fas fa-superscript" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">فیبوناچی 2048</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۸ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    ادغام کاشی‌ها بر اساس دنباله ریاضی فیبوناچی (۱، ۱، ۲، ۳، ۵...) به جای توان‌های ۲ معمولی.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(236, 72, 153, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #f472b6;">
+                                <i class="fas fa-skull-crossbones" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">نبرد کلمات</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۶ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    حدس کلمه قبل از اتمام ۶ جان. دارای حالت‌های بازی با ربات هوشمند یا دو نفره (PvP).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(168, 85, 247, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #c084fc;">
+                                <i class="fas fa-hand-spock" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">سنگ کاغذ قیچی (۵تایی)</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۵ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    قوانین پیشرفته شلدون با اضافه شدن <b>مارمولک</b> و <b>اسپاک</b>. بازی تا کسب ۳ امتیاز ادامه دارد.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(99, 102, 241, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #818cf8;">
+                                <i class="fas fa-border-all" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">دوز محدود (Limited)</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۴ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    هر بازیکن فقط ۳ مهره دارد. با گذاشتن مهره چهارم، قدیمی‌ترین مهره شما حذف می‌شود!
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px; align-items: start;">
+                            <div style="background: rgba(20, 184, 166, 0.1); width: 42px; height: 42px; min-width: 42px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #2dd4bf;">
+                                <i class="fas fa-question-circle" style="font-size: 1.2rem;"></i>
+                            </div>
+                            <div style="flex-grow: 1;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                    <strong style="color: #e2e8f0; font-size: 0.95rem;">حدس عدد پیشرفته</strong>
+                                    <span style="font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); color: #f59e0b; padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(245, 158, 11, 0.2);">۳ سکه</span>
+                                </div>
+                                <p style="margin: 0; color: #94a3b8; font-size: 0.8rem; line-height: 1.5;">
+                                    پیدا کردن عدد مخفی با راهنمایی‌های هوشمند (داغ/سرد، بزرگتر/کوچکتر) و سطوح دشواری مختلف.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+             <div class="help-pane" data-help-pane="about">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(16,185,129,0.4);">
+                        <i class="fas fa-laptop-code" style="font-size: 1.8rem; color: #fff;"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.2rem; color: #fff;">علیرضا زارع‌بیدکی</h4>
+                        <p style="margin: 4px 0 0; color: #10b981; font-size: 0.85rem;">دانشجوی علوم کامپیوتر | دانشگاه فردوسی مشهد</p>
+                    </div>
+                </div>
+
+                <div style="border-right: 2px solid rgba(255,255,255,0.1); padding-right: 15px; margin-bottom: 20px;">
+                    <strong style="color: #e2e8f0; display: block; margin-bottom: 8px;">🚀 داستان پروژه</strong>
+                    <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; text-align: justify;">
+                        هدف اصلی «بازی‌لند»، به چالش کشیدن مرزهای توسعه وب بود. در حالی که اکثر سایت‌ها از زبان‌های سطح بالا استفاده می‌کنند، مغز متفکر این پروژه (Backend) تماماً با زبان قدرتمند و سریع <strong>C</strong> نوشته شده است تا ثابت کند کدنویسی سطح پایین همچنان می‌تواند تجربه‌ای مدرن و جذاب خلق کند.
+                    </p>
+                </div>
+
+                <div>
+                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">جعبه ابزار من:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;">C Language</span>
+                        <span style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;">CGI Standard</span>
+                        <span style="background: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;">HTML5 / CSS3</span>
+                        <span style="background: rgba(236, 72, 153, 0.1); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;">Vanilla JS</span>
+                    </div>
+                </div>
+            </div>
+
+                <div class="help-pane" data-help-pane="contact">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <p style="color: #cbd5e1;">توسعه بازی‌لند یک فرآیند مداوم است. برای گزارش باگ یا پیشنهاد ایده، در تماس باشید:</p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+
+                        <a href="mailto:alireza@zarebidoki.com" style="text-decoration: none;">
+                            <div style="background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); padding: 15px; border-radius: 10px; display: flex; align-items: center; gap: 15px; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.05);">
+                                <div style="width: 40px; height: 40px; background: rgba(239, 68, 68, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-envelope" style="color: #f87171; font-size: 1.2rem;"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #e2e8f0; display: block;">ارسال ایمیل</strong>
+                                    <span style="color: #94a3b8; font-size: 0.85rem;">alireza@zarebidoki.com</span>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="https://github.com/alireza-zarebidoki" target="_blank" style="text-decoration: none;">
+                            <div style="background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent); padding: 15px; border-radius: 10px; display: flex; align-items: center; gap: 15px; transition: transform 0.2s; border: 1px solid rgba(255,255,255,0.05);">
+                                <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fab fa-github" style="color: #fff; font-size: 1.4rem;"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: #e2e8f0; display: block;">گیت‌هاب</strong>
+                                    <span style="color: #94a3b8; font-size: 0.85rem;">مشاهده سورس کد پروژه</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="help-pane" data-help-pane="credits">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h4 style="font-size: 1.5rem; margin-bottom: 5px; color: #fff;">❤️ تالار افتخارات</h4>
+                        <p style="font-size: 0.9rem; color: #94a3b8; margin: 0;">تقدیم به همه کسانی که در خلق این اثر سهیم بودند</p>
+                    </div>
+
+                    <div style="background: linear-gradient(90deg, rgba(16,185,129,0.15), transparent); padding: 12px 16px; border-radius: 12px; border-right: 4px solid #10b981; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                            <i class="fas fa-chalkboard-teacher" style="color: #10b981; font-size: 1.2rem;"></i>
+                            <strong style="color: #e2e8f0; font-size: 1.1rem;">استاد محترم</strong>
+                        </div>
+                        <p style="margin: 0; color: #cbd5e1; font-size: 0.95rem;">
+                            با تشکر ویژه از جناب آقای <strong>دکتر محمد امین طوسی</strong> که با راهنمایی‌های ارزشمند و دانش عمیق‌شان، مسیر پیاده‌سازی این پروژه را روشن کردند.
+                        </p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px;">
+                            <strong style="color: #f1c40f; display: block; margin-bottom: 5px; font-size: 0.95rem;">
+                                <i class="fas fa-user-graduate"></i> دستیاران آموزشی
+                            </strong>
+                            <p style="font-size: 0.85rem; margin: 0; color: #94a3b8; line-height: 1.5;">
+                                سپاس از منتورها و دستیاران محترم که در رفع چالش‌های فنی همراهم بودند.
+                            </p>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 10px;">
+                            <strong style="color: #3498db; display: block; margin-bottom: 5px; font-size: 0.95rem;">
+                                <i class="fas fa-bug"></i> دیباگ و تست
+                            </strong>
+                            <p style="font-size: 0.85rem; margin: 0; color: #94a3b8; line-height: 1.5;">
+                                قدردانی از تمام دوستانی که در فرایند دیباگ، طراحی و تست نهایی یاری‌ام کردند.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px;">
+                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">قدرت گرفته از ابزارهای متن‌باز:</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span style="background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fab fa-cuttlefish"></i> C Logic
+                            </span>
+                            <span style="background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fas fa-server"></i> Python CGI
+                            </span>
+                            <span style="background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fas fa-atom"></i> Particles.js
+                            </span>
+                            <span style="background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1);">
+                                <i class="fas fa-font"></i> Vazirmatn
+                            </span>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                        <p style="margin: 0; font-weight: bold; color: #e2e8f0;">و تشکر نهایی از <span style="color: #e74c3c;">شما</span> برای بازی کردن! 🎮</p>
+                        <small style="color: #64748b; display: block; margin-top: 5px;">ساخته شده با ❤️ در خوابگاه دانشجویی | ۱۴۰۴</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="account-panel hidden" id="account-panel">
+        <div class="account-row">
+            <span class="label">نام کاربری</span>
+            <span class="value" id="panel-username">-</span>
+        </div>
+        <div class="account-row">
+            <span class="label">نقش</span>
+            <span class="value" id="panel-role">-</span>
+        </div>
+        <div class="account-row">
+            <span class="label">سکه‌ها</span>
+            <span class="value" id="panel-coins">0</span>
+        </div>
+        <div class="account-actions">
+            <button class="auth-btn admin hidden" id="account-admin-btn">پنل ادمین</button>
+            <button class="auth-btn danger" id="account-logout-btn">خروج از حساب</button>
+        </div>
+    </div>
+
+    <div class="admin-overlay hidden" id="admin-overlay">
+        <div class="admin-card">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">پنل ادمین</div>
+                    <div class="admin-sub">مدیریت کاربران و سکه‌ها</div>
+                </div>
+                <button class="auth-btn danger" id="admin-close">بستن</button>
+            </div>
+
+            <div class="admin-section">
+                <div class="section-title">کاربران</div>
+                <div class="admin-table" id="admin-users"></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="section-title">افزودن سکه</div>
+                <form id="admin-coin-form" class="admin-form">
+                    <select id="admin-user-select" required></select>
+                    <input id="admin-coin-amount" type="number" min="1" placeholder="مقدار سکه" required>
+                    <button type="submit" class="auth-btn">افزودن</button>
+                </form>
+                <div class="admin-feedback" id="admin-feedback"></div>
+            </div>
+
+            <div class="admin-section">
+                <div class="section-title">لاگ تغییرات</div>
+                <div class="admin-logs" id="admin-logs"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-overlay hidden" id="auth-overlay">
+        <div class="auth-card">
+            <button class="auth-close" id="close-auth" type="button" aria-label="بستن">&times;</button>
+            <div class="auth-card-header">
+                <h3>ورد به بازی لند</h3>
+                <p>برای شروع بازی، وارد شوید یا حساب بسازید.</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="tab-btn active" type="button" data-tab="login">ورود</button>
+                <button class="tab-btn" type="button" data-tab="register">ثبت‌نام</button>
+            </div>
+
+            <form id="login-form" class="auth-form active">
+                <label for="login-username">نام کاربری</label>
+                <input id="login-username" type="text" name="username" autocomplete="username" placeholder="player01" required>
+                <label for="login-password">رمز عبور</label>
+                <input id="login-password" type="password" name="password" autocomplete="current-password" placeholder="••••••" required>
+                <button type="submit" class="primary">ورود</button>
+                <div class="form-hint">حساب ندارید؟ روی ثبت‌نام بزنید.</div>
+            </form>
+
+            <form id="register-form" class="auth-form">
+                <label for="reg-username">نام کاربری</label>
+                <input id="reg-username" type="text" name="username" autocomplete="username" placeholder="player01" minlength="3" maxlength="24" required>
+                <label for="reg-password">رمز عبور</label>
+                <input id="reg-password" type="password" name="password" autocomplete="new-password" placeholder="حداقل ۶ کاراکتر" minlength="6" required>
+                <button type="submit" class="primary">ثبت‌نام</button>
+            </form>
+
+            <div class="auth-feedback" id="auth-feedback"></div>
+        </div>
+    </div>
 
     <div id="particles-js"></div>
 
@@ -16,7 +478,7 @@
         <div class="cabinet-body">
             <div class="marquee">
                 <div class="marquee-content">
-                    <span class="brand-name">ZAREBIDOKI</span>
+                    <span class="brand-name">BAZI LAND</span>
                     <span class="brand-sub">ARCADE SYSTEM</span>
                 </div>
                 <div class="screws">
@@ -33,34 +495,45 @@
                         <div class="menu-overlay">
                             <h2 class="blink-text">INSERT COIN / SELECT GAME</h2>
                             <div class="game-carousel">
-                                <div class="game-item" data-url="chess_modified.cgi">
+                                <div class="game-item" data-url="chess_modified.cgi" data-price="15">
                                     <i class="fas fa-chess-knight"></i>
                                     <h3>شطرنج</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۱۵ سکه</span></div>
                                 </div>
 
-                                <div class="game-item" data-url="rps_5move.cgi">
+                                <div class="game-item" data-url="rps_5move.cgi" data-price="5">
                                     <i class="fas fa-hand-spock"></i>
                                     <h3>سنگ کاغذ قیچی</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۵ سکه</span></div>
                                 </div>
 
-                                <div class="game-item" data-url="tictactoe_limited.cgi">
+                                <div class="game-item" data-url="tictactoe_limited.cgi" data-price="4">
                                     <i class="fas fa-th"></i>
                                     <h3>دوز محدود</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۴ سکه</span></div>
                                 </div>
 
-                                <div class="game-item" data-url="hangman_battle.cgi">
+                                <div class="game-item" data-url="hangman_battle.cgi" data-price="6">
                                     <i class="fas fa-skull-crossbones"></i>
                                     <h3>نبرد کلمات</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۶ سکه</span></div>
                                 </div>
 
-                                <div class="game-item" data-url="fibonacci_2048.cgi">
+                                <div class="game-item" data-url="fibonacci_2048.cgi" data-price="8">
                                     <i class="fas fa-superscript"></i>
                                     <h3>فیبوناچی 2048</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۸ سکه</span></div>
                                 </div>
 
-                                <div class="game-item" data-url="checkers.cgi">
+                                <div class="game-item" data-url="checkers.cgi" data-price="10">
                                     <i class="fas fa-chess-board"></i>
                                     <h3>چکرز</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۱۰ سکه</span></div>
+                                </div>
+                                <div class="game-item" data-url="guess_number.cgi" data-price="3">
+                                    <i class="fas fa-question-circle"></i>
+                                    <h3>حدس عدد</h3>
+                                    <div class="price-tag"><span class="coin-icon price-coin"></span><span class="price-value">۳ سکه</span></div>
                                 </div>
                             </div>
 
@@ -69,7 +542,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="brand-logo">Mini Arcade</div>
+                <div class="brand-logo">Made in Dormitory</div>
             </div>
 
 
@@ -79,6 +552,11 @@
                     <div class="joystick-base"></div>
                     <div class="joystick-stick"></div>
                     <div class="joystick-ball"></div>
+                </div>
+
+                <div class="coin-hud">
+                    <div class="coin-icon-lg"></div>
+                    <div class="coin-amount" id="coin-amount">۰</div>
                 </div>
 
                 <div class="buttons-area">
@@ -99,6 +577,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script defer src="auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

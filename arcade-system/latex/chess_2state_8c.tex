@@ -1,0 +1,325 @@
+\doxysection{src/games/chess/state.c File Reference}
+\hypertarget{chess_2state_8c}{}\label{chess_2state_8c}\index{src/games/chess/state.c@{src/games/chess/state.c}}
+
+
+Game state management and persistence for chess.  
+
+
+{\ttfamily \#include "{}chess.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{chess_2state_8c_a76150235971830781b5e01eb085e122e}{init\+\_\+board}} (\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}game)
+\item 
+void \mbox{\hyperlink{chess_2state_8c_a07f390da18f683a5eaf16318e052c3ab}{update\+\_\+king\+\_\+positions}} (\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}game)
+\item 
+void \mbox{\hyperlink{chess_2state_8c_a0af2925ed0377c4dfc01f590449c9e6a}{serialize\+\_\+state}} (\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}game, char \texorpdfstring{$\ast$}{*}buffer)
+\item 
+void \mbox{\hyperlink{chess_2state_8c_a6010e11d7fcb8129a132018eff68497c}{deserialize\+\_\+state}} (const char \texorpdfstring{$\ast$}{*}buffer, \mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}game)
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{chess_2state_8c_ad00d20ce361fb663e4aead2330570107}{piece\+\_\+to\+\_\+unicode}} (\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021}{Piece\+Type}} type, \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}} color)
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{chess_2state_8c_a61b8ba6b58e28c7bad5c3ba1725f278f}{piece\+\_\+name}} (\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021}{Piece\+Type}} type)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Game state management and persistence for chess. 
+
+@project arcade-\/system \begin{DoxyAuthor}{Author}
+Alireza Zarebidoki @date\+\_\+modified 2025-\/12-\/25 
+\end{DoxyAuthor}
+EN\+: Handles initialization of chess board with custom pieces, serialization of game state to URL-\/safe strings, and deserialization from parameters. Manages piece positioning, turn tracking, king location updates, and time management for both players.
+
+FA\+: مدیریت آغاز صفحه شطرنج با مهره‌های سفارشی، سریال‌سازی وضعیت بازی به رشته‌های ایمن برای URL، و برعکس‌سازی از پارامترها. مدیریت موقعیت مهره، تعقب نوبت‌ها، به‌روزرسانی موقعیت شاه، و مدیریت زمان برای هر دو بازیکن.
+
+@responsibilities
+\begin{DoxyItemize}
+\item Initialize game board with standard chess setup (modified pieces)
+\item Place custom pieces (Dragon, Thief, Gryphon) in correct positions
+\item Serialize \doxylink{structGameState}{Game\+State} to compact string format
+\item Deserialize URL parameters back to \doxylink{structGameState}{Game\+State}
+\item Track king positions for check detection
+\item Manage elapsed time for each player
+\item Reset game state for new games
+\end{DoxyItemize}
+
+@interactions
+\begin{DoxyItemize}
+\item Called by\+: main.\+c (board initialization and updates)
+\item Uses\+: \doxylink{structGameState}{Game\+State} structure from \doxylink{chess_8h}{chess.\+h}
+\end{DoxyItemize}
+
+@notes
+\begin{DoxyItemize}
+\item Board is 8x8 standard chess layout
+\item Custom pieces positioned same as standard equivalents
+\item State format\+: compact URL-\/safe encoding for HTTP transmission
+\item King positions automatically updated after moves 
+\end{DoxyItemize}
+
+Definition in file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{chess_2state_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{chess_2state_8c_a6010e11d7fcb8129a132018eff68497c}\index{state.c@{state.c}!deserialize\_state@{deserialize\_state}}
+\index{deserialize\_state@{deserialize\_state}!state.c@{state.c}}
+\doxysubsubsection{\texorpdfstring{deserialize\_state()}{deserialize\_state()}}
+{\footnotesize\ttfamily \label{chess_2state_8c_a6010e11d7fcb8129a132018eff68497c} 
+void deserialize\+\_\+state (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{buffer}{, }\item[{\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}}]{game}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{chess_2state_8c_source_l00134}{134}} of file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (!buffer\ ||\ strlen(buffer)\ <\ 128)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{chess_2state_8c_a76150235971830781b5e01eb085e122e}{init\_board}}(game);}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00138\ \ \ \ \ \}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keywordtype}{char}\ temp[2048];}
+\DoxyCodeLine{00141\ \ \ \ \ strncpy(temp,\ buffer,\ \textcolor{keyword}{sizeof}(temp)\ -\/\ 1);}
+\DoxyCodeLine{00142\ \ \ \ \ temp[\textcolor{keyword}{sizeof}(temp)\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{comment}{//\ پارس\ کردن\ داده‌ها}}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordtype}{char}\ *tok\ =\ strtok(temp,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{if}\ (!tok)\ \{\ \mbox{\hyperlink{chess_2state_8c_a76150235971830781b5e01eb085e122e}{init\_board}}(game);\ \textcolor{keywordflow}{return};\ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ بازسازی\ صفحه}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordtype}{int}\ idx\ =\ 0;}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ +\ 1\ <\ (\textcolor{keywordtype}{int})strlen(tok))\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_ab8f29312ab7939c96ff03f1fb8957d1c}{type}}\ =\ tok[idx]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_a4cf5b29a9e13dcb93b616b11160c2abc}{color}}\ =\ tok[idx\ +\ 1]\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ idx\ +=\ 2;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{comment}{//\ بازسازی\ بقیه\ داده‌ها}}
+\DoxyCodeLine{00161\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00162\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a7176b8ef28259c9fcacbac406f37687d}{current\_turn}}\ =\ tok\ ?\ atoi(tok)\ :\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00165\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6f31e4826481bce8520025a49f275ac2}{selected\_row}}\ =\ tok\ ?\ atoi(tok)\ :\ -\/1;}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00168\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_af5d1f0ef581dcfa5e1dd4aa4d2fb13de}{selected\_col}}\ =\ tok\ ?\ atoi(tok)\ :\ -\/1;}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00171\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a340dd7c1cbd982b4ea34707e8fa2a863}{game\_over}}\ =\ tok\ ?\ atoi(tok)\ :\ 0;}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00174\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a518d527c05b6a466b35c8f2b4af78962}{white\_time}}\ =\ tok\ ?\ atoi(tok)\ :\ 600;}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00177\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_ace40dd35ba25b1e50a30c33af5973576}{black\_time}}\ =\ tok\ ?\ atoi(tok)\ :\ 600;}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \ \ tok\ =\ strtok(NULL,\ \textcolor{stringliteral}{"{}|"{}});}
+\DoxyCodeLine{00180\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a2cb9f4b5cb3e3381c51941d69435d519}{last\_move\_time}}\ =\ tok\ ?\ atol(tok)\ :\ time(NULL);}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \ \ \mbox{\hyperlink{chess_2state_8c_a07f390da18f683a5eaf16318e052c3ab}{update\_king\_positions}}(game);}
+\DoxyCodeLine{00183\ \}}
+
+\end{DoxyCode}
+\Hypertarget{chess_2state_8c_a76150235971830781b5e01eb085e122e}\index{state.c@{state.c}!init\_board@{init\_board}}
+\index{init\_board@{init\_board}!state.c@{state.c}}
+\doxysubsubsection{\texorpdfstring{init\_board()}{init\_board()}}
+{\footnotesize\ttfamily \label{chess_2state_8c_a76150235971830781b5e01eb085e122e} 
+void init\+\_\+board (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}}]{game}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{chess_2state_8c_source_l00042}{42}} of file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{comment}{//\ خالی\ کردن\ صفحه}}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_ab8f29312ab7939c96ff03f1fb8957d1c}{type}}\ =\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a2f0d18fc0d0fa4a6cd92dc328501874d}{EMPTY}};}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_a4cf5b29a9e13dcb93b616b11160c2abc}{color}}\ =\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}};}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{comment}{//\ ردیف\ اول\ سیاه\ (مهره‌های\ سنگین)}}
+\DoxyCodeLine{00051\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][0]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};\ \ \textcolor{comment}{//\ جایگزین\ رخ}}
+\DoxyCodeLine{00052\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][1]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};\ \ \ \textcolor{comment}{//\ جایگزین\ اسب}}
+\DoxyCodeLine{00053\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][2]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};\ \ \ \ \textcolor{comment}{//\ جایگزین\ فیل}}
+\DoxyCodeLine{00054\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][3]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};}
+\DoxyCodeLine{00055\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][4]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};}
+\DoxyCodeLine{00056\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][5]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};}
+\DoxyCodeLine{00057\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][6]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};}
+\DoxyCodeLine{00058\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[0][7]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//\ ردیف\ دوم\ سیاه\ (پیاده‌ها)}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[1][j]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a1f189a15a64c7c4a1553e876b56c6bf2}{PAWN}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1caf77fb67151d0c18d397069ad8c271ba3}{BLACK}}\};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{comment}{//\ ردیف\ هفتم\ سفید\ (پیاده‌ها)}}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[6][j]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a1f189a15a64c7c4a1553e876b56c6bf2}{PAWN}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//\ ردیف\ هشتم\ سفید\ (مهره‌های\ سنگین)}}
+\DoxyCodeLine{00069\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][0]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00070\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][1]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00071\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][2]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00072\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][3]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00073\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][4]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00074\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][5]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00075\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][6]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00076\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[7][7]\ =\ (\mbox{\hyperlink{structPiece}{Piece}})\{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}},\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}}\};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a7176b8ef28259c9fcacbac406f37687d}{current\_turn}}\ =\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}};}
+\DoxyCodeLine{00079\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6f31e4826481bce8520025a49f275ac2}{selected\_row}}\ =\ -\/1;}
+\DoxyCodeLine{00080\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_af5d1f0ef581dcfa5e1dd4aa4d2fb13de}{selected\_col}}\ =\ -\/1;}
+\DoxyCodeLine{00081\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a518d527c05b6a466b35c8f2b4af78962}{white\_time}}\ =\ 600;\ \ \textcolor{comment}{//\ 10\ دقیقه\ (600\ ثانیه)}}
+\DoxyCodeLine{00082\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_ace40dd35ba25b1e50a30c33af5973576}{black\_time}}\ =\ 600;\ \ \textcolor{comment}{//\ 10\ دقیقه\ (600\ ثانیه)}}
+\DoxyCodeLine{00083\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a2cb9f4b5cb3e3381c51941d69435d519}{last\_move\_time}}\ =\ time(NULL);}
+\DoxyCodeLine{00084\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a340dd7c1cbd982b4ea34707e8fa2a863}{game\_over}}\ =\ 0;}
+\DoxyCodeLine{00085\ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a021507a49abdb3bcaf0eedeedda83398}{winner}}\ =\ 0;}
+\DoxyCodeLine{00086\ \ \ \ \ strcpy(game-\/>\mbox{\hyperlink{structGameState_ad14389c9601f58de110c576a50a09717}{message}},\ \textcolor{stringliteral}{"{}نوبت\ سفید"{}});}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{chess_2state_8c_a07f390da18f683a5eaf16318e052c3ab}{update\_king\_positions}}(game);}
+\DoxyCodeLine{00089\ \}}
+
+\end{DoxyCode}
+\Hypertarget{chess_2state_8c_a61b8ba6b58e28c7bad5c3ba1725f278f}\index{state.c@{state.c}!piece\_name@{piece\_name}}
+\index{piece\_name@{piece\_name}!state.c@{state.c}}
+\doxysubsubsection{\texorpdfstring{piece\_name()}{piece\_name()}}
+{\footnotesize\ttfamily \label{chess_2state_8c_a61b8ba6b58e28c7bad5c3ba1725f278f} 
+const char \texorpdfstring{$\ast$}{*} piece\+\_\+name (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021}{Piece\+Type}}}]{type}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{chess_2state_8c_source_l00215}{215}} of file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{switch}(type)\ \{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a1f189a15a64c7c4a1553e876b56c6bf2}{PAWN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}سرباز"{}};}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}اژدها"{}};}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}دزد"{}};}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}گریفون"{}};}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}وزیر"{}};}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}شاه"{}};}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ \}}
+
+\end{DoxyCode}
+\Hypertarget{chess_2state_8c_ad00d20ce361fb663e4aead2330570107}\index{state.c@{state.c}!piece\_to\_unicode@{piece\_to\_unicode}}
+\index{piece\_to\_unicode@{piece\_to\_unicode}!state.c@{state.c}}
+\doxysubsubsection{\texorpdfstring{piece\_to\_unicode()}{piece\_to\_unicode()}}
+{\footnotesize\ttfamily \label{chess_2state_8c_ad00d20ce361fb663e4aead2330570107} 
+const char \texorpdfstring{$\ast$}{*} piece\+\_\+to\+\_\+unicode (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021}{Piece\+Type}}}]{type}{, }\item[{\mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1c}{Color}}}]{color}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{chess_2state_8c_source_l00186}{186}} of file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{if}\ (type\ ==\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a2f0d18fc0d0fa4a6cd92dc328501874d}{EMPTY}})\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{comment}{//\ یونیکد\ مهره‌های\ سفید}}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{if}\ (color\ ==\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}})\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(type)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a1f189a15a64c7c4a1553e876b56c6bf2}{PAWN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♙"{}};}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🐉"{}};\ \ \textcolor{comment}{//\ به\ جای\ اسب}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🥷"{}};\ \ \ \textcolor{comment}{//\ به\ جای\ فیل}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🦅"{}};\ \textcolor{comment}{//\ به\ جای\ رخ}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♕"{}};}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♔"{}};}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}?"{}};}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00200\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ یونیکد\ مهره‌های\ سیاه}}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(type)\ \{}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a1f189a15a64c7c4a1553e876b56c6bf2}{PAWN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♟"{}};}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a715823e7de6bbbbdd0de7fe00a9c05d6}{DRAGON}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🐲"{}};}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a15890702f0b84f34bd4a69a9dac603f8}{THIEF}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🦹"{}};}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a95a70f6229530775abcd732c701bebde}{GRYPHON}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}🦜"{}};}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a58561257be7e2f96f82c0fdb51d7f964}{QUEEN}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♛"{}};}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}♚"{}};}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}?"{}};}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \}}
+
+\end{DoxyCode}
+\Hypertarget{chess_2state_8c_a0af2925ed0377c4dfc01f590449c9e6a}\index{state.c@{state.c}!serialize\_state@{serialize\_state}}
+\index{serialize\_state@{serialize\_state}!state.c@{state.c}}
+\doxysubsubsection{\texorpdfstring{serialize\_state()}{serialize\_state()}}
+{\footnotesize\ttfamily \label{chess_2state_8c_a0af2925ed0377c4dfc01f590449c9e6a} 
+void serialize\+\_\+state (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}}]{game}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{buffer}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{chess_2state_8c_source_l00109}{109}} of file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keywordtype}{char}\ temp[2048]\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{comment}{//\ ذخیره\ صفحه\ (64\ خانه،\ هر\ کدام\ 2\ رقم:\ نوع\ مهره\ +\ رنگ)}}
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ cell[4];}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ sprintf(cell,\ \textcolor{stringliteral}{"{}\%d\%d"{}},\ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_ab8f29312ab7939c96ff03f1fb8957d1c}{type}},}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_ab8f29312ab7939c96ff03f1fb8957d1c}{type}}\ ==\ \mbox{\hyperlink{chess_8h_a12ed9719bbdf7bc596ff7a6f4bf3f021a2f0d18fc0d0fa4a6cd92dc328501874d}{EMPTY}}\ ?\ 0\ :\ game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_a4cf5b29a9e13dcb93b616b11160c2abc}{color}});}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ strcat(temp,\ cell);}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \ \ sprintf(buffer,\ \textcolor{stringliteral}{"{}\%s|\%d|\%d|\%d|\%d|\%d|\%d|\%ld"{}},}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ temp,}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a7176b8ef28259c9fcacbac406f37687d}{current\_turn}},}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a6f31e4826481bce8520025a49f275ac2}{selected\_row}},}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_af5d1f0ef581dcfa5e1dd4aa4d2fb13de}{selected\_col}},}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a340dd7c1cbd982b4ea34707e8fa2a863}{game\_over}},}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a518d527c05b6a466b35c8f2b4af78962}{white\_time}},}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_ace40dd35ba25b1e50a30c33af5973576}{black\_time}},}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_a2cb9f4b5cb3e3381c51941d69435d519}{last\_move\_time}});}
+\DoxyCodeLine{00131\ \}}
+
+\end{DoxyCode}
+\Hypertarget{chess_2state_8c_a07f390da18f683a5eaf16318e052c3ab}\index{state.c@{state.c}!update\_king\_positions@{update\_king\_positions}}
+\index{update\_king\_positions@{update\_king\_positions}!state.c@{state.c}}
+\doxysubsubsection{\texorpdfstring{update\_king\_positions()}{update\_king\_positions()}}
+{\footnotesize\ttfamily \label{chess_2state_8c_a07f390da18f683a5eaf16318e052c3ab} 
+void update\+\_\+king\+\_\+positions (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGameState}{Game\+State}} \texorpdfstring{$\ast$}{*}}]{game}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{chess_2state_8c_source_l00092}{92}} of file \mbox{\hyperlink{chess_2state_8c_source}{state.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 8;\ i++)\ \{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 8;\ j++)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_ab8f29312ab7939c96ff03f1fb8957d1c}{type}}\ ==\ \mbox{\hyperlink{checkers_8h_a2f6d1f2934d9b4c806eae735982ba2f5a157524408d6f0fc4b7dc5e52f3dd3b80}{KING}})\ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (game-\/>\mbox{\hyperlink{structGameState_a6fc7e16ad9ecf1314811d72ca132e722}{board}}[i][j].\mbox{\hyperlink{structPiece_a4cf5b29a9e13dcb93b616b11160c2abc}{color}}\ ==\ \mbox{\hyperlink{chess_8h_ab87bacfdad76e61b9412d7124be44c1ca283fc479650da98250635b9c3c0e7e50}{WHITE}})\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_aae1c3fa2d7a2a0f3b8be186f65878641}{white\_king\_pos}}[0]\ =\ i;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_aae1c3fa2d7a2a0f3b8be186f65878641}{white\_king\_pos}}[1]\ =\ j;}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_ae6ac34b157e5b14a98c2a26191dd5ac4}{black\_king\_pos}}[0]\ =\ i;}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ game-\/>\mbox{\hyperlink{structGameState_ae6ac34b157e5b14a98c2a26191dd5ac4}{black\_king\_pos}}[1]\ =\ j;}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \}}
+
+\end{DoxyCode}
