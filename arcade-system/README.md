@@ -2,6 +2,8 @@
 
 > **English Summary**: A web-based retro arcade system with 7 games (guess number, tic-tac-toe, rock-paper-scissors-lizard-spock, hangman, fibonacci 2048, chess, checkers), built with C CGI backend, vanilla JavaScript frontend, and a coin-based authentication system. Features a nostalgic neon green theme simulating a classic arcade cabinet.
 
+🌐 **Live Demo**: [https://baziland.zarebidoki.com/](https://baziland.zarebidoki.com/)
+
 ---
 
 ## 📋 فهرست مطالب
