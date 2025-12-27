@@ -342,9 +342,9 @@ int main() {
         printf("<div style='margin-top:15px;text-align:center;'>");
 
         printf("<button name='dir' value='0'%s>⬆️ بالا</button><br>", game_over ? " class='disabled' disabled" : "");
-        printf("<button name='dir' value='3' style='margin:0 5px;'%s>⬅️ چپ</button>", game_over ? " class='disabled' disabled" : "");
+        printf("<button name='dir' value='3' style='margin:0 5px;'%s>➡️ راست</button>", game_over ? " class='disabled' disabled" : "");
         printf("<button name='dir' value='2'%s>⬇️ پایین</button>", game_over ? " class='disabled' disabled" : "");
-        printf("<button name='dir' value='1' style='margin:0 5px;'%s>➡️ راست</button>", game_over ? " class='disabled' disabled" : "");
+        printf("<button name='dir' value='1' style='margin:0 5px;'%s>⬅️ چپ</button>", game_over ? " class='disabled' disabled" : "");
 
         printf("</div>");
         printf("</form>");
