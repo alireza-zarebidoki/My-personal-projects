@@ -3,6 +3,7 @@
 این مستند توضیحات کاملی درباره بخش Frontend سیستم آرکید (HTML، CSS، JavaScript) ارائه می‌دهد.
 
 🌐 **نسخه زنده**: [https://baziland.zarebidoki.com/](https://baziland.zarebidoki.com/)
+**Current Version:** 1.2.0 — Chess rule enforcement fixes (Rook و Gryphon) و بهبود پایداری اعتبارسنجی/هایلایت حرکت.
 
 ---
 

@@ -1,3 +1,42 @@
+/**
+ * @file auth.js
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Client-side authentication and session management module.
+ *
+ * @details
+ * این ماژول را من از صفر نوشتم تا تمام عملیات احراز هویت سمت کلاینت را
+ * مدیریت کند. این یک IIFE (Immediately Invoked Function Expression) است
+ * که interface عمومی Auth را export می‌کند.
+ *
+ * چرا IIFE:
+ * - می‌خواهم متغیرهای داخلی (مثل cachedSession) private باشند
+ * - فقط توابع مورد نیاز را expose می‌کنم
+ * - از global namespace pollution جلوگیری می‌کنم
+ *
+ * @responsibilities
+ * - ثبت‌نام کاربران جدید (register) و مدیریت اطلاعات کاربری
+ * - ورود و خروج (login/logout) با مدیریت token
+ * - نگهداری و به‌روزرسانی session در حافظه محلی (localStorage)
+ * - مدیریت سکه‌ها (getCoinBalance، subtractCoin، rewardWin)
+ * - توابع ادمین (لیست کاربران، تغییر نقش، اضافه کردن سکه)
+ * - مدیریت لاگ‌های ادمین و نظارت بر فعالیت‌ها
+ *
+ * @interactions
+ * - تمام درخواست‌ها به /cgi-bin/auth_api.cgi می‌روند
+ * - از JSON برای انتقال داده استفاده می‌کنم
+ * - token در localStorage ذخیره می‌شود
+ * - session در حافظه cache می‌شود برای سرعت بیشتر
+ * - وابستگی‌ها: auth_api.cgi در سرور و localStorage API مرورگر
+ *
+ * @notes
+ * - تغییرات در session structure باید اینجا و در auth_api.cgi همگام باشند
+ * - token expiration در سرور مدیریت می‌شود، نه اینجا
+ * - همیشه error handling را در نظر بگیرم
+ */
+
 /*
  * ═══════════════════════════════════════════════════════════════════════════
  *                         ماژول احراز هویت Arcade System

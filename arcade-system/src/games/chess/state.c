@@ -1,3 +1,33 @@
+/**
+ * @file src/games/chess/state.c
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Chess game state initialization and serialization for URL-based transfer.
+ *
+ * @details
+ * این فایل وضعیت شطرنج را مقداردهی اولیه می‌کند و برای تبادل در URL سریال‌سازی می‌کند.
+ * تمام عملیات مربوط به مقداردهی صفحه، کدگذاری/بازکدگذاری state، و تغییر موقعیت مهره‌ها اینجاست.
+ *
+ * @responsibilities
+ * - مقداردهی اولیه صفحه شطرنج با چیدمان سفارشی (Dragon/Thief/Gryphon)
+ * - سریال‌سازی state کامل بازی به رشته برای URL
+ * - بازکدگذاری state از رشته URL
+ * - حفظ موقعیت شاه‌ها برای بررسی کیش
+ * - مدیریت نوبت بازی
+ *
+ * @interactions
+ * - استفاده از chess.h برای تعریف‌های داده‌ای
+ * - فراخوانی توسط main.c برای مقداردهی و رندر
+ * - ارسال state برای logic.c برای بررسی صحت حرکات
+ *
+ * @notes
+ * - صفحه با مهره‌های سفارشی مقداردهی می‌شود نه مهره‌های استاندارد
+ * - موقعیت شاه‌های سفید و سیاه نگهداری می‌شود برای کیش
+ * - state کامل به صورت رشته برای URL منتقل می‌شود
+ */
+
 // وضعیت شطرنج را اینجا مقداردهی و برای تبادل در URL سریال‌سازی می‌کنم
 
 #include "chess.h"

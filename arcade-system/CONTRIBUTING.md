@@ -549,7 +549,7 @@ gcc -Wall -Wextra -fsyntax-only src/games/game.c
 
 - **GitHub Issues**: برای باگ و فیچر
 - **Discussions**: برای سوالات عمومی
-- **Email**: (در صورت نیاز)
+- **Email**: alireza@zarebidoki.com
 
 ---
 

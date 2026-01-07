@@ -36,7 +36,7 @@ void init_checkers_board(CheckersState *game) {
     game->multi_jump = 0;
     game->game_over = 0;
     game->winner = 0;
-    strcpy(game->message, "نوبت قرمز");
+    strcpy(game->message, "نوبت سفید");
 }
 
 // تبدیل وضعیت به رشته فشرده برای URL
@@ -122,16 +122,16 @@ const char* checker_to_unicode(CheckerType type, CheckerColor color) {
 
     if (color == RED) {
         switch(type) {
-            case MAN: return "🔴";
-            case KING: return "👑"; // King قرمز
-            case QUEEN: return "💎"; // Queen قرمز
+            case MAN: return "⚪";
+            case KING: return "♔";
+            case QUEEN: return "♕";
             default: return "?";
         }
     } else {
         switch(type) {
             case MAN: return "⚫";
-            case KING: return "♔"; // King سیاه
-            case QUEEN: return "♕"; // Queen سیاه
+            case KING: return "♚";
+            case QUEEN: return "♛";
             default: return "?";
         }
     }

@@ -1,3 +1,35 @@
+/**
+ * @file src/games/chess/logic.c
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Chess move validation and game logic for modified pieces.
+ *
+ * @details
+ * این فایل تمام منطق حرکت، کیش، و مات شطرنج سفارشی را نگه می‌دارد.
+ * هر مهره (شامل مهره‌های سفارشی مثل Dragon و Thief) حرکات خاصی دارد که اینجا پیاده‌سازی شده است.
+ *
+ * @responsibilities
+ * - بررسی صحت حرکت برای هر نوع مهره
+ * - بررسی مسیر خالی برای مهره‌های لغزنده (Rook-like)
+ * - پیاده‌سازی حرکات خاص Dragon و Thief
+ * - شناسایی وضعیت کیش (Checkتهدید شاه)
+ * - شناسایی وضعیت مات (بدون حرکت معتبر)
+ * - جلوگیری از حرکاتی که شاه را در خطر قرار می‌دهند
+ *
+ * @interactions
+ * - استفاده از chess.h برای تعریف‌های داده‌ای
+ * - استفاده از state.c برای دسترسی به state
+ * - فراخوانی توسط main.c برای تأیید حرکات
+ *
+ * @notes
+ * - Dragon: ترکیب اسب و شاه (7 خانه اطراف و 2 خانه L شکل)
+ * - Thief: فیل با قدرت پرش از 1 مانع (حرکت مورب تا 1 مانع)
+ * - Gryphon: ترکیب رخ و 1 خانه مورب
+ * - شاه نمی‌تواند به خانه‌ای برود که تهدید باشد
+ */
+
 // این فایل را گذاشتم تا تمام منطق حرکت، کیش و مات شطرنج سفارشی همین‌جا متمرکز باشد
 
 #include "chess.h"
@@ -19,6 +51,29 @@ int is_path_clear(GameState *game, int from_r, int from_c, int to_r, int to_c) {
     return 1;
 }
 
+// برای رخ مسیر را خانه‌به‌خانه می‌روم و به محض برخورد به مهره متوقف می‌شوم
+static int is_rook_path_clear(GameState *game, int from_r, int from_c, int to_r, int to_c) {
+    if (!(from_r == to_r || from_c == to_c)) return 0;
+
+    int dr = (to_r > from_r) ? 1 : ((to_r < from_r) ? -1 : 0);
+    int dc = (to_c > from_c) ? 1 : ((to_c < from_c) ? -1 : 0);
+
+    int r = from_r + dr;
+    int c = from_c + dc;
+    int blocked = 0;
+
+    while (r != to_r || c != to_c) {
+        if (game->board[r][c].type != EMPTY) {
+            blocked = 1;
+            break; // به محض رسیدن به مانع مسیر را متوقف می‌کنم
+        }
+        r += dr;
+        c += dc;
+    }
+
+    return blocked ? 0 : 1;
+}
+
 // برای مهره Thief می‌شمارم چند مانع در مسیر مورب وجود دارد تا محدودیت یک مانع را اعمال کنم
 int count_obstacles_diagonal(GameState *game, int from_r, int from_c, int to_r, int to_c) {
     int dr = (to_r > from_r) ? 1 : -1;
@@ -34,6 +89,103 @@ int count_obstacles_diagonal(GameState *game, int from_r, int from_c, int to_r, 
         c += dc;
     }
     return count;
+}
+
+// بررسی می‌کنم یک مهره خاص می‌تواند خانه مقصد را تهدید کند یا نه (صرفاً از منظر حمله)
+static int can_attack_square(GameState *game, int from_r, int from_c, int to_r, int to_c) {
+    Piece piece = game->board[from_r][from_c];
+    int dr = abs(to_r - from_r);
+    int dc = abs(to_c - from_c);
+
+    switch (piece.type) {
+        case PAWN: {
+            int direction = (piece.color == WHITE) ? -1 : 1;
+            return (to_r == from_r + direction && dc == 1);
+        }
+
+        case DRAGON: {
+            if ((dr == 2 && dc == 1) || (dr == 1 && dc == 2)) return 1;
+            if (dr <= 1 && dc <= 1 && (dr + dc > 0)) return 1;
+            return 0;
+        }
+
+        case THIEF: {
+            if (dr != dc || dr == 0) return 0;
+            int obstacles = count_obstacles_diagonal(game, from_r, from_c, to_r, to_c);
+            return (obstacles <= 1);
+        }
+
+        case GRYPHON: {
+            int dirs[4][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
+
+            for (int i = 0; i < 4; i++) {
+                int mid_r = from_r + dirs[i][0];
+                int mid_c = from_c + dirs[i][1];
+
+                if (mid_r < 0 || mid_r > 7 || mid_c < 0 || mid_c > 7) continue;
+
+                Piece mid_piece = game->board[mid_r][mid_c];
+
+                // اگر خانه مورب پر از مهره همرنگ باشد، این جهت مسدود است
+                if (mid_piece.type != EMPTY && mid_piece.color == piece.color) continue;
+
+                // اگر روی همان خانه مورب فرود بیاییم، فقط وقتی مجاز است که خالی باشد یا مهره حریف باشد
+                if (to_r == mid_r && to_c == mid_c) return 1;
+
+                // ادامه مثل رخ فقط وقتی خانه مورب خالی باشد
+                if (mid_piece.type == EMPTY) {
+                    // چهار جهت رخ از خانه مورب را قدم‌به‌قدم بررسی می‌کنم
+                    int rook_dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+                    for (int k = 0; k < 4; k++) {
+                        int r = mid_r + rook_dirs[k][0];
+                        int c = mid_c + rook_dirs[k][1];
+
+                        while (r >= 0 && r < 8 && c >= 0 && c < 8) {
+                            if (game->board[r][c].type != EMPTY) {
+                                if (r == to_r && c == to_c && game->board[r][c].color != piece.color)
+                                    return 1; // اولین مهره حریف قابل capture است
+                                break; // مانع اول مسیر را می‌بندد
+                            }
+
+                            if (r == to_r && c == to_c) return 1; // خانه خالی در مسیر رخ
+
+                            r += rook_dirs[k][0];
+                            c += rook_dirs[k][1];
+                        }
+                    }
+                }
+            }
+            return 0;
+        }
+
+        case ROOK: {
+            if (dr == 0 || dc == 0) {
+                return is_rook_path_clear(game, from_r, from_c, to_r, to_c);
+            }
+            return 0;
+        }
+
+        case QUEEN: {
+            if (dr == 0 || dc == 0 || dr == dc) {
+                return is_path_clear(game, from_r, from_c, to_r, to_c);
+            }
+            if ((dr == 2 && dc == 1) || (dr == 1 && dc == 2)) return 1;
+            return 0;
+        }
+
+        case KING: {
+            if (dr == 0 && dc == 0) return 0;
+            if (dr > 2 || dc > 2) return 0;
+            if (!(dr == 0 || dc == 0 || dr == dc)) return 0;
+
+            if (dr <= 1 && dc <= 1) return 1;
+
+            return is_path_clear(game, from_r, from_c, to_r, to_c);
+        }
+
+        default:
+            return 0;
+    }
 }
 
 // منطق خام اعتبار حرکت هر مهره را اینجا به صورت قطعه‌ای پیاده کردم
@@ -82,23 +234,50 @@ int is_valid_move_logic(GameState *game, int from_r, int from_c, int to_r, int t
         }
 
         case GRYPHON: {
-            // ابتدا یک خانه مورب می‌روم و بعد مثل رخ ادامه می‌دهم؛ مقصد باید روی همان خط افقی/عمودیِ خانه مورب باشد
-            int diag_positions[4][2] = {
-                {from_r - 1, from_c - 1}, {from_r - 1, from_c + 1},
-                {from_r + 1, from_c - 1}, {from_r + 1, from_c + 1}
-            };
+            // اول یک خانه مورب اجباری، سپس در صورت خالی بودن آن خانه ادامه حرکت رخ
+            int dirs[4][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
 
             for (int i = 0; i < 4; i++) {
-                int mid_r = diag_positions[i][0];
-                int mid_c = diag_positions[i][1];
+                int mid_r = from_r + dirs[i][0];
+                int mid_c = from_c + dirs[i][1];
 
                 if (mid_r < 0 || mid_r > 7 || mid_c < 0 || mid_c > 7) continue;
 
-                // بررسی اینکه مقصد در راستای افقی یا عمودی این خانه مورب است
-                if ((to_r == mid_r && to_c != mid_c) || (to_c == mid_c && to_r != mid_r)) {
-                    // بررسی خالی بودن مسیر از خانه مورب تا مقصد
-                    if (is_path_clear(game, mid_r, mid_c, to_r, to_c)) return 1;
+                Piece mid_piece = game->board[mid_r][mid_c];
+
+                if (mid_piece.type != EMPTY && mid_piece.color == piece.color) continue; // همرنگ مانع است
+
+                // حرکت فقط به خانه مورب (توقف یا زدن)
+                if (to_r == mid_r && to_c == mid_c) return 1;
+
+                // اگر خانه مورب خالی بود می‌توان مثل رخ ادامه داد
+                if (mid_piece.type == EMPTY) {
+                    int rook_dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+                    for (int k = 0; k < 4; k++) {
+                        int r = mid_r + rook_dirs[k][0];
+                        int c = mid_c + rook_dirs[k][1];
+
+                        while (r >= 0 && r < 8 && c >= 0 && c < 8) {
+                            if (game->board[r][c].type != EMPTY) {
+                                if (r == to_r && c == to_c && game->board[r][c].color != piece.color)
+                                    return 1; // اولین مهره حریف قابل capture است
+                                break; // مانع اول مسیر را می‌بندد
+                            }
+
+                            if (r == to_r && c == to_c) return 1; // خانه خالی در مسیر رخ
+
+                            r += rook_dirs[k][0];
+                            c += rook_dirs[k][1];
+                        }
+                    }
                 }
+            }
+            return 0;
+        }
+
+        case ROOK: {
+            if (dr == 0 || dc == 0) {
+                return is_rook_path_clear(game, from_r, from_c, to_r, to_c);
             }
             return 0;
         }
@@ -108,12 +287,21 @@ int is_valid_move_logic(GameState *game, int from_r, int from_c, int to_r, int t
             if (dr == 0 || dc == 0 || dr == dc) {
                 return is_path_clear(game, from_r, from_c, to_r, to_c);
             }
+            // Adding knight-style jump logic for the queen
+            if ((dr == 2 && dc == 1) || (dr == 1 && dc == 2)) return 1;
+
             return 0;
         }
 
         case KING: {
-            // شاه فقط یک خانه به هر جهت حرکت می‌کند
-            return (dr <= 1 && dc <= 1 && (dr + dc > 0));
+            // شاه می‌تواند یک یا دو خانه در هر جهت (افقی، عمودی، مورب) برود بدون پرش
+            if (dr == 0 && dc == 0) return 0;
+            if (dr > 2 || dc > 2) return 0;
+            if (!(dr == 0 || dc == 0 || dr == dc)) return 0;
+
+            if (dr <= 1 && dc <= 1) return 1;
+
+            return is_path_clear(game, from_r, from_c, to_r, to_c);
         }
 
         default:
@@ -124,6 +312,8 @@ int is_valid_move_logic(GameState *game, int from_r, int from_c, int to_r, int t
 // بررسی می‌کنم شاه رنگ موردنظر زیر ضرب است یا نه
 int is_in_check(GameState *game, Color color) {
     int king_r, king_c;
+
+    Color attacker = (color == WHITE) ? BLACK : WHITE;
 
     if (color == WHITE) {
         king_r = game->white_king_pos[0];
@@ -137,8 +327,8 @@ int is_in_check(GameState *game, Color color) {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             Piece p = game->board[i][j];
-            if (p.type != EMPTY && p.color != color) {
-                if (is_valid_move_logic(game, i, j, king_r, king_c)) {
+            if (p.type != EMPTY && p.color == attacker) {
+                if (can_attack_square(game, i, j, king_r, king_c)) {
                     return 1;
                 }
             }

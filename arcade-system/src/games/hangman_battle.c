@@ -1,3 +1,37 @@
+/**
+ * @file src/games/hangman_battle.c
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Hangman word-guessing battle game with multiplayer and AI (CGI).
+ *
+ * @details
+ * این بازی یک نسخه پیشرفته Hangman (دار آویز) است که دو بازی‌کن می‌توانند
+ * همزمان با هم رقابت کنند. بازی از الگوریتم frequency-based برای Bot هوشمند
+ * استفاده می‌کند و تجربه‌ی جذابی برای هر دو حالت تک‌نفره و دونفره ارائه می‌دهد.
+ *
+ * @responsibilities
+ * - مدیریت state machine با 5 حالت مختلف
+ * - مدیریت واردن کلمه توسط بازی‌کنان
+ * - پردازش حدس حروف و بهروزرسانی تخته نمایش
+ * - پیاده‌سازی Bot هوشمند با انتخاب بر اساس فرکانس حرف
+ * - تشخیص برد/باخت و امتیازدهی
+ * - رندر رابط HTML و ASCII art دار
+ *
+ * @interactions
+ * - دریافت پارامترهای mode، level، word از URL
+ * - نگهداری state بازی در URL برای stateless operation
+ * - استفاده از c_utils برای HTML wrapper
+ * - فرکانس حرف‌ها در زبان انگلیسی برای Bot
+ *
+ * @notes
+ * - State machine: setup → word_menu → p1_setup → [p2_setup] → play
+ * - Bot با meta refresh خودکار حرکت می‌کند
+ * - کلمات می‌توانند دستی یا تصادفی انتخاب شوند
+ * - ASCII art دار با تغییر پذیری بر اساس تعداد اشتباهات
+ */
+
 /*
  * ═══════════════════════════════════════════════════════════════════════════
  * فایل: hangman_battle.c

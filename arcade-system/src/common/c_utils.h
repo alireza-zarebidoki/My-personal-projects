@@ -1,3 +1,34 @@
+/**
+ * @file src/common/c_utils.h
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Common utility functions header for CGI game backends.
+ *
+ * @details
+ * این فایل را من خودم از صفر نوشتم تا تمام توابع کمکی که در بازی‌های CGI
+ * به آن‌ها نیاز دارم در یک جای مرکزی تعریف شوند و تکرار کد در تمام بازی‌ها
+ * جلوگیری شود. این فایل هدر مشترک برای تمام برنامه‌های CGI است.
+ *
+ * @responsibilities
+ * - تعریف توابع پارسینگ پارامترهای GET و POST از CGI
+ * - تعریف تابع url_decode برای تبدیل %XX و + به کاراکترها
+ * - تعریف توابع HTML wrapper (header و footer)
+ * - تعریف ثابت‌های global برای buffer و پیکربندی
+ * - اعلام prototypes توابع مشترک
+ *
+ * @interactions
+ * - این فایل هدر توسط تمام برنامه‌های CGI include می‌شود
+ * - پیاده‌سازی این توابع در c_utils.c است
+ * - تمام بازی‌های C (chess، checkers، guess_number و غیره) از این استفاده می‌کنند
+ *
+ * @notes
+ * - اگر این فایل را حذف یا تغییر دهم، تمام بازی‌های CGI کامپایل نمی‌شوند
+ * - MAX_BUFFER را فقط در صورت ضرورت شدید تغییر بدهم
+ * - هر تابع جدیدی که اضافه کنم باید در c_utils.c پیاده‌سازی شود
+ */
+
 /*
  * ╔═══════════════════════════════════════════════════════════════════════╗
  * ║                         فایل هدر ابزارهای مشترک C                      ║

@@ -2,7 +2,7 @@
 
 // رنگ خانه‌ها را اینجا برمی‌گردانم تا ظاهر صفحه قابل تغییر باشد
 const char* checker_cell_bg(int row, int col) {
-    return ((row + col) % 2 == 0) ? "#e8e8e8" : "#8b4513";
+    return ((row + col) % 2 == 0) ? "#c0c0c0" : "#909090";
 }
 
 // کل رندر تخته را در این تابع نگه داشتم تا هم هایلایت‌ها هم لینک‌ها را یکجا بسازم
@@ -18,12 +18,38 @@ void render_checkers_board(CheckersState *game, int highlight[8][8]) {
             if (game->selected_row == i && game->selected_col == j) {
                 sprintf(bg, "#f1c40f"); // انتخاب شده
             } else if (highlight && highlight[i][j]) {
-                if (abs((game->selected_row - i)) == 2) {
-                    sprintf(bg, "#e74c3c"); // پرش (قرمز)
+                int hv = highlight[i][j];
+                int dr = i - game->selected_row;
+                int dc = j - game->selected_col;
+
+                if (hv == 1) {
+                    // تشخیص پرشِ معتبر برای هایلایت قرمز/سبز روشن
+                    if (abs(dr) == 2 || abs(dc) == 2 || abs(dr) == 4 || abs(dc) == 4) {
+                        int mr = game->selected_row;
+                        int mc = game->selected_col;
+                        if (abs(dr) == 2 || abs(dc) == 2) {
+                            mr = game->selected_row + (dr == 0 ? 0 : dr / 2);
+                            mc = game->selected_col + (dc == 0 ? 0 : dc / 2);
+                        } else {
+                            // برای پرش چهار‌خانه‌ای، مهرهٔ میانی در فاصلهٔ دو خانه قرار دارد
+                            mr = game->selected_row + (dr == 0 ? 0 : (dr > 0 ? 2 : -2));
+                            mc = game->selected_col + (dc == 0 ? 0 : (dc > 0 ? 2 : -2));
+                        }
+                        Checker mid = game->board[mr][mc];
+                        Checker mover = game->board[game->selected_row][game->selected_col];
+                        if (mid.type != EMPTY_C && mid.color != mover.color) {
+                            sprintf(bg, "#e74c3c"); // پرش (قرمز)
+                        } else {
+                            sprintf(bg, "#2ecc71"); // حرکت عادی (سبز روشن)
+                        }
+                    } else {
+                        sprintf(bg, "#2ecc71"); // حرکت عادی (سبز روشن)
+                    }
                 } else {
-                    sprintf(bg, "#2ecc71"); // حرکت عادی (سبز)
+                    // hv == 2 -> حرکت غیرفعال اما در حالت عادی مجاز: نمایش سبزِ مرده‌تر
+                    sprintf(bg, "#7fbf7f");
                 }
-            } else if (game->must_jump && game->jump_from_r == i && game->jump_from_c == j) {
+            } else if (game->must_jump && game->board[i][j].type != EMPTY_C && game->board[i][j].color == game->current_turn && ((game->jump_from_r >= 0 && game->jump_from_c >= 0 && game->jump_from_r == i && game->jump_from_c == j) || (game->jump_from_r < 0 && can_jump_from(game, i, j)))) {
                 sprintf(bg, "#ff6b6b"); // پرش اجباری (قرمز روشن)
             } else {
                 sprintf(bg, "%s", checker_cell_bg(i, j));
@@ -37,7 +63,7 @@ void render_checkers_board(CheckersState *game, int highlight[8][8]) {
 
             if (piece.type != EMPTY_C) {
                 const char *icon = "";
-                const char *color = (piece.color == RED) ? "#e74c3c" : "#3498db";
+                const char *color = (piece.color == RED) ? "#f8f8f8" : "#0f0f0f";
 
                 switch(piece.type) {
                     case MAN: icon = "fas fa-circle"; break;
@@ -62,11 +88,11 @@ int main() {
     // استایل اختصاصی را اینجا تزریق می‌کنم تا داخل iframe مستقل باشد
     printf("<style>\n");
     printf("  .game-container { padding-top: 20px !important; }\n");
-    printf("  .checkers-ui { max-width: 700px; margin: 0 auto; text-align: center; }\n");
+    printf("  .checkers-ui { max-width: 620px; margin: 0 auto; text-align: center; }\n");
     printf("  .checkers-ui h1, .checkers-ui h2, .checkers-ui h3, .checkers-ui p { color: #e5e7eb; }\n");
     printf("  .checkers-ui h2 { font-size: 1.3rem; margin: 10px 0; }\n");
-    printf("  .checkers-board { display:grid; grid-template-columns:repeat(8,60px); gap:0; margin:15px auto; width:fit-content; border:3px solid #333; }\n");
-    printf("  .checkers-cell { width:60px; height:60px; display:flex; align-items:center; justify-content:center; font-size:1.8rem; cursor:pointer; border:1px solid #555; text-decoration:none; }\n");
+    printf("  .checkers-board { display:grid; grid-template-columns:repeat(8,50px); gap:0; margin:15px auto; width:fit-content; border:3px solid #333; }\n");
+    printf("  .checkers-cell { width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:1.6rem; cursor:pointer; border:1px solid #555; text-decoration:none; }\n");
     printf("  .checkers-ui .btn { background: #f39c12; color: #0a0a0a; border: 2px solid #d68910; border-radius: 8px; padding: 10px 25px; font-weight: 900; cursor: pointer; }\n");
     printf("  .checkers-ui .btn:hover { filter: brightness(1.1); }\n");
     printf("  .checkers-ui .panel { margin: 10px auto; padding: 10px; border: 2px solid #10b981; border-radius: 10px; background: rgba(0,0,0,0.6); }\n");
@@ -80,6 +106,8 @@ int main() {
     get_param("state", buffer);
     if (buffer[0]) {
         deserialize_checkers_state(buffer, &game);
+        // بعد از بارگذاری وضعیت از URL، قوانین پرش اجباری را مجدداً محاسبه کن
+        check_global_forced_jump(&game);
     } else {
         init_checkers_board(&game);
         check_global_forced_jump(&game);
@@ -151,10 +179,14 @@ int main() {
             }
             // اگر مهره‌ای انتخاب نشده، اینجا مهره فعلی را انتخاب می‌کنم
             else if (clicked.type != EMPTY_C && clicked.color == game.current_turn) {
-                // وقتی پرش اجباری فعال است فقط همان مهره مجاز است
-                if (game.must_jump && (game.jump_from_r != click_r || game.jump_from_c != click_c)) {
-                    // عمدا نادیده می‌گیرم تا قانون حفظ شود
+                if (game.multi_jump) {
+                    // در حالت پرش زنجیره‌ای فقط همان مهره قابل انتخاب است
+                    if (game.jump_from_r == click_r && game.jump_from_c == click_c) {
+                        game.selected_row = click_r;
+                        game.selected_col = click_c;
+                    }
                 } else {
+                    // اجازه می‌دهم هر مهره‌ای انتخاب شود تا بازیکن بتواند حرکت‌های غیرفعال را پیش‌نمایش کند.
                     game.selected_row = click_r;
                     game.selected_col = click_c;
                 }
@@ -212,10 +244,16 @@ int main() {
                 } else if (black_count == 0) {
                     game.game_over = 1;
                     game.winner = RED;
-                    strcpy(game.message, "قرمز برنده شد!");
+                    strcpy(game.message, "سفید برنده شد!");
+                } else if (!has_any_move_for(&game, game.current_turn)) {
+                    game.game_over = 1;
+                    game.winner = (game.current_turn == RED) ? BLACK_C : RED;
+                    sprintf(game.message, "%s برنده شد (%s حرکتی ندارد)",
+                            (game.winner == RED) ? "سفید" : "سیاه",
+                            (game.current_turn == RED) ? "سفید" : "سیاه");
                 } else {
                     sprintf(game.message, "نوبت %s%s",
-                            (game.current_turn == RED) ? "قرمز" : "سیاه",
+                            (game.current_turn == RED) ? "سفید" : "سیاه",
                             game.must_jump ? " (پرش اجباری!)" : "");
                 }
             }
@@ -223,7 +261,7 @@ int main() {
     }
 
     // نمایش رابط
-    printf("<h2>🔴 چکرز (Checkers) ⚫</h2>");
+    printf("<h2>⚪ چکرز (Checkers) ⚫</h2>");
 
     // پیام وضعیت یا برد را اینجا چاپ می‌کنم
     if (game.game_over) {

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2025.12.20)  26 DEC 2025 21:37
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2025.12.20)  7 JAN 2026 13:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -687,7 +687,7 @@ apping=persian-tex-text;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 13.20007pt on input line 107.
+(Font)              scaled to size 13.20007pt on input line 113.
 
 Package fontspec Info: Font family 'times.ttf(0)' created for font 'times.ttf'
 (fontspec)             with options [Ligatures=TeX,Path=./].
@@ -699,7 +699,7 @@ Package fontspec Info: Font family 'times.ttf(0)' created for font 'times.ttf'
 (fontspec)             <->"[./times.ttf]/OT:language=dflt;mapping=tex-text;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
-LaTeX Info: Redefining \latinfont on input line 108.
+LaTeX Info: Redefining \latinfont on input line 114.
 
 Package fontspec Info: Font family 'XBNiloofar.ttf(1)' created for font 'XB
 (fontspec)             Niloofar.ttf' with options
@@ -714,7 +714,7 @@ an-tex-text;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
 Package xepersian-mathdigitspec Info: DefiningthedefaultPersianmathdigitsfontas
-'XB Niloofar.ttf' on input line 109.
+'XB Niloofar.ttf' on input line 115.
 \symOPERATORS=\mathgroup4
 \symnew@mathbf@font@digits=\mathgroup5
 \symnew@mathit@font@digits=\mathgroup6
@@ -723,31 +723,31 @@ Package xepersian-mathdigitspec Info: DefiningthedefaultPersianmathdigitsfontas
 (./technical-paper.aux)
 \openout1 = `technical-paper.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 139.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 145.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
-39.
+45.
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 139.
-LaTeX Font Info:    ... okay on input line 139.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 145.
+LaTeX Font Info:    ... okay on input line 145.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -766,7 +766,7 @@ LaTeX Font Info:    ... okay on input line 139.
 * \oddsidemargin=-1.1381pt
 * \evensidemargin=-1.1381pt
 * \topmargin=-38.1381pt
-* \headheight=30.0pt
+* \headheight=32.0pt
 * \headsep=25.0pt
 * \topskip=12.0pt
 * \footskip=30.0pt
@@ -783,47 +783,47 @@ LaTeX Font Info:    ... okay on input line 139.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring ON on input line 139.
+Package hyperref Info: Link coloring ON on input line 145.
 (./technical-paper.out) (./technical-paper.out)
 \@outlinefile=\write3
 \openout3 = `technical-paper.out'.
 
 \c@lstlisting=\count355
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 22.81412pt on input line 142.
+(Font)              scaled to size 22.81412pt on input line 148.
 
 
 LaTeX Font Warning: Font shape `TU/XBNiloofar.ttf(0)/b/n' undefined
-(Font)              using `TU/XBNiloofar.ttf(0)/m/n' instead on input line 142.
+(Font)              using `TU/XBNiloofar.ttf(0)/m/n' instead on input line 148.
 
 
 
 LaTeX Font Warning: Font shape `TU/times.ttf(0)/b/n' undefined
-(Font)              using `TU/times.ttf(0)/m/n' instead on input line 142.
+(Font)              using `TU/times.ttf(0)/m/n' instead on input line 148.
 
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 15.84007pt on input line 142.
+(Font)              scaled to size 15.84007pt on input line 148.
 
 LaTeX Font Warning: Font shape `TU/XBNiloofar.ttf(1)/bx/n' undefined
-(Font)              using `TU/XBNiloofar.ttf(1)/m/n' instead on input line 142.
+(Font)              using `TU/XBNiloofar.ttf(1)/m/n' instead on input line 148.
 
 
 
 LaTeX Font Warning: Font shape `TU/XBNiloofar.ttf(1)/m/it' undefined
-(Font)              using `TU/XBNiloofar.ttf(1)/m/n' instead on input line 142.
+(Font)              using `TU/XBNiloofar.ttf(1)/m/n' instead on input line 148.
 
 
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 12.04506pt on input line 142.
+(Font)              scaled to size 12.04506pt on input line 148.
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/b/n' will be
-(Font)              scaled to size 12.04506pt on input line 144.
+(Font)              scaled to size 12.04506pt on input line 150.
 [1
 
 ]
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 19.0081pt on input line 166.
+(Font)              scaled to size 19.0081pt on input line 176.
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/b/n' will be
-(Font)              scaled to size 19.0081pt on input line 166.
+(Font)              scaled to size 19.0081pt on input line 176.
  (./technical-paper.toc
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/b/n' will be
 (Font)              scaled to size 13.20007pt on input line 1.
@@ -838,8 +838,11 @@ LaTeX Font Warning: Font shape `TU/XBNiloofar.ttf(1)/b/n' undefined
 
  [4]
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/b/n' will be
-(Font)              scaled to size 15.84007pt on input line 171.
+(Font)              scaled to size 15.84007pt on input line 181.
  [5] [6] [7]
+File: architecture_diagram.png Graphic file (type bmp)
+<architecture_diagram.png>
+ [8]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
@@ -847,155 +850,56 @@ File: lstlang1.sty 2023/02/27 1.9 listings language file
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 307.
-LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 308.
-
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no └ (U+2514) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-[8]
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no └ (U+2514) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no └ (U+2514) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no └ (U+2514) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no │ (U+2502) in font [lmmono10-regular]:!
-Missing character: There is no └ (U+2514) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ├ (U+251C) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no └ (U+2514) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-Missing character: There is no ─ (U+2500) in font [lmmono10-regular]:!
-[9] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+nput line 284.
+ [9] [10]
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-) [10] [11]
+)
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 359.
+ [11] [12]
+[13]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 477.
-
-[12] [13]
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 455.
+ [14]
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 8.80005pt on input line 572.
+(Font)              scaled to size 8.80005pt on input line 550.
 LaTeX Font Info:    Font shape `TU/XBNiloofar.ttf(0)/m/n' will be
-(Font)              scaled to size 6.60004pt on input line 572.
- [14] [15] [16] [17] [18] [19]
+(Font)              scaled to size 6.60004pt on input line 550.
+ [15] [16] [17] [18] [19] [20] [21] [22] [23]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-) [20] [21]
-[22] [23]
-Underfull \hbox (badness 10000) in paragraph at lines 1036--1038
+) [24] [25]
+[26] [27] [28]
+Underfull \hbox (badness 10000) in paragraph at lines 1050--1052
 [][][]\TU/times.ttf(0)/b/n/12 OWASP Foundation. (2021). OWASP Top Ten Project.[
 ] [][][][][][]$[][][][][] [] [] [] [][][][][] [] [][][] []$[][][][][]
  []
 
-[24]
-Underfull \hbox (badness 5036) in paragraph at lines 1044--1046
+
+Underfull \hbox (badness 5036) in paragraph at lines 1058--1060
 [][][]\TU/times.ttf(0)/b/n/12 CSS-Tricks. (2025). A Complete Guide to Flexbox.[
 ] [][][][][][]$[][][][][] [] [] [] [][][][][][][][][][][] [] [][][] []$[][][][]
 []
  []
 
-[25] (./technical-paper.aux)
+[29] [30] (./technical-paper.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `technical-paper.out' has not changed.
-(rerunfilecheck)             Checksum: D40B011471F7889D8EBC54881E994C71;13289.
+(rerunfilecheck)             Checksum: D3CB0FA870B3B2A2EDDB16FC35DFCE3B;13616.
  ) 
 Here is how much of TeX's memory you used:
- 16801 strings out of 476689
- 324468 string characters out of 5806612
- 2150018 words of memory out of 6000000
- 36743 multiletter control sequences out of 15000+600000
+ 16813 strings out of 476689
+ 324728 string characters out of 5806612
+ 2157018 words of memory out of 6000000
+ 36752 multiletter control sequences out of 15000+600000
  518905 words of font info for 97 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 87i,12n,99p,1350b,2138s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 87i,12n,99p,1350b,2019s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on technical-paper.pdf (25 pages).
+Output written on technical-paper.pdf (30 pages).

@@ -1,3 +1,36 @@
+/**
+ * @file src/games/chess/chess.h
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Data structures and function declarations for modified chess game.
+ *
+ * @details
+ * قرارداد داده‌ای شطرنج تغییر‌یافته را اینجا نگه می‌دارم تا منطق و CGI روی یک تعریف مشترک کار کنند.
+ * شطرنج ما مهره‌های سفارشی دارد (Dragon، Thief، Gryphon) که مهره‌های استاندارد را جایگزین می‌کنند
+ * و حرکات خاصی دارند.
+ *
+ * @responsibilities
+ * - تعریف enum PieceType با انواع مختلف مهره‌ها (شامل مهره‌های سفارشی)
+ * - تعریف enum Color برای رنگ مهره‌ها (سفید/سیاه)
+ * - تعریف struct Piece برای نمایش هر مهره
+ * - تعریف struct GameState برای حالت کامل بازی
+ * - اعلام function prototypes برای منطق و رندر
+ * - تعریف ثابت‌های خاص شطرنج
+ *
+ * @interactions
+ * - این هدر توسط main.c و logic.c و state.c include می‌شود
+ * - c_utils.h برای HTML wrapper include شده است
+ * - تمام توابع منطق شطرنج این قرارداد را دنبال می‌کنند
+ *
+ * @notes
+ * - نوع مهره‌ها را با جایگزین‌های سفارشی خودم تعریف کردم
+ * - رنگ مهره را دو مقدار ساده گذاشتم
+ * - هر مهره فقط نوع و رنگ دارد تا ساختار سبک بماند
+ * - Piece types: PAWN، DRAGON، THIEF، GRYPHON، QUEEN، KING
+ */
+
 // قرارداد داده‌ای شطرنج تغییر‌یافته را اینجا نگه می‌دارم تا منطق و CGI روی یک تعریف مشترک کار کنند
 
 #ifndef CHESS_H
@@ -9,7 +42,7 @@
 typedef enum {
     EMPTY = 0,
     PAWN = 1,      // سرباز
-    KNIGHT = 2,    // اسب (حذف شده، جایگزین: Dragon)
+    KNIGHT = 2,    // اسب (حذف شده، جای گزین: Dragon)
     BISHOP = 3,    // فیل (حذف شده، جایگزین: Thief)
     ROOK = 4,      // رخ (حذف شده، جایگزین: Gryphon)
     QUEEN = 5,     // وزیر

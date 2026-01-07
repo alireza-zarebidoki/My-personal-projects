@@ -52,6 +52,7 @@ int check_global_forced_jump(CheckersState *game);
 void make_checkers_move(CheckersState *game, int from_r, int from_c, int to_r, int to_c);
 void get_valid_checkers_moves(CheckersState *game, int row, int col, int valid[8][8]);
 int count_pieces(CheckersState *game, CheckerColor color);
+int has_any_move_for(CheckersState *game, CheckerColor color);
 
 // نمایش یونیکد مهره‌ها برای UI
 const char* checker_to_unicode(CheckerType type, CheckerColor color);

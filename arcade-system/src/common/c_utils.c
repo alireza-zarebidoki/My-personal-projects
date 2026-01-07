@@ -1,3 +1,35 @@
+/**
+ * @file src/common/c_utils.c
+ * @project arcade-system
+ * @author Alireza Zarebidoki
+ * @date_created 2024
+ * @date_modified 2024
+ * @brief Implementation of common utility functions for CGI game backends.
+ *
+ * @details
+ * این فایل را من خودم نوشتم تا تمام توابع کمکی که در c_utils.h تعریف کردم
+ * را پیاده‌سازی کنم. این توابع در همه بازی‌های CGI من استفاده می‌شوند و کدهای
+ * تکراری را از توابع CGI مختلف حذف می‌کند.
+ *
+ * @responsibilities
+ * - پیاده‌سازی url_decode_internal برای تبدیل %XX و + به کاراکترهای واقعی
+ * - پیاده‌سازی get_param برای خواندن پارامترهای GET و POST از CGI
+ * - پیاده‌سازی print_header برای چاپ هدر HTML استاندارد
+ * - پیاده‌سازی print_footer برای بستن تگ‌های HTML
+ * - مدیریت buffer overflow در URL decoding
+ *
+ * @interactions
+ * - این فایل با تمام برنامه‌های CGI لینک می‌شود
+ * - تغییرات در اینجا بر تمام بازی‌ها تأثیر می‌گذارد
+ * - از GNU SOURCE directives استفاده می‌کند برای توابع GNU
+ *
+ * @notes
+ * - بدون این فایل، هر بازی باید منطق پارسینگ و HTML را خودش بنویسد
+ * - تغییرات مرکزی در یک جا اعمال می‌شوند
+ * - کد تکراری کمتر = باگ کمتر
+ * - این فایل با تمام بازی‌ها لینک می‌شود، تغییر در اینجا نیاز به rebuild کامل دارد
+ */
+
 /*
  * ╔═══════════════════════════════════════════════════════════════════════╗
  * ║                    پیاده‌سازی ابزارهای مشترک C                        ║

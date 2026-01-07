@@ -6,6 +6,38 @@
 int can_jump_from(CheckersState *game, int row, int col) {
     Checker piece = game->board[row][col];
     if (piece.type == EMPTY_C) return 0;
+    if (piece.type == QUEEN) {
+        int dirs[4][2] = {{-1,0},{1,0},{0,-1},{0,1}}; // up, down, left, right
+        for (int d = 0; d < 4; d++) {
+            int dr = dirs[d][0];
+            int dc = dirs[d][1];
+            // New rule: QUEEN captures when opponent is two squares away and lands on the 4th square
+            // pattern: [Q][empty][opponent][empty][landing(empty)] in same row/col
+            int b1_r = row + dr;           // one step (must be empty)
+            int mid_r = row + 2*dr;        // opponent at two steps
+            int b2_r = row + 3*dr;         // third square (must be empty)
+            int land_r = row + 4*dr;       // landing at four steps
+            int b1_c = col + dc;
+            int mid_c = col + 2*dc;
+            int b2_c = col + 3*dc;
+            int land_c = col + 4*dc;
+
+            if (b1_r < 0 || b1_r > 7 || b1_c < 0 || b1_c > 7) continue;
+            if (mid_r < 0 || mid_r > 7 || mid_c < 0 || mid_c > 7) continue;
+            if (b2_r < 0 || b2_r > 7 || b2_c < 0 || b2_c > 7) continue;
+            if (land_r < 0 || land_r > 7 || land_c < 0 || land_c > 7) continue;
+
+            Checker b1 = game->board[b1_r][b1_c];
+            Checker mid_cell = game->board[mid_r][mid_c];
+            Checker b2 = game->board[b2_r][b2_c];
+            Checker landing_cell = game->board[land_r][land_c];
+
+            if (b1.type == EMPTY_C && b2.type == EMPTY_C && mid_cell.type != EMPTY_C && mid_cell.color != piece.color && landing_cell.type == EMPTY_C) {
+                return 1; // پرشِ ویژه: حریف دو خانه دور و فرود در خانهٔ چهارم
+            }
+        }
+        return 0;
+    }
 
     // چهار جهت ممکن برای پرش مورب را یکجا فهرست کردم تا حلقه ساده شود
     int dirs[4][2] = {{-2, -2}, {-2, 2}, {2, -2}, {2, 2}};
@@ -39,21 +71,74 @@ int can_jump_from(CheckersState *game, int row, int col) {
 
 // تمام صفحه را می‌گردم تا ببینم آیا در این نوبت پرش اجباری وجود دارد یا نه
 int check_global_forced_jump(CheckersState *game) {
+    int found = 0;
+    int first_r = -1, first_c = -1;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             Checker p = game->board[i][j];
             if (p.type != EMPTY_C && p.color == game->current_turn) {
                 if (can_jump_from(game, i, j)) {
-                    game->must_jump = 1;
-                    game->jump_from_r = i;
-                    game->jump_from_c = j;
-                    return 1;
+                    if (found == 0) {
+                        first_r = i;
+                        first_c = j;
+                    }
+                    found++;
+                }
+            }
+        }
+    }
+    if (found) {
+        game->must_jump = 1;
+        if (found == 1) {
+            // only one jumper -> lock jump_from to that piece
+            game->jump_from_r = first_r;
+            game->jump_from_c = first_c;
+        } else {
+            game->jump_from_r = -1;
+            game->jump_from_c = -1;
+        }
+        return 1;
+    }
+
+    game->must_jump = 0;
+    game->jump_from_r = -1;
+    game->jump_from_c = -1;
+    return 0;
+}
+
+// بررسی می‌کنم آیا رنگ مشخص حداقل یک حرکت معتبر دارد یا خیر (برای تشخیص بن‌بست)
+int has_any_move_for(CheckersState *game, CheckerColor color) {
+    int saved_turn = game->current_turn;
+    int saved_must = game->must_jump;
+    int saved_jr = game->jump_from_r;
+    int saved_jc = game->jump_from_c;
+
+    game->current_turn = color;
+    check_global_forced_jump(game);
+
+    for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+            Checker p = game->board[r][c];
+            if (p.type != EMPTY_C && p.color == color) {
+                for (int tr = 0; tr < 8; tr++) {
+                    for (int tc = 0; tc < 8; tc++) {
+                        if (is_valid_checkers_move(game, r, c, tr, tc)) {
+                            game->current_turn = saved_turn;
+                            game->must_jump = saved_must;
+                            game->jump_from_r = saved_jr;
+                            game->jump_from_c = saved_jc;
+                            return 1;
+                        }
+                    }
                 }
             }
         }
     }
 
-    game->must_jump = 0;
+    game->current_turn = saved_turn;
+    game->must_jump = saved_must;
+    game->jump_from_r = saved_jr;
+    game->jump_from_c = saved_jc;
     return 0;
 }
 
@@ -68,13 +153,55 @@ int is_valid_checkers_move(CheckersState *game, int from_r, int from_c, int to_r
     // فقط به خانه خالی اجازه می‌دهم
     if (target.type != EMPTY_C) return 0;
 
-    // چکرز روی خانه‌های تیره است، پس مقصد باید تیره باشد
-    if ((to_r + to_c) % 2 == 0) return 0;
+    // چکرز روی خانه‌های تیره است، پس مقصد باید تیره باشد (به جز Queen که عمودی حرکت می‌کند)
+    if (piece.type != QUEEN && (to_r + to_c) % 2 == 0) return 0;
 
     int dr = to_r - from_r;
     int dc = to_c - from_c;
 
-    // حرکت عادی یک خانه مورب
+    // حرکت عمودی یا افقی فقط مخصوص Queen است
+    if (piece.type != QUEEN && dc == 0 && dr == 0) return 0; // هیچ حرکتی نیست
+
+    // Queen: یک خانه عمودی/افقی یا پرش یک مهره عمودی/افقی
+    if (piece.type == QUEEN) {
+        // حرکت باید عمودی یا افقی باشد (نه ثابت و نه مورب)
+        if (!((dc == 0 && dr != 0) || (dr == 0 && dc != 0))) return 0;
+
+        // حرکت و پرشِ ویژهٔ QUEEN: پرش فقط وقتی رخ می‌دهد که مهرهٔ حریف دو خانه دور باشد
+        // حرکت عادی دوخانه‌ای مجاز است (اگر میانه خالی باشد و پرش اجباری نباشد)
+        if ((abs(dr) + abs(dc) == 2) && (abs(dr) == 2 || abs(dc) == 2)) {
+            int between_r = from_r + (dr == 0 ? 0 : (dr / abs(dr)) * 1);
+            int between_c = from_c + (dc == 0 ? 0 : (dc / abs(dc)) * 1);
+            Checker between = game->board[between_r][between_c];
+            if (between.type == EMPTY_C) {
+                if (game->must_jump) return 0;
+                return 1; // حرکت عادی دوخانه‌ای
+            }
+            return 0;
+        }
+
+        // پرش چهار خانه‌ای (حریف دو خانه دور و مقصد در خانهٔ چهارم)
+        if ((abs(dr) + abs(dc) == 4) && (abs(dr) == 4 || abs(dc) == 4)) {
+            int b1_r = from_r + (dr == 0 ? 0 : (dr / abs(dr)) * 1);
+            int mid_r = from_r + (dr == 0 ? 0 : (dr / abs(dr)) * 2);
+            int b2_r = from_r + (dr == 0 ? 0 : (dr / abs(dr)) * 3);
+            int b1_c = from_c + (dc == 0 ? 0 : (dc / abs(dc)) * 1);
+            int mid_c = from_c + (dc == 0 ? 0 : (dc / abs(dc)) * 2);
+            int b2_c = from_c + (dc == 0 ? 0 : (dc / abs(dc)) * 3);
+
+            Checker b1 = game->board[b1_r][b1_c];
+            Checker mid = game->board[mid_r][mid_c];
+            Checker b2 = game->board[b2_r][b2_c];
+
+            if (b1.type == EMPTY_C && b2.type == EMPTY_C && mid.type != EMPTY_C && mid.color != piece.color) {
+                return 1; // پرش چهارخانه‌ای معتبر
+            }
+        }
+
+        return 0;
+    }
+
+    // حرکت عادی یک خانه مورب (فقط Man/King)
     if (abs(dr) == 1 && abs(dc) == 1) {
         // اگر پرش اجباری فعال است، حرکت عادی را ممنوع می‌کنم
         if (game->must_jump) return 0;
@@ -87,13 +214,7 @@ int is_valid_checkers_move(CheckersState *game, int from_r, int from_c, int to_r
         return 1;
     }
 
-    // حرکت Queen یک خانه عمودی یا افقی مجاز است
-    if (piece.type == QUEEN) {
-        if (dr == 0 && abs(dc) == 1) return 1;
-        if (dc == 0 && abs(dr) == 1) return 1;
-    }
-
-    // حرکت پرشی دو خانه مورب، با وجود مهره حریف در میانه
+    // حرکت پرشی دو خانه مورب، با وجود مهره حریف در میانه (Queen مجاز نیست)
     if (abs(dr) == 2 && abs(dc) == 2) {
         int mr = from_r + dr / 2;
         int mc = from_c + dc / 2;
@@ -129,22 +250,32 @@ void make_checkers_move(CheckersState *game, int from_r, int from_c, int to_r, i
     int dc = to_c - from_c;
 
     int is_jump = 0;
-    if (abs(dr) == 2 && abs(dc) == 2) {
+    // QUEEN special capture: opponent two squares away -> capture by landing on fourth square
+    if (moving.type == QUEEN && (abs(dr) == 4 || abs(dc) == 4) && (dr == 0 || dc == 0)) {
+        int signr = (dr == 0) ? 0 : (dr > 0 ? 1 : -1);
+        int signc = (dc == 0) ? 0 : (dc > 0 ? 1 : -1);
+        int midr = from_r + signr * 2;
+        int midc = from_c + signc * 2;
+        Checker mid = game->board[midr][midc];
+        if (mid.type != EMPTY_C && mid.color != moving.color) {
+            game->board[midr][midc] = (Checker){EMPTY_C, RED};
+            is_jump = 1;
+        }
+    } else if (moving.type == QUEEN && (abs(dr) == 2 || abs(dc) == 2) && (dr == 0 || dc == 0)) {
+        // two-square non-capture move -> do not remove anything
+        is_jump = 0;
+    } else if (abs(dr) == 2 && abs(dc) == 2) {
         int mr = from_r + dr / 2;
         int mc = from_c + dc / 2;
-        game->board[mr][mc] = (Checker){EMPTY_C, RED};
-        is_jump = 1;
+        Checker mid = game->board[mr][mc];
+        if (mid.type != EMPTY_C && mid.color != moving.color) {
+            game->board[mr][mc] = (Checker){EMPTY_C, RED};
+            is_jump = 1;
+        }
     }
 
     game->board[to_r][to_c] = moving;
     game->board[from_r][from_c] = (Checker){EMPTY_C, RED};
-
-    // اگر مهره عادی به انتهای زمین رسید، پیش‌فرض به King ارتقاء می‌دهم (انتخاب UI در main.c مدیریت می‌شود)
-    if (moving.type == MAN) {
-        if ((moving.color == RED && to_r == 0) || (moving.color == BLACK_C && to_r == 7)) {
-            game->board[to_r][to_c].type = KING;
-        }
-    }
 
     // اگر هنوز امکان پرش بعدی وجود دارد، در همین نوبت می‌مانم تا پرش زنجیره‌ای انجام شود
     if (is_jump && can_jump_from(game, to_r, to_c)) {
@@ -175,10 +306,16 @@ void make_checkers_move(CheckersState *game, int from_r, int from_c, int to_r, i
     } else if (black_count == 0) {
         game->game_over = 1;
         game->winner = RED;
-        strcpy(game->message, "قرمز برنده شد!");
+        strcpy(game->message, "سفید برنده شد!");
+    } else if (!has_any_move_for(game, game->current_turn)) {
+        game->game_over = 1;
+        game->winner = (game->current_turn == RED) ? BLACK_C : RED;
+        sprintf(game->message, "%s برنده شد (%s حرکتی ندارد)",
+                (game->winner == RED) ? "سفید" : "سیاه",
+                (game->current_turn == RED) ? "سفید" : "سیاه");
     } else {
         sprintf(game->message, "نوبت %s%s",
-                (game->current_turn == RED) ? "قرمز" : "سیاه",
+                (game->current_turn == RED) ? "سفید" : "سیاه",
                 game->must_jump ? " (پرش اجباری!)" : "");
     }
 }
@@ -191,15 +328,39 @@ void get_valid_checkers_moves(CheckersState *game, int row, int col, int valid[8
 
     if (game->board[row][col].type == EMPTY_C) return;
 
-    // اگر پرش اجباری فعال است فقط همان مهره اجازه دارد حرکت کند
-    if (game->must_jump && (game->jump_from_r != row || game->jump_from_c != col)) {
-        return;
+    // در حالت پرش زنجیره‌ای فقط همان مهرهٔ انتخاب‌شده اجازه حرکت دارد
+    if (game->multi_jump) {
+        if (game->jump_from_r != row || game->jump_from_c != col) return;
     }
 
+    // حالا برای هر مقصد ممکن، دو حالت را بررسی می‌کنیم:
+    //  - 1 : حرکت واقعاً مجاز است (نمایش سبز روشن)
+    //  - 2 : اگر پرش اجباری غیرفعال بود، این حرکت مجاز می‌بود (نمایش سبزِ مرده‌تر)
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
+            // ابتدا همچون قبل حرکتِ واقعی را چک کن
             if (is_valid_checkers_move(game, row, col, i, j)) {
                 valid[i][j] = 1;
+                continue;
+            }
+
+            // اگر پرش اجباری فعال است، بررسی کن که آیا همین حرکت در حالت بدون پرشِ اجباری مجاز می‌بود
+            if (game->must_jump) {
+                int saved_must = game->must_jump;
+                int saved_jr = game->jump_from_r;
+                int saved_jc = game->jump_from_c;
+
+                game->must_jump = 0;
+                game->jump_from_r = -1;
+                game->jump_from_c = -1;
+
+                if (is_valid_checkers_move(game, row, col, i, j)) {
+                    valid[i][j] = 2; // نمایشِ مرده‌تر
+                }
+
+                game->must_jump = saved_must;
+                game->jump_from_r = saved_jr;
+                game->jump_from_c = saved_jc;
             }
         }
     }

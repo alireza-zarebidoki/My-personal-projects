@@ -1,7 +1,43 @@
 #!/usr/bin/env python3
 # coding: utf-8
+"""@file cgi-bin/auth_api.cgi
+@project arcade-system
+@author Alireza Zarebidoki
+@date_created 2024
+@date_modified 2024
+@brief REST API backend for user authentication, session management, and coin economy.
+
+@details
+سرور احراز هویت و مدیریت سکه این بازی‌لند است که از JSON برای ذخیره‌سازی داده استفاده می‌کند.
+این سرور تمام عملیات احراز هویت (ثبت‌نام، ورود)، مدیریت session، و نظارت بر اقتصاد سکه‌ها را انجام می‌دهد.
+از یک طراحی stateless استفاده می‌کند که هر درخواست مستقل است و session از طریق token مدیریت می‌شود.
+
+@responsibilities
+- ثبت‌نام و ورود کاربران جدید و موجود
+- مدیریت token و session هایشان
+- نگهداری موجودی سکه برای هر کاربر
+- پاداش دادن سکه به برندگان بازی‌ها
+- کاهش سکه هنگام شروع بازی
+- توابع خصوصی ادمین (لیست کاربران، تغییر نقش، اضافه کردن سکه)
+- نگهداری لاگ‌های تمام فعالیت‌های ادمین
+- جداسازی داده‌های ادمین از کاربران عادی
+
+@interactions
+- دریافت درخواست‌های GET/POST از فرانت‌اند
+- خواندن و نوشتن فایل‌های JSON برای ذخیره‌سازی داده
+- توليد token منحصر به فرد برای هر session
+- تأیید token برای هر درخواست که نیاز دارد
+
+@notes
+- فایل‌های JSON: admins.json، users.json، sessions.json، admin_logs.json
+- هر درخواست باید action را مشخص کند (register، login، logout، coin_balance و غیره)
+- Token باید در لاگ شود و برای امنیت باید منقضی‌شود
+- هر تغییر موجودی سکه باید لاگ شود
 """
-File-based auth/coin backend with separated admin & user stores.
+
+#!/usr/bin/env python3
+# coding: utf-8
+"""File-based auth/coin backend with separated admin & user stores.
 
 Data files (JSON):
 - admins.json -> {"admins": [{username, passwordHash, role="admin", coins}]}
